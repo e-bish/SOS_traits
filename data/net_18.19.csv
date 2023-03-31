@@ -1,0 +1,1039 @@
+year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_length_mm
+2018,06,11,SHR,Armored,0,Fish,Flatfish,Sand Sole,3,115
+2018,06,11,SHR,Armored,0,Fish,Flatfish,Speckled Sand Dab,1,130
+2018,06,11,SHR,Armored,0,Fish,Perch,Shiner Perch,3,89.66666666666667
+2018,06,11,SHR,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,150
+2018,06,11,SHR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,8,0
+2018,06,11,SHR,Armored,2,Fish,Salmon,Chum,3,95
+2018,06,11,SHR,Natural,0,Benthic invertebrate,Decapod,Helmet Crab,1,45
+2018,06,11,SHR,Natural,0,Fish,Hexagrammidae,Lingcod,2,97.5
+2018,06,11,SHR,Natural,0,Fish,Perch,Shiner Perch,1,110
+2018,06,11,SHR,Natural,1,Fish,Salmon,Coho,1,120
+2018,06,11,SHR,Natural,2,Fish,Salmon,Chum,44,36.63636363636364
+2018,06,11,SHR,Natural,2,Fish,Salmon,Coho,1,100
+2018,06,11,SHR,Restored,0,Fish,Salmon,Chinook,2,84
+2018,06,11,SHR,Restored,1,Fish,Salmon,Chinook,2,86
+2018,06,11,SHR,Restored,2,Pelagic invertebrate,Jellyfish,UnID Jellyfish,8,0
+2018,06,12,FAM,Armored,0,Fish,Salmon,Chum,1,67
+2018,06,12,FAM,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,3,0
+2018,06,12,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,12,0
+2018,06,12,FAM,Armored,2,Fish,Forage Fish,Herring,17,48.411764705882355
+2018,06,12,FAM,Natural,0,Benthic invertebrate,Decapod,Kelp Crab,1,59.5
+2018,06,12,FAM,Natural,0,Fish,Forage Fish,Herring,1,49
+2018,06,12,FAM,Natural,0,Fish,Hexagrammidae,Kelp Greenling,1,90
+2018,06,12,FAM,Natural,0,Fish,Hexagrammidae,Lingcod,1,70
+2018,06,12,FAM,Natural,0,Fish,Salmon,Chum,1,58
+2018,06,12,FAM,Natural,0,Fish,Stichaeid,Snake Prickleback,1,150
+2018,06,12,FAM,Natural,1,NA,NA,none,1,0
+2018,06,12,FAM,Natural,2,NA,NA,none,1,0
+2018,06,12,FAM,Restored,0,Fish,Cottidae,Buffalo Sculpin,1,31
+2018,06,12,FAM,Restored,0,Fish,Pholidae,Saddleback Gunnel,1,103
+2018,06,12,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2018,06,12,FAM,Restored,2,Fish,Forage Fish,Herring,1,49
+2018,06,12,TUR,Armored,0,Fish,Gadidae,Tom Cod,47,19.808510638297864
+2018,06,12,TUR,Armored,0,Fish,Salmon,Pink,3,71.33333333333333
+2018,06,12,TUR,Armored,1,Benthic invertebrate,Decapod,Helmet Crab,2,40
+2018,06,12,TUR,Armored,1,Benthic invertebrate,Decapod,Hippolyte Sp,4,0
+2018,06,12,TUR,Armored,1,Fish,Cottidae,Buffalo Sculpin,1,132
+2018,06,12,TUR,Armored,1,Fish,Gadidae,Tom Cod,126,7.833333333333323
+2018,06,12,TUR,Armored,1,Fish,Perch,Shiner Perch,1,79
+2018,06,12,TUR,Armored,1,Fish,Pholidae,UnID Gunnel,1,0
+2018,06,12,TUR,Armored,2,NA,NA,none,1,0
+2018,06,12,TUR,Natural,0,Fish,Salmon,Pink,220,7.26818181818183
+2018,06,12,TUR,Natural,1,Fish,Salmon,Pink,1,0
+2018,06,12,TUR,Natural,2,Fish,Salmon,Pink,1,0
+2018,06,12,TUR,Restored,0,Fish,Gadidae,Tom Cod,43,22.60465116279071
+2018,06,12,TUR,Restored,0,Fish,Salmon,Pink,6,66.66666666666667
+2018,06,12,TUR,Restored,0,Fish,UnID Fish,UnID Fish,2,59.5
+2018,06,12,TUR,Restored,1,Fish,Rockfish,UnID Rockfish,1,53
+2018,06,12,TUR,Restored,1,Fish,Salmon,Pink,89,15.69662921348316
+2018,06,12,TUR,Restored,2,Benthic invertebrate,Decapod,Idotea,1,0
+2018,06,12,TUR,Restored,2,Fish,Poacher,Poacher,1,35
+2018,06,12,TUR,Restored,2,Fish,Salmon,Chum,1,79
+2018,06,12,TUR,Restored,2,Fish,Salmon,Pink,17,84.94117647058823
+2018,06,12,TUR,Restored,2,Pelagic invertebrate,Jellyfish,UnID Jellyfish,1,0
+2018,06,13,COR,Armored,1,Fish,Forage Fish,Herring,1,125
+2018,06,13,COR,Armored,1,Fish,Salmon,Chinook,1,97
+2018,06,13,COR,Armored,2,Fish,Salmon,UnID Salmon,1,0
+2018,06,13,COR,Natural,1,Fish,Perch,Shiner Perch,21,80.57142857142857
+2018,06,13,COR,Natural,1,Fish,Perch,Striped Perch,2,220
+2018,06,13,COR,Natural,1,Fish,Pholidae,Crescent Gunnel,5,87.6
+2018,06,13,COR,Natural,1,Fish,Pholidae,Saddleback Gunnel,2,94
+2018,06,13,COR,Natural,1,Fish,Salmon,Coho,1,94
+2018,06,13,COR,Natural,1,Fish,Stichaeid,Snake Prickleback,5,137
+2018,06,13,COR,Natural,2,Benthic invertebrate,Decapod,Kelp Crab,1,20
+2018,06,13,COR,Natural,2,Fish,Salmon,Chinook,1,101
+2018,06,13,COR,Natural,2,Fish,Salmon,Pink,1,85
+2018,06,13,COR,Restored,1,Benthic invertebrate,Decapod,Dungeness Crab,1,180
+2018,06,13,COR,Restored,1,Benthic invertebrate,Decapod,Helmet Crab,1,80
+2018,06,13,COR,Restored,1,Benthic invertebrate,Decapod,Kelp Crab,1,25
+2018,06,13,COR,Restored,1,Fish,Cottidae,Staghorn Sculpin,18,48.16666666666667
+2018,06,13,COR,Restored,1,Fish,Perch,Shiner Perch,7,76.71428571428571
+2018,06,13,COR,Restored,1,Fish,Pholidae,Crescent Gunnel,1,80
+2018,06,13,COR,Restored,1,Fish,Pholidae,Saddleback Gunnel,1,110
+2018,06,13,COR,Restored,1,Fish,Salmon,Chinook,6,79.83333333333333
+2018,06,13,COR,Restored,1,Fish,Stichaeid,Snake Prickleback,7,151
+2018,06,13,COR,Restored,2,Fish,Perch,Shiner Perch,2,81
+2018,06,13,COR,Restored,2,Fish,Salmon,Chinook,2,83
+2018,06,13,COR,Restored,2,Fish,Salmon,Coho,1,115
+2018,06,14,EDG,Armored,0,Benthic invertebrate,Decapod,Kelp Crab,1,12
+2018,06,14,EDG,Armored,0,Fish,Aulorhynchus,Tube Snout,1,146
+2018,06,14,EDG,Armored,0,Fish,Flatfish,Sand Sole,1,86
+2018,06,14,EDG,Armored,0,Fish,Perch,Shiner Perch,2,93
+2018,06,14,EDG,Armored,0,Fish,Stichaeid,Stickleback,27,46.03703703703703
+2018,06,14,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,20,3
+2018,06,14,EDG,Armored,1,NA,salmon,none,1,0
+2018,06,14,EDG,Armored,2,Fish,Salmon,Chinook,1,85
+2018,06,14,EDG,Natural,0,Benthic invertebrate,Decapod,Dungeness Crab,7,53.285714285714285
+2018,06,14,EDG,Natural,0,Fish,Perch,Shiner Perch,40,52.80000000000002
+2018,06,14,EDG,Natural,1,Fish,Stichaeid,Stickleback,1,50
+2018,06,14,EDG,Natural,2,Fish,Salmon,Chinook,1,107
+2018,06,14,EDG,Restored,0,Benthic invertebrate,Decapod,Dungeness Crab,20,59.5
+2018,06,14,EDG,Restored,0,Benthic invertebrate,Decapod,Kelp Crab,4,12.25
+2018,06,14,EDG,Restored,0,Fish,Aulorhynchus,Tube Snout,2,140.5
+2018,06,14,EDG,Restored,0,Fish,Flatfish,C-O Sole,1,70
+2018,06,14,EDG,Restored,0,Fish,Flatfish,Sand Sole,8,87.5
+2018,06,14,EDG,Restored,0,Fish,Perch,Shiner Perch,13,90.61538461538461
+2018,06,14,EDG,Restored,0,Fish,Salmon,Chinook,1,80
+2018,06,14,EDG,Restored,0,Fish,Stichaeid,Stickleback,1,68
+2018,06,14,EDG,Restored,1,Fish,Salmon,Chinook,1,101
+2018,06,14,EDG,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,10,3
+2018,06,14,EDG,Restored,2,NA,fish,none,1,0
+2018,06,19,DOK,Armored,0,Fish,Aulorhynchus,Tube Snout,1,182
+2018,06,19,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,60,3
+2018,06,19,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,10
+2018,06,19,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,40,0
+2018,06,19,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,3,10
+2018,06,19,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,50,0
+2018,06,19,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,9,10
+2018,06,19,DOK,Natural,0,Fish,Perch,Shiner Perch,1,80
+2018,06,19,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,10
+2018,06,19,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,5,10
+2018,06,19,DOK,Natural,1,Fish,Perch,Shiner Perch,10,81.1
+2018,06,19,DOK,Natural,1,Fish,Salmon,Chinook,1,85
+2018,06,19,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,36
+2018,06,19,DOK,Natural,2,Pelagic invertebrate,Jellyfish,UnID Jellyfish,20,10
+2018,06,19,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,30,3
+2018,06,19,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,20
+2018,06,19,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,20,3
+2018,06,19,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,5,5
+2018,06,19,DOK,Restored,2,Fish,Perch,Shiner Perch,1,81
+2018,06,19,DOK,Restored,2,Fish,Salmon,Chinook,1,105
+2018,06,19,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,30,3
+2018,06,19,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,3,10
+2018,07,11,FAM,Armored,0,NA,NA,none,1,0
+2018,07,11,FAM,Armored,1,NA,NA,none,1,0
+2018,07,11,FAM,Armored,2,NA,NA,none,1,0
+2018,07,11,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2018,07,11,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,10,0
+2018,07,11,FAM,Natural,1,NA,NA,none,1,0
+2018,07,11,FAM,Natural,2,NA,NA,none,1,0
+2018,07,11,FAM,Restored,0,NA,NA,none,1,0
+2018,07,11,FAM,Restored,1,NA,NA,none,1,0
+2018,07,11,FAM,Restored,2,NA,NA,none,1,0
+2018,07,11,TUR,Armored,0,Benthic invertebrate,Decapod,Pandalid,1,6.2
+2018,07,11,TUR,Armored,0,Benthic invertebrate,Decapod,UnID Shrimp,4,4.25
+2018,07,11,TUR,Armored,0,Fish,Cottidae,Silver Spotted Sculpin,1,5
+2018,07,11,TUR,Armored,0,Fish,Gadidae,Pacific Cod,4,6
+2018,07,11,TUR,Armored,0,Fish,Gadidae,Tom Cod,3,6.233333333333333
+2018,07,11,TUR,Armored,0,Fish,Hexagrammidae,Lingcod,1,10.2
+2018,07,11,TUR,Armored,0,Fish,Perch,Shiner Perch,1,6.2
+2018,07,11,TUR,Armored,0,Fish,Pholidae,Saddleback Gunnel,2,14.75
+2018,07,11,TUR,Armored,1,NA,NA,none,1,0
+2018,07,11,TUR,Armored,2,NA,NA,none,1,0
+2018,07,11,TUR,Natural,1,NA,NA,none,1,0
+2018,07,11,TUR,Natural,2,NA,NA,none,1,0
+2018,07,11,TUR,Restored,1,NA,NA,none,1,0
+2018,07,11,TUR,Restored,2,NA,NA,none,1,0
+2018,07,12,COR,Armored,0,NA,NA,none,1,0
+2018,07,12,COR,Armored,1,NA,NA,none,1,0
+2018,07,12,COR,Armored,2,NA,NA,none,1,0
+2018,07,12,COR,Natural,0,Benthic invertebrate,Decapod,Dungeness Crab,1,65
+2018,07,12,COR,Natural,0,Fish,Forage Fish,Surf Smelt,1,117
+2018,07,12,COR,Natural,0,Fish,Salmon,Chinook,8,94.5
+2018,07,12,COR,Natural,1,Fish,Forage Fish,Herring,5,147
+2018,07,12,COR,Natural,1,Fish,Forage Fish,Sand Lance,1,134
+2018,07,12,COR,Natural,1,Fish,Forage Fish,Surf Smelt,7,106.85714285714286
+2018,07,12,COR,Natural,1,Fish,Perch,Shiner Perch,50,34.80000000000002
+2018,07,12,COR,Natural,1,Fish,Salmon,Chinook,15,111.46666666666667
+2018,07,12,COR,Natural,2,Fish,Stichaeid,Stickleback,1,30
+2018,07,12,COR,Restored,0,Fish,Perch,Shiner Perch,7,80.14285714285714
+2018,07,12,COR,Restored,0,Fish,Salmon,Chinook,9,100.55555555555556
+2018,07,12,COR,Restored,1,Fish,Forage Fish,Herring,1,148
+2018,07,12,COR,Restored,1,Fish,Forage Fish,Surf Smelt,1,148
+2018,07,12,COR,Restored,1,Fish,Perch,Shiner Perch,2,80
+2018,07,12,COR,Restored,1,Fish,Salmon,Chinook,6,102.66666666666667
+2018,07,12,COR,Restored,2,NA,NA,none,1,0
+2018,07,12,TUR,Armored,0,NA,NA,none,1,0
+2018,07,12,TUR,Armored,1,Benthic invertebrate,Decapod,Kelp Crab,1,45
+2018,07,12,TUR,Armored,1,Fish,Gadidae,Pacific Cod,8,58.25
+2018,07,12,TUR,Armored,1,Fish,Salmon,Chinook,1,120
+2018,07,12,TUR,Armored,1,Fish,Salmon,Pink,1,70
+2018,07,12,TUR,Armored,2,Fish,Salmon,Chinook,11,89.72727272727273
+2018,07,12,TUR,Armored,2,Fish,Salmon,Chum,16,101.5625
+2018,07,12,TUR,Armored,2,Fish,Salmon,Pink,3,81
+2018,07,12,TUR,Natural,0,NA,NA,none,1,0
+2018,07,12,TUR,Natural,1,NA,NA,none,1,0
+2018,07,12,TUR,Natural,2,NA,NA,none,1,0
+2018,07,12,TUR,Restored,0,NA,NA,none,1,0
+2018,07,12,TUR,Restored,1,Benthic invertebrate,Decapod,Kelp Crab,1,1
+2018,07,12,TUR,Restored,2,NA,NA,none,1,0
+2018,07,16,SHR,Armored,0,NA,NA,none,1,0
+2018,07,16,SHR,Armored,1,NA,NA,none,1,0
+2018,07,16,SHR,Armored,2,NA,NA,none,1,0
+2018,07,16,SHR,Natural,0,NA,NA,none,1,0
+2018,07,16,SHR,Natural,1,NA,NA,none,1,0
+2018,07,16,SHR,Natural,2,NA,NA,none,1,0
+2018,07,16,SHR,Restored,0,Benthic invertebrate,Decapod,Graceful Crab,4,38.75
+2018,07,16,SHR,Restored,0,Benthic invertebrate,Decapod,Helmet Crab,3,40
+2018,07,16,SHR,Restored,0,Benthic invertebrate,Decapod,Idotea,1,32
+2018,07,16,SHR,Restored,0,Benthic invertebrate,Decapod,Pandalid,12,44.166666666666664
+2018,07,16,SHR,Restored,0,Fish,Perch,Shiner Perch,15,91.73333333333333
+2018,07,16,SHR,Restored,1,NA,NA,none,1,0
+2018,07,16,SHR,Restored,2,NA,NA,none,1,0
+2018,07,18,EDG,Armored,0,NA,NA,none,1,0
+2018,07,18,EDG,Armored,1,NA,NA,none,1,0
+2018,07,18,EDG,Armored,2,NA,NA,none,1,0
+2018,07,18,EDG,Natural,0,Fish,Salmon,Chinook,2,124
+2018,07,18,EDG,Natural,0,Fish,Salmon,Chum,6,135
+2018,07,18,EDG,Natural,0,Fish,Stichaeid,Stickleback,2,60
+2018,07,18,EDG,Natural,1,NA,NA,none,1,0
+2018,07,18,EDG,Natural,2,NA,NA,none,1,0
+2018,07,18,EDG,Restored,0,NA,NA,none,1,0
+2018,07,18,EDG,Restored,1,Fish,Salmon,Chinook,1,105
+2018,07,18,EDG,Restored,1,Fish,Salmon,Chum,2,152.5
+2018,07,18,EDG,Restored,1,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,0
+2018,07,18,EDG,Restored,2,NA,NA,none,1,0
+2018,07,19,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2018,07,19,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,50,0
+2018,07,19,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,100,0
+2018,07,19,DOK,Natural,0,Fish,Perch,Shiner Perch,1,57
+2018,07,19,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2018,07,19,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2018,07,19,DOK,Natural,2,Fish,Salmon,Chum,1,120
+2018,07,19,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,75,0
+2018,07,19,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,50,0
+2018,07,19,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,50,0
+2018,07,19,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,50,0
+2018,08,01,SHR,Armored,0,NA,NA,none,1,0
+2018,08,01,SHR,Armored,1,NA,NA,none,1,0
+2018,08,01,SHR,Armored,2,NA,NA,none,1,0
+2018,08,01,SHR,Natural,0,NA,NA,none,1,0
+2018,08,01,SHR,Natural,1,NA,NA,none,1,0
+2018,08,01,SHR,Natural,2,NA,NA,none,1,0
+2018,08,01,SHR,Restored,0,Benthic invertebrate,Decapod,Kelp Crab,1,60
+2018,08,01,SHR,Restored,0,Fish,Perch,Shiner Perch,16,97.625
+2018,08,01,SHR,Restored,0,Fish,Salmon,Chinook,1,195
+2018,08,01,SHR,Restored,0,Fish,Sygnathid,Pipefish,3,78.66666666666667
+2018,08,01,SHR,Restored,1,NA,NA,none,1,0
+2018,08,01,SHR,Restored,2,NA,NA,none,1,0
+2018,08,03,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2018,08,03,DOK,Armored,1,Fish,Salmon,Chinook,1,127
+2018,08,03,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,100,0
+2018,08,03,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,100,0
+2018,08,03,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2018,08,03,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,40,0
+2018,08,03,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,99,0
+2018,08,03,DOK,Restored,0,Fish,Perch,Shiner Perch,148,7.5945945945946045
+2018,08,03,DOK,Restored,1,NA,NA,none,1,0
+2018,08,03,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2018,08,07,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,25
+2018,08,07,EDG,Armored,1,NA,NA,none,1,0
+2018,08,07,EDG,Armored,2,NA,NA,none,1,0
+2018,08,07,EDG,Natural,0,NA,NA,none,1,0
+2018,08,07,EDG,Natural,1,NA,NA,none,1,0
+2018,08,07,EDG,Natural,2,NA,NA,none,1,0
+2018,08,07,EDG,Restored,0,NA,NA,none,1,0
+2018,08,07,EDG,Restored,1,NA,NA,none,1,0
+2018,08,07,EDG,Restored,2,NA,NA,none,1,0
+2018,08,23,FAM,Armored,0,NA,NA,none,1,0
+2018,08,23,FAM,Armored,1,NA,NA,none,1,0
+2018,08,23,FAM,Armored,2,NA,NA,none,1,0
+2018,08,23,FAM,Natural,0,Fish,Perch,Shiner Perch,55,20.709090909090904
+2018,08,23,FAM,Natural,1,Benthic invertebrate,Decapod,UnID Amphipod,1,0
+2018,08,23,FAM,Natural,1,Benthic invertebrate,Decapod,UnID Shrimp,1,0
+2018,08,23,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2018,08,23,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,11,0
+2018,08,23,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2018,08,23,FAM,Restored,0,NA,NA,none,1,0
+2018,08,23,FAM,Restored,1,NA,NA,none,1,0
+2018,08,23,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2018,08,23,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,3,0
+2018,08,23,TUR,Armored,0,Benthic invertebrate,Decapod,Green Shrimp,1,50
+2018,08,23,TUR,Armored,0,Benthic invertebrate,Decapod,Striped Shrimp,2,59
+2018,08,23,TUR,Armored,0,Fish,Cottidae,Silver Spotted Sculpin,2,77
+2018,08,23,TUR,Armored,0,Fish,Perch,Shiner Perch,33,38.66666666666666
+2018,08,23,TUR,Armored,0,Fish,Perch,Striped Perch,4,87.5
+2018,08,23,TUR,Armored,0,Fish,Pholidae,Crescent Gunnel,1,70
+2018,08,23,TUR,Armored,1,Benthic invertebrate,Decapod,Green Shrimp,36,10.5
+2018,08,23,TUR,Armored,1,Benthic invertebrate,Decapod,Kelp Crab,2,35
+2018,08,23,TUR,Armored,1,Benthic invertebrate,Decapod,Striped Shrimp,11,46.63636363636363
+2018,08,23,TUR,Armored,1,Fish,Perch,Shiner Perch,55,22.581818181818175
+2018,08,23,TUR,Armored,1,Fish,Perch,Striped Perch,5,74.2
+2018,08,23,TUR,Armored,2,Fish,Perch,Shiner Perch,2,80.5
+2018,08,23,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2018,08,23,TUR,Natural,0,Benthic invertebrate,Decapod,Green Shrimp,1,0
+2018,08,23,TUR,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2018,08,23,TUR,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2018,08,23,TUR,Natural,1,NA,NA,none,1,0
+2018,08,23,TUR,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2018,08,23,TUR,Restored,0,NA,NA,none,1,0
+2018,08,23,TUR,Restored,1,NA,NA,none,1,0
+2018,08,23,TUR,Restored,2,NA,NA,none,1,0
+2018,08,29,COR,Armored,0,Fish,Cottidae,Buffalo Sculpin,4,37.75
+2018,08,29,COR,Armored,0,Fish,Forage Fish,Herring,1,75
+2018,08,29,COR,Armored,0,Fish,Forage Fish,Sand Lance,1,83
+2018,08,29,COR,Armored,0,Fish,Hexagrammidae,White Spotted Greenling,1,105
+2018,08,29,COR,Armored,0,Fish,Perch,Shiner Perch,37,36.1081081081081
+2018,08,29,COR,Armored,0,Fish,Perch,Striped Perch,1,80
+2018,08,29,COR,Armored,1,NA,NA,none,1,0
+2018,08,29,COR,Armored,2,NA,NA,none,1,0
+2018,08,29,COR,Natural,0,Fish,Perch,Shiner Perch,4,125
+2018,08,29,COR,Natural,0,Fish,Salmon,Chinook,1,130
+2018,08,29,COR,Natural,1,NA,NA,none,1,0
+2018,08,29,COR,Natural,2,NA,NA,none,1,0
+2018,08,29,COR,Restored,0,Fish,Perch,Shiner Perch,18,91.44444444444444
+2018,08,29,COR,Restored,0,Fish,Salmon,Chinook,1,115
+2018,08,29,COR,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,80,0
+2018,08,29,COR,Restored,1,Fish,Perch,Shiner Perch,6,96.16666666666667
+2018,08,29,COR,Restored,1,Fish,Salmon,Chinook,1,131
+2018,08,29,COR,Restored,2,Fish,Forage Fish,Surf Smelt,1,110
+2018,08,29,COR,Restored,2,Fish,Salmon,Chinook,1,135
+2018,08,29,COR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,100,0
+2018,09,06,DOK,Armored,0,Benthic invertebrate,Decapod,Shore Crab,1,5
+2018,09,06,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2018,09,06,DOK,Armored,1,Fish,Salmon,Chinook,1,138
+2018,09,06,DOK,Armored,2,Fish,Forage Fish,Herring,4,110.75
+2018,09,06,DOK,Armored,2,Fish,Forage Fish,Surf Smelt,12,104.25
+2018,09,06,DOK,Natural,0,Benthic invertebrate,Decapod,Shore Crab,1,15
+2018,09,06,DOK,Natural,0,Fish,Perch,Shiner Perch,7,65.71428571428571
+2018,09,06,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,1,40
+2018,09,06,DOK,Natural,1,NA,NA,none,1,0
+2018,09,06,DOK,Natural,2,NA,NA,none,1,0
+2018,09,06,DOK,Restored,0,Benthic invertebrate,Decapod,Shore Crab,1,18
+2018,09,06,DOK,Restored,0,Fish,Flatfish,Speckled Sand Dab,1,137
+2018,09,06,DOK,Restored,1,Benthic invertebrate,Decapod,Shore Crab,1,15
+2018,09,06,DOK,Restored,1,Fish,Stichaeid,Stickleback,1,30
+2018,09,06,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,10
+2018,09,06,DOK,Restored,2,NA,NA,none,1,0
+2018,09,06,SHR,Armored,0,NA,NA,none,1,0
+2018,09,06,SHR,Armored,1,Benthic invertebrate,Decapod,Shore Crab,1,17
+2018,09,06,SHR,Armored,1,Fish,Stichaeid,Stickleback,2,35.5
+2018,09,06,SHR,Armored,2,NA,NA,none,1,0
+2018,09,06,SHR,Natural,0,NA,NA,none,1,0
+2018,09,06,SHR,Natural,1,NA,NA,none,1,0
+2018,09,06,SHR,Natural,2,NA,NA,none,1,0
+2018,09,06,SHR,Restored,0,Fish,Perch,Shiner Perch,1,78
+2018,09,06,SHR,Restored,1,NA,NA,none,1,0
+2018,09,06,SHR,Restored,2,NA,NA,none,1,0
+2018,09,11,FAM,Armored,0,Fish,Forage Fish,Herring,1,82
+2018,09,11,FAM,Armored,0,Fish,Perch,Shiner Perch,7,86.14285714285714
+2018,09,11,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,50,0
+2018,09,11,FAM,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,25,0
+2018,09,11,FAM,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,5,0
+2018,09,11,FAM,Natural,0,Fish,Forage Fish,Herring,61,27.852459016393436
+2018,09,11,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,200,10
+2018,09,11,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,200,10
+2018,09,11,FAM,Restored,0,Fish,Forage Fish,Herring,1,88
+2018,09,11,FAM,Restored,0,Fish,Forage Fish,Surf Smelt,6,55.666666666666664
+2018,09,11,FAM,Restored,0,Fish,Perch,Shiner Perch,81,15.962962962962974
+2018,09,11,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2018,09,11,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,270,0
+2018,09,11,FAM,Restored,2,Fish,Stichaeid,Stickleback,1,31
+2018,09,11,TUR,Armored,0,Benthic invertebrate,Decapod,UnID Shrimp,4,66.5
+2018,09,11,TUR,Armored,1,Fish,Perch,Shiner Perch,10,99.3
+2018,09,11,TUR,Armored,2,NA,NA,none,1,0
+2018,09,11,TUR,Natural,0,NA,NA,none,1,0
+2018,09,11,TUR,Natural,1,NA,NA,none,1,0
+2018,09,11,TUR,Natural,2,Fish,Stichaeid,Stickleback,1,31
+2018,09,11,TUR,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,20,0
+2018,09,11,TUR,Restored,0,NA,NA,none,1,0
+2018,09,11,TUR,Restored,1,NA,NA,none,1,0
+2018,09,11,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2018,09,11,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,4,0
+2018,09,12,COR,Armored,0,Benthic invertebrate,Decapod,UnID Shrimp,2,24
+2018,09,12,COR,Armored,0,Fish,Hexagrammidae,White Spotted Greenling,1,128
+2018,09,12,COR,Armored,0,Fish,Perch,Shiner Perch,32,36.875
+2018,09,12,COR,Armored,0,Fish,Pholidae,Crescent Gunnel,1,125
+2018,09,12,COR,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,20,0
+2018,09,12,COR,Armored,1,Fish,Forage Fish,Herring,1,73
+2018,09,12,COR,Armored,2,NA,NA,none,1,0
+2018,09,12,COR,Natural,0,Fish,Perch,Shiner Perch,35,0
+2018,09,12,COR,Natural,1,Fish,Gadidae,Pacific Cod,1,0
+2018,09,12,COR,Natural,1,Fish,Perch,Shiner Perch,76,17.789473684210535
+2018,09,12,COR,Natural,2,NA,NA,none,1,0
+2018,09,12,COR,Restored,0,Benthic invertebrate,Decapod,Dungeness Crab,1,120
+2018,09,12,COR,Restored,0,Benthic invertebrate,Decapod,UnID Shrimp,1,45
+2018,09,12,COR,Restored,0,Fish,Cottidae,Buffalo Sculpin,1,120
+2018,09,12,COR,Restored,0,Fish,Perch,Shiner Perch,13,93.15384615384616
+2018,09,12,COR,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2018,09,12,COR,Restored,1,Fish,Cottidae,Buffalo Sculpin,1,41
+2018,09,12,COR,Restored,1,Fish,Perch,Shiner Perch,15,89
+2018,09,12,COR,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,80,0
+2018,09,12,COR,Restored,2,NA,NA,none,1,0
+2018,09,12,TUR,Armored,0,Benthic invertebrate,Decapod,UnID Shrimp,1,35
+2018,09,12,TUR,Armored,0,Fish,Perch,Shiner Perch,23,64.47826086956522
+2018,09,12,TUR,Armored,1,Benthic invertebrate,Decapod,UnID Shrimp,1,45
+2018,09,12,TUR,Armored,1,Fish,Cottidae,Silver Spotted Sculpin,1,81
+2018,09,12,TUR,Armored,1,Fish,Perch,Shiner Perch,14,87.07142857142857
+2018,09,12,TUR,Armored,1,Fish,Perch,Striped Perch,1,74
+2018,09,12,TUR,Armored,1,Fish,Pholidae,Saddleback Gunnel,1,95
+2018,09,12,TUR,Armored,2,NA,NA,none,1,0
+2018,09,12,TUR,Natural,0,NA,NA,none,1,0
+2018,09,12,TUR,Natural,1,NA,NA,none,1,0
+2018,09,12,TUR,Natural,2,NA,NA,none,1,0
+2018,09,12,TUR,Restored,0,Fish,Perch,Pile Perch,1,285
+2018,09,12,TUR,Restored,0,Fish,Perch,Striped Perch,3,116.66666666666667
+2018,09,12,TUR,Restored,1,Fish,Perch,Striped Perch,1,232
+2018,09,12,TUR,Restored,2,NA,NA,none,1,0
+2018,09,14,EDG,Armored,0,NA,NA,none,1,0
+2018,09,14,EDG,Armored,1,NA,NA,none,1,0
+2018,09,14,EDG,Armored,2,NA,NA,none,1,0
+2018,09,14,EDG,Natural,0,NA,NA,none,1,0
+2018,09,14,EDG,Natural,1,NA,NA,none,1,0
+2018,09,14,EDG,Natural,2,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,0
+2018,09,14,EDG,Restored,0,NA,NA,none,1,0
+2018,09,14,EDG,Restored,1,NA,NA,none,1,0
+2018,09,14,EDG,Restored,2,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,0
+2019,04,19,DOK,Armored,1,Benthic Invertebrate,Isopod,Idotea,1,0
+2019,04,19,DOK,Armored,1,Fish,Forage Fish,Surf Smelt,1,145
+2019,04,19,DOK,Armored,1,Fish,Salmon,Chum,13,87.23076923076923
+2019,04,19,DOK,Armored,2,NA,NA,none,1,0
+2019,04,19,DOK,Natural,0,NA,NA,none,1,0
+2019,04,19,DOK,Natural,1,NA,NA,none,1,0
+2019,04,19,DOK,Natural,2,NA,NA,none,1,0
+2019,04,19,DOK,Restored,0,Fish,Salmon,Chinook,1,99
+2019,04,19,DOK,Restored,1,NA,NA,none,1,0
+2019,04,19,DOK,Restored,2,NA,NA,none,1,0
+2019,04,19,SHR,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,04,19,SHR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,7,0
+2019,04,19,SHR,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,04,19,SHR,Natural,0,NA,NA,none,1,0
+2019,04,19,SHR,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,04,19,SHR,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,04,19,SHR,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
+2019,04,19,SHR,Restored,1,NA,NA,none,1,0
+2019,04,19,SHR,Restored,2,NA,NA,none,1,0
+2019,04,24,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,11,0
+2019,04,24,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,04,24,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,04,24,EDG,Armored,2,NA,NA,none,1,0
+2019,04,24,EDG,Natural,0,Fish,Forage Fish,Sand Lance,1,40
+2019,04,24,EDG,Natural,1,NA,NA,none,1,0
+2019,04,24,EDG,Natural,2,NA,NA,none,1,0
+2019,04,24,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,23,0
+2019,04,24,EDG,Restored,1,Fish,Perch,Shiner Perch,50,34
+2019,04,24,EDG,Restored,2,NA,NA,none,1,0
+2019,04,29,COR,Armored,0,Benthic Invertebrate,Decapod,Crab,1,20
+2019,04,29,COR,Armored,0,Benthic Invertebrate,Decapod,UnID Shrimp,3,33.333333333333336
+2019,04,29,COR,Armored,0,Fish,Perch,Shiner Perch,1,80
+2019,04,29,COR,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,85
+2019,04,29,COR,Armored,0,Fish,Salmon,Chum,1,45
+2019,04,29,COR,Armored,0,Fish,Stichaeid,Snake Prickleback,1,195
+2019,04,29,COR,Armored,1,Benthic Invertebrate,Isopod,Idotea,1,40
+2019,04,29,COR,Armored,1,Fish,Salmon,Chum,512,2.044921875
+2019,04,29,COR,Armored,2,Fish,Forage Fish,Herring,1,32
+2019,04,29,COR,Armored,2,Fish,Salmon,Chum,79,16.797468354430357
+2019,04,29,COR,Natural,0,Fish,Forage Fish,Herring,4,151.75
+2019,04,29,COR,Natural,0,Fish,Forage Fish,Sand Lance,2,72.5
+2019,04,29,COR,Natural,0,Fish,Forage Fish,Surf Smelt,1,144
+2019,04,29,COR,Natural,0,Fish,Salmon,Chum,20,54.6
+2019,04,29,COR,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,04,29,COR,Natural,2,Fish,Salmon,Chum,15,45.13333333333333
+2019,04,29,COR,Restored,0,Benthic Invertebrate,Decapod,Pandalid,25,32.8
+2019,04,29,COR,Restored,0,Benthic Invertebrate,Gastropod,Nudibranch,1,90
+2019,04,29,COR,Restored,0,Fish,Cottidae,Buffalo Sculpin,7,22.428571428571427
+2019,04,29,COR,Restored,0,Fish,Cottidae,Staghorn Sculpin,1,110
+2019,04,29,COR,Restored,0,Fish,Flatfish,English sole,2,76
+2019,04,29,COR,Restored,0,Fish,Flatfish,UnID Flatfish,1,24
+2019,04,29,COR,Restored,0,Fish,Salmon,Chum,38,23.605263157894736
+2019,04,29,COR,Restored,1,Fish,Forage Fish,Herring,2,0
+2019,04,29,COR,Restored,1,Fish,Salmon,Chum,44,20.8409090909091
+2019,04,29,COR,Restored,1,Pelagic invertebrate,Decapod,Crab Zoea,1,4
+2019,04,29,COR,Restored,2,NA,NA,none,1,0
+2019,04,29,FAM,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,4,0
+2019,04,29,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,15,0
+2019,04,29,FAM,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,22,0
+2019,04,29,FAM,Natural,0,Fish,Hexagrammidae,Kelp Greenling,183,6.672131147540974
+2019,04,29,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,04,29,FAM,Natural,1,Pelagic invertebrate,Ctenophore,Ctenophore,18,0
+2019,04,29,FAM,Natural,2,Benthic Invertebrate,Decapod,UnID Shrimp,1,23
+2019,04,29,FAM,Natural,2,Fish,Hexagrammidae,Kelp Greenling,1,30
+2019,04,29,FAM,Natural,2,Pelagic invertebrate,Ctenophore,Ctenophore,7,0
+2019,04,29,FAM,Restored,0,Fish,Forage Fish,Surf Smelt,1,120
+2019,04,29,FAM,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
+2019,04,29,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,04,29,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,04,30,COR,Natural,0,Benthic Invertebrate,Decapod,Crab Zoea,1,0
+2019,04,30,TUR,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,8,0
+2019,04,30,TUR,Armored,1,Benthic Invertebrate,Decapod,Kelp Crab,1,10
+2019,04,30,TUR,Armored,1,Fish,Aulorhynchus,Tube Snout,1,150
+2019,04,30,TUR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
+2019,04,30,TUR,Armored,2,Fish,Gadidae,Tom Cod,1,23
+2019,04,30,TUR,Armored,2,Pelagic invertebrate,Decapod,Crab Zoea,3,4
+2019,04,30,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2019,04,30,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,04,30,TUR,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,15,0
+2019,04,30,TUR,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,25,0
+2019,04,30,TUR,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,04,30,TUR,Restored,0,Benthic Invertebrate,Decapod,Kelp Crab,1,20
+2019,04,30,TUR,Restored,0,Benthic Invertebrate,Decapod,UnID Shrimp,8,28.25
+2019,04,30,TUR,Restored,0,Fish,Pholidae,Crescent Gunnel,1,110
+2019,04,30,TUR,Restored,0,Fish,Pholidae,Penpoint Gunnel,1,0
+2019,04,30,TUR,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,04,30,TUR,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,04,30,TUR,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,04,30,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,8,0
+2019,05,01,COR,Natural,0,Benthic Invertebrate,Decapod,Crab Zoea,1,0
+2019,05,20,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,49,0
+2019,05,20,DOK,Armored,1,Fish,Salmon,Chum,1,80
+2019,05,20,DOK,Armored,1,Fish,Stichaeid,Stickleback,1,70
+2019,05,20,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,40,0
+2019,05,20,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,11,0
+2019,05,20,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,22,0
+2019,05,20,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,20,0
+2019,05,20,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,05,20,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,20,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,20,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2019,05,20,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,05,20,SHR,Armored,0,Fish,Aulorhynchus,Tube Snout,3,144.33333333333334
+2019,05,20,SHR,Armored,0,Fish,Perch,Shiner Perch,45,38.15555555555555
+2019,05,20,SHR,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,135
+2019,05,20,SHR,Armored,0,Fish,Salmon,Chum,3,67
+2019,05,20,SHR,Armored,1,Fish,Salmon,Chum,1,0
+2019,05,20,SHR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,20,SHR,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,4,0
+2019,05,20,SHR,Natural,0,Benthic Invertebrate,Decapod,Helmet Crab,1,40
+2019,05,20,SHR,Natural,0,Fish,Aulorhynchus,Tube Snout,1,145
+2019,05,20,SHR,Natural,0,Fish,Perch,Shiner Perch,1,85
+2019,05,20,SHR,Natural,0,Fish,Pholidae,Saddleback Gunnel,2,125
+2019,05,20,SHR,Natural,1,Fish,Hexagrammidae,Kelp Greenling,1,55
+2019,05,20,SHR,Natural,1,Fish,Salmon,Chum,9,66.88888888888889
+2019,05,20,SHR,Natural,2,Fish,Hexagrammidae,Kelp Greenling,3,52
+2019,05,20,SHR,Natural,2,Fish,Salmon,Chum,6,36.166666666666664
+2019,05,20,SHR,Natural,2,Fish,Salmon,Coho,1,60
+2019,05,20,SHR,Natural,2,Fish,Stichaeid,Stickleback,1,60
+2019,05,20,SHR,Restored,0,Fish,Aulorhynchus,Tube Snout,58,47.051724137931075
+2019,05,20,SHR,Restored,0,Fish,Forage Fish,Sand Lance,1,110
+2019,05,20,SHR,Restored,0,Fish,Perch,Shiner Perch,4,93
+2019,05,20,SHR,Restored,1,Fish,Salmon,Chum,18,84.16666666666667
+2019,05,20,SHR,Restored,2,Fish,Salmon,Chinook,1,109
+2019,05,20,SHR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,05,21,COR,Armored,0,Fish,Forage Fish,Herring,2,90.5
+2019,05,21,COR,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,100
+2019,05,21,COR,Armored,0,Fish,Salmon,Chinook,8,100.375
+2019,05,21,COR,Armored,0,Fish,Salmon,Chum,176,9.130681818181824
+2019,05,21,COR,Armored,0,Fish,Stichaeid,Stickleback,1,60
+2019,05,21,COR,Armored,1,Fish,Salmon,Chinook,2,97.5
+2019,05,21,COR,Armored,1,Fish,Salmon,Chum,2,80
+2019,05,21,COR,Armored,2,Fish,Salmon,Chinook,8,104.875
+2019,05,21,COR,Armored,2,Fish,Salmon,Chum,10,89.8
+2019,05,21,COR,Armored,2,Fish,Sygnathid,Pipefish,1,157
+2019,05,21,COR,Armored,2,Pelagic invertebrate,Gastropod,Melibe,1,0
+2019,05,21,COR,Natural,0,Fish,Perch,Shiner Perch,2,87.5
+2019,05,21,COR,Natural,1,Fish,Forage Fish,Herring,51,49.3725490196078
+2019,05,21,COR,Natural,1,Fish,Forage Fish,Northern Anchovy,1,110
+2019,05,21,COR,Natural,1,Fish,Forage Fish,Surf Smelt,8,153.75
+2019,05,21,COR,Natural,1,Fish,Perch,Shiner Perch,85,19.294117647058844
+2019,05,21,COR,Natural,1,Fish,Salmon,Chinook,11,125.81818181818181
+2019,05,21,COR,Natural,1,Fish,Salmon,Chum,9,86.66666666666667
+2019,05,21,COR,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,3,0
+2019,05,21,COR,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,21,COR,Natural,2,NA,NA,none,1,0
+2019,05,21,COR,Restored,0,Benthic Invertebrate,Decapod,Kelp Crab,1,40
+2019,05,21,COR,Restored,0,Benthic Invertebrate,Decapod,UnID Shrimp,63,9.190476190476181
+2019,05,21,COR,Restored,0,Fish,Cottidae,Buffalo Sculpin,7,23.571428571428573
+2019,05,21,COR,Restored,0,Fish,Forage Fish,Herring,4,130.75
+2019,05,21,COR,Restored,0,Fish,Forage Fish,Surf Smelt,4,104.5
+2019,05,21,COR,Restored,0,Fish,Perch,Shiner Perch,9,88.88888888888889
+2019,05,21,COR,Restored,0,Fish,Perch,Striped Perch,1,103
+2019,05,21,COR,Restored,0,Fish,Pholidae,Crescent Gunnel,6,99.33333333333333
+2019,05,21,COR,Restored,0,Fish,Pholidae,Penpoint Gunnel,1,90
+2019,05,21,COR,Restored,0,Fish,Pholidae,Saddleback Gunnel,1,110
+2019,05,21,COR,Restored,0,Fish,Salmon,Chinook,6,103
+2019,05,21,COR,Restored,0,Fish,Salmon,Chum,40,33.75
+2019,05,21,COR,Restored,0,Fish,Stichaeid,Snake Prickleback,9,102.33333333333333
+2019,05,21,COR,Restored,0,Fish,Sygnathid,Pipefish,7,150.28571428571428
+2019,05,21,COR,Restored,0,Pelagic invertebrate,Gastropod,Melibe,9,0
+2019,05,21,COR,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
+2019,05,21,COR,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,05,21,COR,Restored,1,Benthic Invertebrate,Decapod,Helmet Crab,1,80
+2019,05,21,COR,Restored,1,Benthic Invertebrate,Decapod,Hippolyte Sp,18,13.388888888888891
+2019,05,21,COR,Restored,1,Benthic Invertebrate,Decapod,Pandalid,10,20.3
+2019,05,21,COR,Restored,1,Benthic Invertebrate,Decapod,UnID Shrimp,5,21.6
+2019,05,21,COR,Restored,1,Fish,Cottidae,Buffalo Sculpin,3,19.333333333333332
+2019,05,21,COR,Restored,1,Fish,Cottidae,Silver Spotted Sculpin,1,30
+2019,05,21,COR,Restored,1,Fish,Gadidae,Tom Cod,1,48
+2019,05,21,COR,Restored,1,Fish,Hexagrammidae,Kelp Greenling,2,40
+2019,05,21,COR,Restored,1,Fish,Perch,Shiner Perch,3,74
+2019,05,21,COR,Restored,1,Fish,Pholidae,Crescent Gunnel,2,100
+2019,05,21,COR,Restored,1,Fish,Pholidae,Saddleback Gunnel,1,110
+2019,05,21,COR,Restored,1,Fish,Stichaeid,Snake Prickleback,1,150
+2019,05,21,COR,Restored,1,Pelagic invertebrate,Gastropod,Melibe,5,0
+2019,05,21,COR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2019,05,21,COR,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,22,FAM,Armored,0,Benthic Invertebrate,Decapod,UnID Shrimp,2,52.5
+2019,05,22,FAM,Armored,0,Fish,Forage Fish,Surf Smelt,2,134.5
+2019,05,22,FAM,Armored,0,Fish,Perch,Shiner Perch,2,124
+2019,05,22,FAM,Armored,0,Fish,Salmon,Chum,2,57.5
+2019,05,22,FAM,Armored,0,Fish,Stichaeid,Stickleback,3,58.333333333333336
+2019,05,22,FAM,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,4,0
+2019,05,22,FAM,Armored,1,Fish,UnID Fish,UnID Larval Fish,1,30
+2019,05,22,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,22,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,3,0
+2019,05,22,FAM,Armored,2,Fish,UnID Fish,UnID Larval Fish,50,12.979999999999997
+2019,05,22,FAM,Natural,0,Fish,Forage Fish,Herring,28,28.785714285714292
+2019,05,22,FAM,Natural,0,Fish,Stichaeid,Snake Prickleback,6,111.16666666666667
+2019,05,22,FAM,Natural,1,NA,NA,none,1,0
+2019,05,22,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,05,22,FAM,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2019,05,22,FAM,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,22,FAM,Restored,1,Fish,Hexagrammidae,Kelp Greenling,2,65
+2019,05,22,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,22,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,22,TUR,Armored,0,Fish,Aulorhynchus,Tube Snout,1,135
+2019,05,22,TUR,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,22,TUR,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,8,0
+2019,05,22,TUR,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,6,0
+2019,05,22,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,7,0
+2019,05,22,TUR,Natural,0,Fish,Forage Fish,Herring,2,31
+2019,05,22,TUR,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,22,TUR,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,3,0
+2019,05,22,TUR,Natural,2,NA,NA,none,1,0
+2019,05,22,TUR,Restored,0,Benthic Invertebrate,Decapod,Kelp Crab,3,31
+2019,05,22,TUR,Restored,0,Benthic Invertebrate,Decapod,UnID Shrimp,5,0
+2019,05,22,TUR,Restored,0,Fish,Gadidae,Tom Cod,4,29.75
+2019,05,22,TUR,Restored,0,Fish,Pholidae,Saddleback Gunnel,2,90
+2019,05,22,TUR,Restored,0,Fish,Stichaeid,Snake Prickleback,1,110
+2019,05,22,TUR,Restored,1,NA,NA,none,1,0
+2019,05,22,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,30,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,3,0
+2019,05,30,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,30,EDG,Armored,2,Fish,Salmon,Chinook,1,120
+2019,05,30,EDG,Natural,0,Benthic Invertebrate,Decapod,Graceful Crab,1,19
+2019,05,30,EDG,Natural,0,Benthic Invertebrate,Decapod,Helmet Crab,17,24.88235294117647
+2019,05,30,EDG,Natural,0,Fish,Perch,Shiner Perch,4,90.5
+2019,05,30,EDG,Natural,0,Fish,Rockfish,UnID Rockfish,1,22
+2019,05,30,EDG,Natural,0,Fish,Stichaeid,Stickleback,1,63
+2019,05,30,EDG,Natural,1,Fish,Salmon,Chinook,2,86
+2019,05,30,EDG,Natural,1,Fish,Salmon,Chum,1,80
+2019,05,30,EDG,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,05,30,EDG,Restored,0,Fish,Perch,Shiner Perch,7,83.85714285714286
+2019,05,30,EDG,Restored,0,Fish,Salmon,Chinook,3,93.66666666666667
+2019,05,30,EDG,Restored,0,Fish,Stichaeid,Stickleback,1,58
+2019,05,30,EDG,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,05,30,EDG,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,05,30,EDG,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,05,30,EDG,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,06,18,COR,Armored,0,NA,NA,none,1,0
+2019,06,18,COR,Armored,1,NA,NA,none,1,0
+2019,06,18,COR,Armored,2,Fish,Salmon,Chum,4,89
+2019,06,18,COR,Natural,0,Fish,Perch,Pile Perch,4,152.5
+2019,06,18,COR,Natural,0,Fish,Perch,Shiner Perch,61,27.672131147540977
+2019,06,18,COR,Natural,0,Fish,Perch,Striped Perch,2,165
+2019,06,18,COR,Natural,0,Fish,Pholidae,Saddleback Gunnel,5,88
+2019,06,18,COR,Natural,0,Fish,Salmon,Chinook,3,105
+2019,06,18,COR,Natural,0,Fish,Salmon,Chum,43,35.04651162790698
+2019,06,18,COR,Natural,0,Fish,Salmon,Cutthroat,1,173
+2019,06,18,COR,Natural,0,Fish,Sygnathid,Pipefish,1,0
+2019,06,18,COR,Natural,1,Fish,Forage Fish,Surf Smelt,1,130
+2019,06,18,COR,Natural,1,Fish,Perch,Shiner Perch,11,87.0909090909091
+2019,06,18,COR,Natural,1,Fish,Salmon,Chum,3,76.33333333333333
+2019,06,18,COR,Natural,2,Fish,Salmon,Chum,1,63
+2019,06,18,COR,Restored,0,Benthic Invertebrate,Isopod,Idotea,1,1
+2019,06,18,COR,Restored,0,Fish,Aulorhynchus,Tube Snout,1,120
+2019,06,18,COR,Restored,0,Fish,Cottidae,Great Sculpin,2,200
+2019,06,18,COR,Restored,0,Fish,Cottidae,Tadpole Sculpin,4,27.25
+2019,06,18,COR,Restored,0,Fish,Cottidae,UnID Sculpin,1,105
+2019,06,18,COR,Restored,0,Fish,Flatfish,Starry Flounder,1,300
+2019,06,18,COR,Restored,0,Fish,Hexagrammidae,Kelp Greenling,1,74
+2019,06,18,COR,Restored,0,Fish,Liparidae,Tidepool Snailfish,1,117
+2019,06,18,COR,Restored,0,Fish,Perch,Shiner Perch,11,74.45454545454545
+2019,06,18,COR,Restored,0,Fish,Perch,Striped Perch,1,220
+2019,06,18,COR,Restored,0,Fish,Salmon,Chum,1,100
+2019,06,18,COR,Restored,0,Fish,Sygnathid,Pipefish,1,150
+2019,06,18,COR,Restored,1,Benthic Invertebrate,Decapod,Kelp Crab,1,30
+2019,06,18,COR,Restored,1,Benthic Invertebrate,Decapod,UnID Shrimp,12,0
+2019,06,18,COR,Restored,1,Fish,Cottidae,Staghorn Sculpin,1,250
+2019,06,18,COR,Restored,1,Fish,Cottidae,Tadpole Sculpin,2,24
+2019,06,18,COR,Restored,1,Fish,Gadidae,Tom Cod,2,55.5
+2019,06,18,COR,Restored,1,Fish,Hexagrammidae,Kelp Greenling,1,53
+2019,06,18,COR,Restored,1,Fish,Perch,Shiner Perch,11,88.9090909090909
+2019,06,18,COR,Restored,1,Fish,Pholidae,Saddleback Gunnel,2,92.5
+2019,06,18,COR,Restored,1,Fish,Salmon,Chinook,2,98
+2019,06,18,COR,Restored,1,Fish,Stichaeid,Snake Prickleback,1,210
+2019,06,18,COR,Restored,1,Fish,Sygnathid,Pipefish,2,193.5
+2019,06,18,COR,Restored,1,Pelagic invertebrate,Gastropod,Melibe,6,0
+2019,06,18,COR,Restored,2,Fish,Salmon,Chinook,3,102.33333333333333
+2019,06,18,COR,Restored,2,Fish,Salmon,Chum,3,79.66666666666667
+2019,06,18,FAM,Armored,0,Benthic Invertebrate,Decapod,Graceful Crab,2,42.5
+2019,06,18,FAM,Armored,0,Benthic Invertebrate,Decapod,Helmet Crab,2,67.5
+2019,06,18,FAM,Armored,0,Fish,Cottidae,UnID Sculpin,3,81.66666666666667
+2019,06,18,FAM,Armored,0,Fish,Hexagrammidae,Kelp Greenling,2,90
+2019,06,18,FAM,Armored,0,Fish,Perch,Shiner Perch,6,85.5
+2019,06,18,FAM,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,79
+2019,06,18,FAM,Armored,0,Fish,Stichaeid,Snake Prickleback,1,109
+2019,06,18,FAM,Armored,1,NA,NA,none,1,0
+2019,06,18,FAM,Armored,2,NA,NA,none,1,0
+2019,06,18,FAM,Natural,0,Fish,Forage Fish,Surf Smelt,1,36
+2019,06,18,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,06,18,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
+2019,06,18,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,06,18,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,06,18,FAM,Restored,0,Fish,Stichaeid,Snake Prickleback,11,118.36363636363636
+2019,06,18,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,20,0
+2019,06,18,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,06,18,FAM,Restored,2,NA,NA,none,1,0
+2019,06,19,TUR,Armored,0,Fish,Cottidae,UnID Sculpin,4,47.75
+2019,06,19,TUR,Armored,0,Fish,Flatfish,English sole,2,57.5
+2019,06,19,TUR,Armored,0,Fish,Gadidae,Tom Cod,40,23
+2019,06,19,TUR,Armored,0,Fish,Hexagrammidae,Kelp Greenling,1,38
+2019,06,19,TUR,Armored,0,Fish,Perch,Shiner Perch,4,87.25
+2019,06,19,TUR,Armored,0,Fish,Stichaeid,Snake Prickleback,5,68.6
+2019,06,19,TUR,Armored,1,Fish,Gadidae,Tom Cod,21,43.476190476190474
+2019,06,19,TUR,Armored,1,Fish,Perch,Shiner Perch,1,90
+2019,06,19,TUR,Armored,1,Fish,Pholidae,Saddleback Gunnel,2,82.5
+2019,06,19,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,06,19,TUR,Natural,0,Fish,Cottidae,Silver Spotted Sculpin,4,52.5
+2019,06,19,TUR,Natural,0,Fish,Perch,Striped Perch,2,220
+2019,06,19,TUR,Natural,0,Fish,Stichaeid,Stickleback,1,74
+2019,06,19,TUR,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,06,19,TUR,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,06,19,TUR,Restored,0,NA,NA,none,1,0
+2019,06,19,TUR,Restored,1,Fish,Salmon,Chum,2,100
+2019,06,19,TUR,Restored,2,NA,NA,none,1,0
+2019,06,20,DOK,Armored,0,Fish,Perch,Shiner Perch,51,33.607843137254896
+2019,06,20,DOK,Armored,1,NA,NA,none,1,0
+2019,06,20,DOK,Armored,2,NA,NA,none,1,0
+2019,06,20,DOK,Natural,0,NA,NA,none,1,0
+2019,06,20,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,5,0
+2019,06,20,DOK,Natural,2,Fish,Perch,Shiner Perch,1,105
+2019,06,20,DOK,Restored,0,Fish,Perch,Shiner Perch,34,48.88235294117647
+2019,06,20,DOK,Restored,0,Fish,Sygnathid,Pipefish,2,152.5
+2019,06,20,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,06,20,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,06,20,DOK,Restored,1,NA,NA,none,1,0
+2019,06,20,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,06,20,EDG,Armored,0,NA,NA,none,1,0
+2019,06,20,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,06,20,EDG,Armored,2,NA,NA,none,1,0
+2019,06,20,EDG,Natural,0,NA,NA,none,1,0
+2019,06,20,EDG,Natural,1,Fish,Stichaeid,Stickleback,1,68
+2019,06,20,EDG,Natural,2,Fish,Salmon,Chinook,1,125
+2019,06,20,EDG,Natural,2,Fish,Stichaeid,Stickleback,1,61
+2019,06,20,EDG,Restored,0,Fish,Perch,Shiner Perch,4,98
+2019,06,20,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,0
+2019,06,20,EDG,Restored,1,NA,NA,none,1,0
+2019,06,20,EDG,Restored,2,NA,NA,none,1,0
+2019,06,20,SHR,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,10,0
+2019,06,20,SHR,Armored,0,Pelagic invertebrate,Jellyfish,Water Jelly,1,0
+2019,06,20,SHR,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,50,0
+2019,06,20,SHR,Armored,2,Fish,Salmon,Chinook,4,96
+2019,06,20,SHR,Armored,2,Fish,Salmon,Chum,2,81
+2019,06,20,SHR,Armored,2,Fish,Salmon,Coho,7,151.14285714285714
+2019,06,20,SHR,Natural,0,Benthic Invertebrate,Decapod,Kelp Crab,1,0
+2019,06,20,SHR,Natural,0,Fish,Aulorhynchus,Tube Snout,4,133.75
+2019,06,20,SHR,Natural,0,Fish,Gadidae,Tom Cod,1,62
+2019,06,20,SHR,Natural,0,Fish,Pholidae,Crescent Gunnel,1,125
+2019,06,20,SHR,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,25,0
+2019,06,20,SHR,Natural,2,Fish,Salmon,Chum,1,110
+2019,06,20,SHR,Natural,2,Fish,Salmon,Coho,1,139
+2019,06,20,SHR,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,50,0
+2019,06,20,SHR,Natural,2,Pelagic invertebrate,Jellyfish,Water Jelly,1,0
+2019,06,20,SHR,Restored,0,Benthic Invertebrate,Decapod,UnID Shrimp,2,0
+2019,06,20,SHR,Restored,0,Fish,Aulorhynchus,Tube Snout,1,132
+2019,06,20,SHR,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,100,0
+2019,06,20,SHR,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,50,0
+2019,06,20,SHR,Restored,2,Pelagic invertebrate,Jellyfish,Water Jelly,1,0
+2019,07,09,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,45,0
+2019,07,09,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,0
+2019,07,09,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,85,0
+2019,07,09,DOK,Armored,2,Fish,Salmon,Chinook,1,155
+2019,07,09,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,44,0
+2019,07,09,DOK,Natural,0,Fish,Salmon,Cutthroat,2,240
+2019,07,09,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,33,0
+2019,07,09,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,07,09,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,11,0
+2019,07,09,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,29,0
+2019,07,09,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,3,0
+2019,07,09,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,41,0
+2019,07,09,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,12,0
+2019,07,09,SHR,Armored,0,NA,NA,none,1,0
+2019,07,09,SHR,Armored,1,NA,NA,none,1,0
+2019,07,09,SHR,Armored,2,NA,NA,none,1,0
+2019,07,09,SHR,Natural,0,NA,NA,none,1,0
+2019,07,09,SHR,Natural,1,NA,NA,none,1,0
+2019,07,09,SHR,Natural,2,NA,NA,none,1,0
+2019,07,09,SHR,Restored,0,NA,NA,none,1,0
+2019,07,09,SHR,Restored,1,NA,NA,none,1,0
+2019,07,09,SHR,Restored,2,NA,NA,none,1,0
+2019,07,15,FAM,Armored,0,Benthic Invertebrate,Decapod,Helmet Crab,1,50
+2019,07,15,FAM,Armored,0,Fish,Forage Fish,Surf Smelt,1,58
+2019,07,15,FAM,Armored,0,Fish,Perch,Shiner Perch,3,48.666666666666664
+2019,07,15,FAM,Armored,0,Fish,Salmon,Chinook,1,123
+2019,07,15,FAM,Armored,1,Fish,Forage Fish,Herring,6,57.166666666666664
+2019,07,15,FAM,Armored,1,Fish,Forage Fish,Surf Smelt,60,18.766666666666676
+2019,07,15,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,11,0
+2019,07,15,FAM,Armored,2,NA,NA,none,1,0
+2019,07,15,FAM,Natural,0,Benthic Invertebrate,Decapod,Hermit Crab,1,0
+2019,07,15,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2019,07,15,FAM,Natural,1,Benthic Invertebrate,Decapod,UnID Shrimp,2,0
+2019,07,15,FAM,Natural,1,Fish,Forage Fish,Herring,357,3.03081232492995
+2019,07,15,FAM,Natural,1,Fish,Forage Fish,Sand Lance,3,79
+2019,07,15,FAM,Natural,1,Fish,Hexagrammidae,Kelp Greenling,1,47
+2019,07,15,FAM,Natural,1,Fish,Rockfish,UnID Rockfish,3,32.333333333333336
+2019,07,15,FAM,Natural,1,Fish,Sygnathid,Pipefish,2,184.5
+2019,07,15,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,61,0
+2019,07,15,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,22,0
+2019,07,15,FAM,Restored,0,Benthic Invertebrate,Decapod,Hermit Crab,1,0
+2019,07,15,FAM,Restored,0,Fish,Cottidae,UnID Sculpin,2,89.5
+2019,07,15,FAM,Restored,0,Fish,Perch,Shiner Perch,6,81
+2019,07,15,FAM,Restored,0,Fish,Stichaeid,Stickleback,1,68
+2019,07,15,FAM,Restored,1,Fish,Stichaeid,Stickleback,1,40
+2019,07,15,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,18,0
+2019,07,15,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,4,0
+2019,07,15,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,07,15,TUR,Armored,0,Benthic Invertebrate,Decapod,UnID Shrimp,7,0
+2019,07,15,TUR,Armored,0,Fish,Cottidae,Silver Spotted Sculpin,1,65
+2019,07,15,TUR,Armored,0,Fish,Gadidae,Pacific Cod,1,70
+2019,07,15,TUR,Armored,0,Fish,Gadidae,Tom Cod,226,5.672566371681411
+2019,07,15,TUR,Armored,0,Fish,Pholidae,Crescent Gunnel,1,95
+2019,07,15,TUR,Armored,0,Fish,Pholidae,Saddleback Gunnel,2,80
+2019,07,15,TUR,Armored,1,NA,NA,none,1,0
+2019,07,15,TUR,Armored,2,NA,NA,none,1,0
+2019,07,15,TUR,Natural,0,NA,NA,none,2,0
+2019,07,15,TUR,Natural,1,NA,NA,none,1,0
+2019,07,15,TUR,Natural,2,NA,NA,none,1,0
+2019,07,15,TUR,Restored,0,Benthic Invertebrate,Decapod,Kelp Crab,1,20
+2019,07,15,TUR,Restored,0,Fish,Gadidae,Tom Cod,63,22.412698412698397
+2019,07,15,TUR,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,07,15,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,07,16,COR,Armored,0,Fish,Forage Fish,Herring,1,105
+2019,07,16,COR,Armored,0,Fish,Forage Fish,Surf Smelt,3,151.66666666666666
+2019,07,16,COR,Armored,0,Fish,Salmon,Chinook,10,114.3
+2019,07,16,COR,Armored,0,Fish,Salmon,Chum,1,100
+2019,07,16,COR,Armored,0,Fish,Trichodontidae,Pacific Sandfish,1,83
+2019,07,16,COR,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
+2019,07,16,COR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,07,16,COR,Armored,2,Fish,Stichaeid,Stickleback,1,22
+2019,07,16,COR,Natural,0,Benthic Invertebrate,Decapod,UnID Shrimp,8,0
+2019,07,16,COR,Natural,0,Fish,Aulorhynchus,Tube Snout,1,270
+2019,07,16,COR,Natural,0,Fish,Hexagrammidae,Kelp Greenling,1,91
+2019,07,16,COR,Natural,0,Fish,Perch,Shiner Perch,88,9.056818181818187
+2019,07,16,COR,Natural,0,Fish,Pholidae,Crescent Gunnel,6,100.16666666666667
+2019,07,16,COR,Natural,0,Fish,Pholidae,Saddleback Gunnel,2,89.5
+2019,07,16,COR,Natural,0,Fish,Stichaeid,Snake Prickleback,1,134
+2019,07,16,COR,Natural,1,Benthic Invertebrate,Decapod,Kelp Crab,2,16
+2019,07,16,COR,Natural,1,Fish,Forage Fish,Herring,28,86.85714285714283
+2019,07,16,COR,Natural,1,Fish,Forage Fish,Surf Smelt,79,38.886075949367076
+2019,07,16,COR,Natural,1,Fish,Gadidae,Pacific Cod,1,68
+2019,07,16,COR,Natural,1,Fish,Perch,Shiner Perch,9,91.66666666666667
+2019,07,16,COR,Natural,1,Fish,Perch,Striped Perch,1,130
+2019,07,16,COR,Natural,1,Fish,Pholidae,Penpoint Gunnel,1,75
+2019,07,16,COR,Natural,1,Fish,Salmon,Chinook,9,120.44444444444444
+2019,07,16,COR,Natural,1,Fish,Salmon,Chum,8,87.75
+2019,07,16,COR,Natural,2,Fish,Salmon,Chinook,1,135
+2019,07,16,COR,Natural,2,Fish,Salmon,Chum,4,104.75
+2019,07,16,COR,Restored,0,Benthic Invertebrate,Decapod,Helmet Crab,1,60
+2019,07,16,COR,Restored,0,Benthic Invertebrate,Decapod,UnID Shrimp,14,0
+2019,07,16,COR,Restored,0,Fish,Cottidae,Buffalo Sculpin,8,32.25
+2019,07,16,COR,Restored,0,Fish,Cottidae,Staghorn Sculpin,2,209
+2019,07,16,COR,Restored,0,Fish,Flatfish,Starry Flounder,1,190
+2019,07,16,COR,Restored,0,Fish,Gadidae,Pacific Cod,1,65
+2019,07,16,COR,Restored,0,Fish,Hexagrammidae,Kelp Greenling,1,101
+2019,07,16,COR,Restored,0,Fish,Perch,Pile Perch,1,148
+2019,07,16,COR,Restored,0,Fish,Perch,Shiner Perch,30,56.066666666666656
+2019,07,16,COR,Restored,0,Fish,Pholidae,Crescent Gunnel,8,95.875
+2019,07,16,COR,Restored,0,Fish,Pholidae,Saddleback Gunnel,5,107.8
+2019,07,16,COR,Restored,0,Fish,Stichaeid,Snake Prickleback,5,166.8
+2019,07,16,COR,Restored,1,Benthic Invertebrate,Decapod,UnID Shrimp,7,0
+2019,07,16,COR,Restored,1,Fish,Cottidae,Tadpole Sculpin,1,27
+2019,07,16,COR,Restored,1,Fish,Perch,Shiner Perch,41,21.536585365853643
+2019,07,16,COR,Restored,1,Fish,Pholidae,Crescent Gunnel,1,81
+2019,07,16,COR,Restored,1,Fish,Pholidae,Saddleback Gunnel,2,80.5
+2019,07,16,COR,Restored,1,Fish,Stichaeid,Snake Prickleback,2,77
+2019,07,16,COR,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,07,16,COR,Restored,2,NA,NA,none,1,0
+2019,07,31,EDG,Armored,0,Fish,Salmon,Chinook,2,120
+2019,07,31,EDG,Armored,0,Fish,Stichaeid,Stickleback,2,70
+2019,07,31,EDG,Armored,1,Fish,Stichaeid,Stickleback,1,65
+2019,07,31,EDG,Armored,2,NA,NA,none,1,0
+2019,07,31,EDG,Natural,0,NA,NA,none,1,0
+2019,07,31,EDG,Natural,1,NA,NA,none,1,0
+2019,07,31,EDG,Natural,2,NA,NA,none,1,0
+2019,07,31,EDG,Restored,0,Fish,Perch,Shiner Perch,16,96.5
+2019,07,31,EDG,Restored,0,Fish,Stichaeid,Stickleback,14,63.857142857142854
+2019,07,31,EDG,Restored,0,Fish,Sygnathid,Pipefish,1,82
+2019,07,31,EDG,Restored,1,Fish,Forage Fish,Surf Smelt,4,130.75
+2019,07,31,EDG,Restored,1,Fish,Stichaeid,Stickleback,26,48.423076923076934
+2019,07,31,EDG,Restored,2,Fish,Stichaeid,Stickleback,1,62
+2019,08,13,COR,Armored,1,Fish,Forage Fish,Herring,1,80
+2019,08,13,COR,Armored,1,Fish,Perch,Shiner Perch,4,54
+2019,08,13,COR,Armored,1,Fish,Pholidae,Saddleback Gunnel,1,105
+2019,08,13,COR,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,08,13,COR,Natural,1,Fish,Flatfish,Starry Flounder,1,191
+2019,08,13,COR,Natural,1,Fish,Perch,Shiner Perch,71,17.338028169014077
+2019,08,13,COR,Natural,2,Fish,Salmon,Chinook,3,127.33333333333333
+2019,08,13,COR,Natural,2,Fish,Salmon,Chum,1,129
+2019,08,13,COR,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,3,0
+2019,08,13,COR,Restored,1,Benthic Invertebrate,Decapod,UnID Shrimp,1,0
+2019,08,13,COR,Restored,1,Fish,Gadidae,Pacific Cod,1,114
+2019,08,13,COR,Restored,1,Fish,Perch,Shiner Perch,20,79.75
+2019,08,13,COR,Restored,1,Fish,Pholidae,Crescent Gunnel,1,82
+2019,08,13,COR,Restored,1,Fish,Pholidae,Penpoint Gunnel,1,160
+2019,08,13,COR,Restored,1,Fish,Pholidae,Saddleback Gunnel,5,99.4
+2019,08,13,COR,Restored,1,Fish,Sygnathid,Pipefish,1,170
+2019,08,13,COR,Restored,1,Pelagic invertebrate,Gastropod,Melibe,42,0
+2019,08,13,COR,Restored,2,Fish,Salmon,Chinook,1,120
+2019,08,13,FAM,Armored,0,Fish,Forage Fish,Surf Smelt,15,75.46666666666667
+2019,08,13,FAM,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
+2019,08,13,FAM,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,11,0
+2019,08,13,FAM,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,3,0
+2019,08,13,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,08,13,FAM,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,5,0
+2019,08,13,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,17,0
+2019,08,13,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,6,0
+2019,08,13,FAM,Natural,2,Fish,Forage Fish,Herring,1,70
+2019,08,13,FAM,Natural,2,Fish,Forage Fish,Surf Smelt,2,76
+2019,08,13,FAM,Restored,0,Benthic Invertebrate,Decapod,Dungeness Crab,1,43
+2019,08,13,FAM,Restored,0,Fish,Flatfish,UnID Flatfish,1,72
+2019,08,13,FAM,Restored,0,Fish,Perch,Shiner Perch,29,36.96551724137932
+2019,08,13,FAM,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,23,0
+2019,08,13,FAM,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,7,0
+2019,08,13,FAM,Restored,1,Fish,Forage Fish,Herring,2,51.5
+2019,08,13,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2019,08,13,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,08,13,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,3,0
+2019,08,13,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,5,0
+2019,08,14,TUR,Armored,0,Benthic Invertebrate,Decapod,Hermit Crab,1,54
+2019,08,14,TUR,Armored,0,Fish,Perch,Shiner Perch,7,93.57142857142857
+2019,08,14,TUR,Armored,0,Fish,Pholidae,Penpoint Gunnel,2,70
+2019,08,14,TUR,Armored,1,Fish,Gadidae,Tom Cod,2,71
+2019,08,14,TUR,Armored,1,Fish,Perch,Pile Perch,1,70
+2019,08,14,TUR,Armored,1,Fish,Pholidae,Crescent Gunnel,1,80
+2019,08,14,TUR,Armored,1,Fish,Pholidae,Penpoint Gunnel,1,90
+2019,08,14,TUR,Armored,1,Fish,Pholidae,Saddleback Gunnel,1,90
+2019,08,14,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,08,14,TUR,Natural,0,NA,NA,none,1,0
+2019,08,14,TUR,Natural,1,NA,NA,none,1,0
+2019,08,14,TUR,Natural,2,NA,NA,none,1,0
+2019,08,14,TUR,Restored,0,Fish,Hexagrammidae,White Spotted Greenling,1,141
+2019,08,14,TUR,Restored,1,NA,NA,none,1,0
+2019,08,14,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,08,20,DOK,Armored,0,Fish,Stichaeid,Stickleback,3,28.333333333333332
+2019,08,20,DOK,Armored,1,Fish,Stichaeid,Stickleback,174,3.821839080459773
+2019,08,20,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,08,20,DOK,Natural,0,Fish,Stichaeid,Stickleback,1,29
+2019,08,20,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,9,0
+2019,08,20,DOK,Natural,1,Fish,Stichaeid,Stickleback,1,29
+2019,08,20,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,28,0
+2019,08,20,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,128,0
+2019,08,20,DOK,Restored,0,Fish,Stichaeid,Stickleback,2,36.5
+2019,08,20,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,08,20,DOK,Restored,2,Fish,Stichaeid,Stickleback,2,30.5
+2019,08,20,DOK,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,6,0
+2019,08,20,SHR,Armored,0,Fish,Perch,Shiner Perch,1,96
+2019,08,20,SHR,Armored,1,NA,NA,none,1,0
+2019,08,20,SHR,Armored,2,NA,NA,none,1,0
+2019,08,20,SHR,Natural,0,Benthic Invertebrate,Decapod,Dungeness Crab,1,0
+2019,08,20,SHR,Natural,0,Benthic Invertebrate,Decapod,Kelp Crab,4,14
+2019,08,20,SHR,Natural,0,Fish,Perch,Shiner Perch,10,96.3
+2019,08,20,SHR,Natural,1,NA,NA,none,1,0
+2019,08,20,SHR,Natural,2,NA,NA,none,1,0
+2019,08,20,SHR,Restored,0,Benthic Invertebrate,Isopod,Idotea,1,0
+2019,08,20,SHR,Restored,0,Fish,Perch,Shiner Perch,7,85.28571428571429
+2019,08,20,SHR,Restored,1,NA,NA,none,1,0
+2019,08,20,SHR,Restored,2,NA,NA,none,1,0
+2019,08,22,EDG,Armored,0,Fish,Stichaeid,Stickleback,2,22
+2019,08,22,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,15,0
+2019,08,22,EDG,Armored,0,Pelagic invertebrate,Jellyfish,Lion's Mane,1,0
+2019,08,22,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2019,08,22,EDG,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2019,08,22,EDG,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,100,0
+2019,08,22,EDG,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,15,0
+2019,08,22,EDG,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,08,22,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,30,0
+2019,08,22,EDG,Restored,1,NA,NA,none,1,0
+2019,08,22,EDG,Restored,2,Benthic Invertebrate,Isopod,Idotea,1,0
+2019,08,22,EDG,Restored,2,Fish,Stichaeid,Stickleback,1,64
+2019,08,22,EDG,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,15,0
+2019,09,05,FAM,Armored,0,NA,NA,none,1,0
+2019,09,05,FAM,Armored,1,Pelagic Invertebrate,Jellyfish,Ctenophore,1,0
+2019,09,05,FAM,Armored,2,Fish,Stichaeid,Stickleback,1,41
+2019,09,05,FAM,Armored,2,Pelagic Invertebrate,Jellyfish,Ctenophore,2,0
+2019,09,05,FAM,Natural,0,Fish,Forage Fish,Surf Smelt,1,77
+2019,09,05,FAM,Natural,0,Pelagic Invertebrate,Jellyfish,Ctenophore,5,0
+2019,09,05,FAM,Natural,1,NA,NA,none,1,0
+2019,09,05,FAM,Natural,2,Fish,Stichaeid,Stickleback,4,39.25
+2019,09,05,FAM,Natural,2,Pelagic Invertebrate,Jellyfish,Redeyed Medusa Jelly,1,0
+2019,09,05,FAM,Restored,0,NA,NA,none,1,0
+2019,09,05,FAM,Restored,1,NA,NA,none,1,0
+2019,09,05,FAM,Restored,2,NA,NA,none,1,0
+2019,09,05,TUR,Armored,0,Fish,Perch,Shiner Perch,20,78.35
+2019,09,05,TUR,Armored,1,NA,NA,none,1,0
+2019,09,05,TUR,Armored,2,NA,NA,none,1,0
+2019,09,05,TUR,Natural,0,Benthic Invertebrate,Decapod,Green Shrimp,4,0
+2019,09,05,TUR,Natural,1,NA,NA,none,1,0
+2019,09,05,TUR,Natural,2,NA,NA,none,1,0
+2019,09,05,TUR,Restored,0,NA,NA,none,1,0
+2019,09,05,TUR,Restored,1,NA,NA,none,1,0
+2019,09,05,TUR,Restored,2,NA,NA,none,1,0
+2019,09,06,COR,Armored,0,Fish,Perch,Shiner Perch,66,20.242424242424235
+2019,09,06,COR,Armored,1,Pelagic Invertebrate,Jellyfish,Ctenophore,4,0
+2019,09,06,COR,Armored,2,Pelagic Invertebrate,Jellyfish,Ctenophore,3,0
+2019,09,06,COR,Natural,0,Benthic Invertebrate,Decapod,Kelp Crab,1,10
+2019,09,06,COR,Natural,0,Fish,Perch,Shiner Perch,6,98.16666666666667
+2019,09,06,COR,Natural,0,Pelagic Invertebrate,Jellyfish,Ctenophore,1,0
+2019,09,06,COR,Natural,0,benthic Invertebrate,Decapod,Green Shrimp,2,0
+2019,09,06,COR,Natural,1,Fish,Cottidae,Irish Lord,1,35
+2019,09,06,COR,Natural,1,Fish,Forage Fish,Surf Smelt,2,139
+2019,09,06,COR,Natural,1,Fish,Perch,Shiner Perch,21,64.14285714285714
+2019,09,06,COR,Natural,1,Fish,Pholidae,Crescent Gunnel,1,92
+2019,09,06,COR,Natural,2,Pelagic Invertebrate,Jellyfish,Ctenophore,2,0
+2019,09,06,COR,Restored,0,Fish,Cottidae,Staghorn Sculpin,1,116
+2019,09,06,COR,Restored,0,Fish,Flatfish,Speckled Sand Dab,1,130
+2019,09,06,COR,Restored,0,Fish,Stichaeid,Snake Prickleback,1,160
+2019,09,06,COR,Restored,0,benthic Invertebrate,Decapod,Dungeness Crab,3,90
+2019,09,06,COR,Restored,1,Benthic Invertebrate,Decapod,Green Shrimp,1,0
+2019,09,06,COR,Restored,1,Fish,Perch,Shiner Perch,21,68.85714285714286
+2019,09,06,COR,Restored,1,Fish,Perch,Striped Perch,2,122
+2019,09,06,COR,Restored,1,Fish,Pholidae,Saddleback Gunnel,2,93.5
+2019,09,06,COR,Restored,1,Pelagic Invertebrate,Gastropod,Melibe,4,0
+2019,09,06,COR,Restored,2,Benthic Invertebrate,Decapod,Green Shrimp,1,0
+2019,09,06,COR,Restored,2,Pelagic Invertebrate,Jellyfish,Ctenophore,1,0
+2019,09,13,EDG,Armored,0,Fish,Stichaeid,Stickleback,4,34.5
+2019,09,13,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
+2019,09,13,EDG,Armored,2,Fish,Stichaeid,Stickleback,3,54.333333333333336
+2019,09,13,EDG,Natural,0,Fish,Perch,Shiner Perch,21,66.9047619047619
+2019,09,13,EDG,Natural,0,Fish,Stichaeid,Stickleback,1,38
+2019,09,13,EDG,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,36,0
+2019,09,13,EDG,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,31,0
+2019,09,13,EDG,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,09,13,EDG,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,31,0
+2019,09,13,EDG,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,09,13,EDG,Restored,0,Fish,Flatfish,Starry Flounder,1,290
+2019,09,13,EDG,Restored,0,Fish,Perch,Shiner Perch,444,3.3963963963964146
+2019,09,13,EDG,Restored,0,Fish,Stichaeid,Stickleback,1,35
+2019,09,13,EDG,Restored,0,Fish,Sygnathid,Pipefish,1,130
+2019,09,13,EDG,Restored,1,NA,NA,none,1,0
+2019,09,13,EDG,Restored,2,NA,NA,none,1,0
+2019,09,30,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,09,30,DOK,Armored,1,NA,NA,none,1,0
+2019,09,30,DOK,Armored,2,NA,NA,none,1,0
+2019,09,30,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
+2019,09,30,DOK,Natural,1,NA,NA,none,1,0
+2019,09,30,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,78,0
+2019,09,30,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
+2019,09,30,DOK,Restored,1,NA,NA,none,1,0
+2019,09,30,DOK,Restored,2,NA,NA,none,1,0
+2019,09,30,SHR,Armored,0,NA,NA,none,1,0
+2019,09,30,SHR,Armored,1,NA,NA,none,1,0
+2019,09,30,SHR,Armored,2,NA,NA,none,1,0
+2019,09,30,SHR,Natural,0,Benthic Invertebrate,Decapod,Kelp Crab,1,55
+2019,09,30,SHR,Natural,0,Fish,Perch,Shiner Perch,12,75.91666666666667
+2019,09,30,SHR,Natural,1,NA,NA,none,1,0
+2019,09,30,SHR,Natural,2,NA,NA,none,1,0
+2019,09,30,SHR,Restored,0,NA,NA,none,1,0
+2019,09,30,SHR,Restored,1,Fish,Aulorhynchus,Tube Snout,60,39.866666666666674
+2019,09,30,SHR,Restored,2,NA,NA,none,1,0
