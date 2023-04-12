@@ -1,9 +1,10 @@
 library(tidyverse)
 library(here)
+library(janitor)
 library(rfishbase)
 
 #Load data
-#load data (raw data downloaded/formatted in "import_data.R")
+#load field data (raw data downloaded/formatted in "import_data.R")
 net_2018.19 <- here::here("data","net_18.19.csv") %>% 
   read_csv()
 
@@ -13,8 +14,6 @@ net_2021 <- here::here("data","net_2021.csv") %>%
 net_2022 <- here::here("data","net_2022.csv") %>% 
   read_csv()
 
-################################################################################
-#prepare data for analysis
 net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
   filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
   mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island
@@ -44,17 +43,21 @@ net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>%
                              TRUE ~ ComName)) %>% 
   mutate(ComName = case_when(ComName == "Steelhead salmon" ~ "Steelhead trout",
                              ComName == "Cutthroat salmon" ~ "Cutthroat trout",
-                             TRUE ~ ComName)) %>% 
+                             TRUE ~ ComName))  
+
+################################################################################
+#prepare field abundance data for analysis
+fish_N <- net_tidy %>% 
   select(date, site_ipa, ComName, species_count) %>% 
   arrange(ComName)
 
-spp_names <- net_tidy %>% 
+spp_names <- fish_N %>% 
   distinct(ComName) %>% 
   mutate(Species = NA)
 
 sci_names <- list()
 
-for (i in 1:nrow(comm_names)) {
+for (i in 1:nrow(spp_names)) {
   sci_names[[i]] <- rfishbase::common_to_sci(spp_names[i,])
   spp_names[i,2] <- ifelse(nrow(sci_names[[i]]) == 1, sci_names[[i]][[1]], NA) 
 }
@@ -72,7 +75,7 @@ spp_names <- spp_names %>%
   arrange(ComName) %>% 
   filter(!str_detect(ComName, 'UnID'))
 
-MaxN <- net_tidy %>% 
+MaxN <- fish_N %>% 
   group_by(site_ipa, ComName) %>%
   filter(species_count == max(species_count)) %>% 
   ungroup() %>% 
@@ -80,11 +83,54 @@ MaxN <- net_tidy %>%
   select(!date) %>% 
   distinct(site_ipa, ComName, MaxN)
  
-fish.MaxN <- MaxN %>% 
+fish_MaxN <- MaxN %>% 
   complete(site_ipa, ComName) %>% 
   replace(is.na(.), 0) %>% 
   pivot_wider(names_from = ComName, values_from = MaxN) %>% 
-  select(-contains("UnID"))
+  select(-contains("UnID")) %>% 
   column_to_rownames(var="site_ipa") %>% 
+  clean_names() %>% 
   as.matrix()
+
+###############################################################################
+# trait data
+
+fork_length <- net_tidy %>% 
+  group_by(ComName) %>% 
+  summarize(mean_fork_length = mean(mean_length_mm)) %>% 
+  # mutate(fork_length = case_when(mean_fork_length < 70 ~ "small", ## does this need to be categorical??
+  #                                mean_fork_length > 150  ~ "large",
+  #                                TRUE ~ "medium")) %>% 
+  filter(ComName %in% spp_names$ComName)
+
+feeding_guild <- fooditems(spp_names$Species) %>% 
+  select(Species, FoodI, FoodII, PredatorStage) %>% 
+  group_by(Species, FoodI) %>% 
+  summarize(count = n()) %>% 
+  group_by(Species) %>% 
+  mutate(per =  100 *count/sum(count), food_count = n_distinct(FoodI)) %>% 
+  mutate(category = ifelse(per >= 66, FoodI, NA)) %>% 
+  mutate(non_na = sum(!is.na(category)))
+
+
+
+  filter(per == max(per)) %>% 
+  ungroup() 
+
+
+  filter(!c(Species == "Trichodon trichodon" & FoodI == "nekton",
+            Species == "Oncorhynchus gorbuscha" & FoodI == "zoobenthos",
+            Species == "Oncorhynchus gorbuscha" & FoodI == "zoobenthos")) 
+
+
+body_transverse_shape <- morphology(spp_names$Species) %>% 
+  select(Species, BodyShapeI) %>% 
+  distinct() %>% 
+  mutate(BodyShapeI = ifelse(Species == "Psychrolutes paradoxus", "elongated", BodyShapeI))
+
+
+
+
+
+
 
