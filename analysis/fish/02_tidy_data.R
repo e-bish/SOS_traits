@@ -103,34 +103,53 @@ fork_length <- net_tidy %>%
   #                                TRUE ~ "medium")) %>% 
   filter(ComName %in% spp_names$ComName)
 
-feeding_guild <- fooditems(spp_names$Species) %>% 
+feeding_guild1 <- fooditems(spp_names$Species) %>% 
   select(Species, FoodI, FoodII, PredatorStage) %>% 
   group_by(Species, FoodI) %>% 
   summarize(count = n()) %>% 
   group_by(Species) %>% 
-  mutate(per =  100 *count/sum(count), food_count = n_distinct(FoodI)) %>% 
-  mutate(category = ifelse(per >= 66, FoodI, NA)) %>% 
-  mutate(non_na = sum(!is.na(category)))
+  mutate(per =  100 *count/sum(count)) %>% 
+  filter(per >= 60) %>% #classify main food source if more than 60% of diet is in one category
+  inner_join(spp_names) %>% 
+  arrange(ComName) %>% 
+  mutate(feeding_guild = case_when(FoodI == "zoobenthos" ~ "Zoobenthivorous",
+                                   FoodI == "zooplankton" ~ "Planktivorous", 
+                                   FoodI == "nekton" ~ "Piscivorous",
+                                   TRUE ~ FoodI)) %>% 
+  ungroup() %>% 
+  select(ComName, feeding_guild)
 
+feeding_guild2 <- fooditems(spp_names$Species) %>% 
+  select(Species, FoodI, FoodII, PredatorStage) %>% 
+  group_by(Species, FoodI) %>% 
+  summarize(count = n()) %>% 
+  group_by(Species) %>% 
+  mutate(per = 100 *count/sum(count)) %>% 
+  mutate(category = ifelse(per >= 60, FoodI, NA)) %>% 
+  mutate(onlyNA = all(is.na(category))) %>% 
+  filter(onlyNA == TRUE) %>% 
+  inner_join(spp_names) %>% 
+  select(!c(category, onlyNA)) %>% 
+  mutate(feeding_guild = "Omnivorous") %>% 
+  ungroup() %>% 
+  select(ComName, feeding_guild) %>% 
+  distinct()
 
-
-  filter(per == max(per)) %>% 
-  ungroup() 
-
-
-  filter(!c(Species == "Trichodon trichodon" & FoodI == "nekton",
-            Species == "Oncorhynchus gorbuscha" & FoodI == "zoobenthos",
-            Species == "Oncorhynchus gorbuscha" & FoodI == "zoobenthos")) 
-
+feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>% 
+  add_row(ComName = "Silverspotted sculpin", feeding_guild = "Zoobenthivorous") %>% #fishbase "Diet"
+  add_row(ComName = "Tidepool Snailfish", feeding_guild = "Zoobenthivorous") %>% #don't have a great source for this one
+  arrange(ComName)
 
 body_transverse_shape <- morphology(spp_names$Species) %>% 
   select(Species, BodyShapeI) %>% 
   distinct() %>% 
-  mutate(BodyShapeI = ifelse(Species == "Psychrolutes paradoxus", "elongated", BodyShapeI))
+  mutate(BodyShapeI = ifelse(Species == "Psychrolutes paradoxus", "elongated", BodyShapeI)) %>% 
+  inner_join(spp_names) %>% 
+  select(!Species) %>% 
+  arrange(ComName)
 
-
-
-
+fish_traits <- inner_join(fork_length, body_transverse_shape)
+fish_traits <- left_join(fish_traits, feeding_guild)
 
 
 
