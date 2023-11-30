@@ -43,7 +43,7 @@ net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>%
                              TRUE ~ ComName)) %>% 
   mutate(ComName = case_when(ComName == "Steelhead salmon" ~ "Steelhead trout",
                              ComName == "Cutthroat salmon" ~ "Cutthroat trout",
-                             TRUE ~ ComName))  
+                             TRUE ~ ComName)) 
 
 ################################################################################
 #prepare field abundance data for analysis
@@ -55,7 +55,7 @@ spp_names <- fish_N %>%
   distinct(ComName) %>% 
   mutate(Species = NA)
 
-sci_names <- list()
+sci_names <- vector(mode = 'list', length = length(spp_names))
 
 for (i in 1:nrow(spp_names)) {
   sci_names[[i]] <- rfishbase::common_to_sci(spp_names[i,])
@@ -96,6 +96,7 @@ fish_MaxN <- MaxN %>%
 # trait data
 
 fork_length <- net_tidy %>% 
+  filter(ComName == "Tidepool Sculpin")
   group_by(ComName) %>% 
   summarize(mean_fork_length = mean(mean_length_mm)) %>% 
   # mutate(fork_length = case_when(mean_fork_length < 70 ~ "small", ## does this need to be categorical??
@@ -148,8 +149,14 @@ body_transverse_shape <- morphology(spp_names$Species) %>%
   select(!Species) %>% 
   arrange(ComName)
 
+
+milieu <- spp_names %>% 
+  mutate(water_position = c("demersal"))
+
 fish_traits <- inner_join(fork_length, body_transverse_shape)
 fish_traits <- left_join(fish_traits, feeding_guild)
+
+
 
 
 
