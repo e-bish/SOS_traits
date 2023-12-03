@@ -3,6 +3,10 @@ library(here)
 library(janitor)
 library(rfishbase)
 
+# If common_to_sci gives issues, install the duckdb package
+# options(timeout=100)
+# install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))
+
 #Load data
 #load field data (raw data downloaded/formatted in "import_data.R")
 net_2018.19 <- here::here("data","net_18.19.csv") %>% 
@@ -29,7 +33,7 @@ net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>%
                              ComName == "Snake Prickleback" ~ "Pacific snake prickleback",
                              ComName == "Speckled Sand Dab" ~ "Speckled sanddab",
                              ComName == "Poacher" ~ "UnID Poacher",
-                             ComName == "Striped Perch" ~ "Striped seaperch",
+                             ComName == "Striped Perch" ~ "Striped Seaperch",
                              ComName == "Staghorn Sculpin" ~ "Pacific staghorn sculpin",
                              ComName == "Stickleback" ~ "Three-spined stickleback",
                              ComName == "Tom Cod" ~ "Pacific tomcod",
@@ -53,19 +57,14 @@ fish_N <- net_tidy %>%
 
 spp_names <- fish_N %>% 
   distinct(ComName) %>% 
-  mutate(Species = NA) %>% 
-  mutate(SppCode = NA)
+  mutate(Species = NA) 
 
 sci_names <- vector(mode = 'list', length = length(spp_names))
 
 for (i in 1:nrow(spp_names)) {
   sci_names[[i]] <- rfishbase::common_to_sci(spp_names[i,])
-  spp_names[i,2] <- ifelse(nrow(sci_names[[i]]) == 1, sci_names[[i]][[1]], NA) 
-  spp_names[i,3] <- ifelse(nrow(sci_names[[i]]) == 1, sci_names[[i]][[4]], NA) 
+  spp_names[i,2] <- ifelse(nrow(sci_names[[i]]) == 1, sci_names[[i]][[1]], NA)
 }
-
-test <- spp_names %>% 
-  mutate_at()
 
 spp_names <- spp_names %>% 
   mutate(Species = case_when(ComName == "Pacific herring" ~ "Clupea pallasii", 
@@ -78,7 +77,12 @@ spp_names <- spp_names %>%
                            ComName == "Tube-snout" ~ "Aulorhynchus flavidus",
                            TRUE ~ Species)) %>% 
   arrange(ComName) %>% 
-  filter(!str_detect(ComName, 'UnID')) 
+  filter(!str_detect(ComName, 'UnID'))
+
+# spp_names <- milieu %>% 
+#   select(Species, SpecCode) %>% 
+#   inner_join(spp_names) %>% 
+#   mutate(Species2 = str_to_sentence(ComName))
 
 MaxN <- fish_N %>% 
   group_by(site_ipa, ComName) %>%
@@ -106,7 +110,11 @@ fork_length <- net_tidy %>%
   # mutate(fork_length = case_when(mean_fork_length < 70 ~ "small", ## does this need to be categorical??
   #                                mean_fork_length > 150  ~ "large",
   #                                TRUE ~ "medium")) %>% 
-  filter(ComName %in% spp_names$ComName)
+  # filter(ComName %in% spp_names$ComName) %>% 
+  inner_join(spp_names)
+
+milieu <- species(spp_names$Species) %>% 
+  select(Species, BodyShapeI, DemersPelag) 
 
 feeding_guild1 <- fooditems(spp_names$Species) %>% 
   select(Species, FoodI, FoodII, PredatorStage) %>% 
@@ -122,7 +130,7 @@ feeding_guild1 <- fooditems(spp_names$Species) %>%
                                    FoodI == "nekton" ~ "Piscivorous",
                                    TRUE ~ FoodI)) %>% 
   ungroup() %>% 
-  select(ComName, feeding_guild)
+  select(Species, feeding_guild)
 
 feeding_guild2 <- fooditems(spp_names$Species) %>% 
   select(Species, FoodI, FoodII, PredatorStage) %>% 
@@ -137,13 +145,13 @@ feeding_guild2 <- fooditems(spp_names$Species) %>%
   select(!c(category, onlyNA)) %>% 
   mutate(feeding_guild = "Omnivorous") %>% 
   ungroup() %>% 
-  select(ComName, feeding_guild) %>% 
+  select(Species, feeding_guild) %>% 
   distinct()
 
 feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>% 
-  add_row(ComName = "Silverspotted sculpin", feeding_guild = "Zoobenthivorous") %>% #fishbase "Diet"
-  add_row(ComName = "Tidepool Snailfish", feeding_guild = "Zoobenthivorous") %>% #don't have a great source for this one
-  arrange(ComName)
+  add_row(Species = "Blepsias cirrhosus", feeding_guild = "Zoobenthivorous") %>% #fishbase "Diet"
+  add_row(Species = "Liparis florae", feeding_guild = "Zoobenthivorous")  %>% #don't have a great source for this one
+  mutate(feeding_guild = str_to_lower(feeding_guild))
 
 # body_transverse_shape <- morphology(spp_names$Species) %>% 
 #   select(Species, BodyShapeI) %>% 
@@ -153,15 +161,9 @@ feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>%
 #   select(!Species) %>% 
 #   arrange(ComName)
 
-milieu <- species(spp_names$Species) %>% 
-  select(FBname, BodyShapeI, DemersPelag) %>% 
-  rename(ComName = "FBname")
-  
-
-fish_traits <- full_join(fork_length, milieu)
+fish_traits <- full_join(fork_length, milieu) %>% select(3,1,2,4,5)
 fish_traits <- left_join(fish_traits, feeding_guild)
 
-## want to add species codes to spp_names object to be able to use those in extracting data otherwise the common names don't always match up 
 
 
 
