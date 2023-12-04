@@ -7,6 +7,7 @@ library(rfishbase)
 # options(timeout=100)
 # install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))
 
+load_data <- function() {
 #Load data
 #load field data (raw data downloaded/formatted in "import_data.R")
 net_2018.19 <- here::here("data","net_18.19.csv") %>% 
@@ -48,10 +49,16 @@ net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>%
   mutate(ComName = case_when(ComName == "Steelhead salmon" ~ "Steelhead trout",
                              ComName == "Cutthroat salmon" ~ "Cutthroat trout",
                              TRUE ~ ComName)) 
+return(net_tidy)
+}
+
+net_tidy <- load_data()
 
 ################################################################################
 #prepare field abundance data for analysis
-fish_N <- net_tidy %>% 
+create_fish_matrices <- function(net_tidy) {
+  
+  fish_N <- net_tidy %>% 
   select(date, site_ipa, ComName, species_count) %>% 
   arrange(ComName)
 
@@ -101,20 +108,34 @@ fish_MaxN <- MaxN %>%
   clean_names() %>% 
   as.matrix()
 
-###############################################################################
 # trait data
 
 fork_length <- net_tidy %>% 
   group_by(ComName) %>% 
-  summarize(mean_fork_length = mean(mean_length_mm)) %>% 
+  summarize(mean_length_mm = mean(mean_length_mm)) %>% 
   # mutate(fork_length = case_when(mean_fork_length < 70 ~ "small", ## does this need to be categorical??
   #                                mean_fork_length > 150  ~ "large",
   #                                TRUE ~ "medium")) %>% 
   # filter(ComName %in% spp_names$ComName) %>% 
-  inner_join(spp_names)
+  inner_join(spp_names) %>% 
+  mutate(mean_length_mm = ifelse(ComName == "Tidepool Sculpin", 89.0, mean_length_mm)) #no length in our df so taking the max length from fishbase
 
-milieu <- species(spp_names$Species) %>% 
-  select(Species, BodyShapeI, DemersPelag) 
+schooling <- net_tidy %>% 
+  mutate(schooling = ifelse(species_count > 10, "school", "nonschool")) %>% #arbitrary schooling cutoff
+  filter(ComName %in% spp_names$ComName) %>% 
+  group_by(ComName, schooling) %>% 
+  summarize(count = n()) %>%  #see which spp had schooling and nonschooling results
+  ungroup() %>% 
+  pivot_wider(names_from = schooling, values_from = count) %>% 
+  replace(is.na(.), 0) %>% 
+  mutate(schooling = ifelse(school > 3, "schooling", "nonschooling")) %>% #arbitrary cuttoff
+  mutate(schooling = ifelse(ComName == "Tube-snout", "schooling", schooling)) %>% 
+  select(-c(nonschool, school))
+
+milieu <- species(spp_names$Species) %>% #could also do length
+  select(Species, BodyShapeI, DemersPelag, AnaCat) %>% 
+  mutate(migrations = ifelse(is.na(AnaCat), "non-migratory", AnaCat)) %>% #presumed non migratory if no information is available
+  select(!AnaCat) 
 
 feeding_guild1 <- fooditems(spp_names$Species) %>% 
   select(Species, FoodI, FoodII, PredatorStage) %>% 
@@ -153,17 +174,22 @@ feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>%
   add_row(Species = "Liparis florae", feeding_guild = "Zoobenthivorous")  %>% #don't have a great source for this one
   mutate(feeding_guild = str_to_lower(feeding_guild))
 
-# body_transverse_shape <- morphology(spp_names$Species) %>% 
-#   select(Species, BodyShapeI) %>% 
-#   distinct() %>% 
-#   mutate(BodyShapeI = ifelse(Species == "Psychrolutes paradoxus", "elongated", BodyShapeI)) %>% 
-#   inner_join(spp_names) %>% 
-#   select(!Species) %>% 
-#   arrange(ComName)
+# morphs <- morphology(spp_names$Species) sparse information on mouth position
+# swim <- swimming(spp_names$Species) less than half of species represented
 
-fish_traits <- full_join(fork_length, milieu) %>% select(3,1,2,4,5)
-fish_traits <- left_join(fish_traits, feeding_guild)
+fish_traits <- full_join(fork_length, milieu) %>% 
+  select(3,1,2,4,5,6) %>% 
+  left_join(schooling) %>% 
+  left_join(feeding_guild)
 
+fish_trait_mat <- fish_traits %>% 
+  select(-c(Species, ComName)) %>% 
+  mutate_if(is.character, as.factor) %>% 
+  clean_names() %>% 
+  magrittr::set_rownames(colnames(fish_MaxN))
+  
+return(list("trait" = fish_trait_mat, "abund" = fish_MaxN))
 
+}
 
 
