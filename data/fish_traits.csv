@@ -1,0 +1,43 @@
+Species,ComName,mean_length_mm,BodyShapeI,DemersPelag,migrations,schooling,feeding_guild
+Syngnathus leptorhynchus,Bay pipefish,136.01665802437128,eel-like,demersal,non-migratory,nonschooling,zoobenthivorous
+Enophrys bison,Buffalo Sculpin,81.24444444444444,fusiform / normal,demersal,non-migratory,nonschooling,zoobenthivorous
+Pleuronichthys coenosus,C-O Sole,70,short and / or deep,demersal,non-migratory,nonschooling,zoobenthivorous
+Oncorhynchus tshawytscha,Chinook salmon,105.09026013570484,fusiform / normal,benthopelagic,anadromous,schooling,omnivorous
+Oncorhynchus keta,Chum salmon,72.20300314550079,fusiform / normal,benthopelagic,anadromous,schooling,omnivorous
+Oncorhynchus kisutch,Coho salmon,121.54047619047618,fusiform / normal,pelagic,anadromous,nonschooling,omnivorous
+Pholis laeta,Crescent Gunnel,100.71305555555556,eel-like,demersal,non-migratory,nonschooling,zoobenthivorous
+Oncorhynchus clarkii,Cutthroat trout,206.5,fusiform / normal,demersal,anadromous,nonschooling,omnivorous
+Parophrys vetulus,English sole,87.40509259259258,short and / or deep,demersal,oceanodromous,nonschooling,zoobenthivorous
+Myoxocephalus polyacanthocephalus,Great Sculpin,200,fusiform / normal,demersal,amphidromous,nonschooling,zoobenthivorous
+Hexagrammos decagrammus,Kelp Greenling,60.04777517564403,fusiform / normal,demersal,non-migratory,nonschooling,zoobenthivorous
+Ophiodon elongatus,Lingcod,59.233333333333334,elongated,demersal,oceano-estuarine,nonschooling,piscivorous
+Engraulis mordax,Northern Anchovy,98.125,elongated,pelagic-neritic,non-migratory,nonschooling,omnivorous
+Gadus macrocephalus,Pacific Cod,54.464285714285715,fusiform / normal,demersal,oceanodromous,nonschooling,zoobenthivorous
+Trichodon trichodon,Pacific Sandfish,83,elongated,demersal,non-migratory,nonschooling,omnivorous
+Clupea pallasii,Pacific herring,84.65129316714669,fusiform / normal,pelagic-neritic,non-migratory,schooling,planktivorous
+Ammodytes hexapterus,Pacific sand lance,76.75768209063664,elongated,benthopelagic,oceanodromous,schooling,planktivorous
+Psettichthys melanostictus,Pacific sand sole,125.64285714285714,short and / or deep,demersal,non-migratory,nonschooling,piscivorous
+Lumpenus sagitta,Pacific snake prickleback,136.43667557932264,eel-like,benthopelagic,non-migratory,nonschooling,zoobenthivorous
+Leptocottus armatus,Pacific staghorn sculpin,118.30833333333334,elongated,demersal,amphidromous,nonschooling,zoobenthivorous
+Microgadus proximus,Pacific tomcod,39.103268790741836,fusiform / normal,demersal,oceanodromous,schooling,zoobenthivorous
+Artedius fenestralis,Padded Sculpin,80,elongated,demersal,non-migratory,nonschooling,omnivorous
+Apodichthys flavidus,Penpoint Gunnel,122.60714285714286,eel-like,demersal,non-migratory,nonschooling,zoobenthivorous
+Phanerodon vacca,Pile Perch,148.1875,short and / or deep,demersal,non-migratory,nonschooling,zoobenthivorous
+Oncorhynchus gorbuscha,Pink salmon,56.77079202563043,fusiform / normal,demersal,anadromous,schooling,omnivorous
+Porichthys notatus,Plainfin midshipman,47.64074074074074,elongated,demersal,non-migratory,nonschooling,piscivorous
+Lepidopsetta bilineata,Rock Sole,214.55555555555554,short and / or deep,demersal,non-migratory,nonschooling,zoobenthivorous
+Pholis ornata,Saddleback Gunnel,98.39553376906318,eel-like,demersal,non-migratory,nonschooling,zoobenthivorous
+Limanda limanda,Sand Dab,86.6,short and / or deep,demersal,oceanodromous,nonschooling,zoobenthivorous
+Cymatogaster aggregata,Shiner Perch,70.28254962816057,short and / or deep,demersal,non-migratory,schooling,zoobenthivorous
+Blepsias cirrhosus,Silverspotted sculpin,51.14102564102564,elongated,demersal,non-migratory,nonschooling,zoobenthivorous
+Citharichthys stigmaeus,Speckled sanddab,110,short and / or deep,demersal,non-migratory,nonschooling,zoobenthivorous
+Platichthys stellatus,Starry Flounder,219.36363636363637,short and / or deep,demersal,catadromous,nonschooling,zoobenthivorous
+Oncorhynchus mykiss,Steelhead trout,209,fusiform / normal,benthopelagic,anadromous,nonschooling,zoobenthivorous
+Embiotoca lateralis,Striped Seaperch,136.33541666666667,short and / or deep,demersal,non-migratory,nonschooling,zoobenthivorous
+Hypomesus pretiosus,Surf Smelt,115.2394631632038,elongated,benthopelagic,non-migratory,schooling,omnivorous
+Psychrolutes paradoxus,Tadpole Sculpin,32.38333333333333,elongated,demersal,non-migratory,nonschooling,planktivorous
+Gasterosteus aculeatus,Three-spined stickleback,46.66104818648488,fusiform / normal,benthopelagic,anadromous,schooling,omnivorous
+Oligocottus maculosus,Tidepool Sculpin,89,elongated,demersal,non-migratory,nonschooling,zoobenthivorous
+Liparis florae,Tidepool Snailfish,117,elongated,demersal,non-migratory,nonschooling,zoobenthivorous
+Aulorhynchus flavidus,Tube-snout,134.32063403781981,elongated,benthopelagic,non-migratory,schooling,planktivorous
+Hexagrammos stelleri,Whitespotted greenling,93.5,fusiform / normal,demersal,non-migratory,nonschooling,planktivorous

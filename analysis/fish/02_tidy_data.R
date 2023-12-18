@@ -54,6 +54,11 @@ return(net_tidy)
 
 net_tidy <- load_data()
 
+# sum_counts <- net_tidy %>% 
+#   group_by(ComName) %>% 
+#   summarize(total = sum(species_count)) %>% 
+#   arrange(-total)
+
 ################################################################################
 #prepare field abundance data for analysis
 create_fish_matrices <- function(net_tidy) {
@@ -181,6 +186,8 @@ fish_traits <- full_join(fork_length, milieu) %>%
   select(3,1,2,4,5,6) %>% 
   left_join(schooling) %>% 
   left_join(feeding_guild)
+
+# write_csv(fish_traits, "data/fish_traits.csv")
 
 fish_trait_mat <- fish_traits %>% 
   select(-c(Species, ComName)) %>% 

@@ -13,6 +13,19 @@ fish.traits <- fish.list$trait
 #create species x species matrix
 fish.gowdist <- gowdis(fish.list$trait)
 
+#view pcoa
+# pcoa <- cmdscale(fish.gowdist) 
+# colnames(pcoa) <- c("pcoa1", "pcoa2")
+# 
+# pcoa %>% 
+#   as_tibble(rownames = "species") %>% 
+#   ggplot(aes(x = pcoa1, y = pcoa2)) +
+#   geom_point() +
+#   geom_text(
+#     label=rownames(pcoa), 
+#     check_overlap = T
+#   )
+
 #### test the quality of the functional space ####
 space_qual <- qual_funct_space(mat_funct = fish.list$trait, nbdim = 6, metric = "Gower")
 space_qual$meanSD # very little difference between 4 and >4 dimensions (we're shooting for 0 here)
