@@ -63,7 +63,7 @@ net_tidy <- load_data()
 #prepare field abundance data for analysis
 create_fish_matrices <- function(net_tidy) {
   
-  fish_N <- net_tidy %>% 
+fish_N <- net_tidy %>% 
   select(date, site_ipa, ComName, species_count) %>% 
   arrange(ComName)
 
@@ -139,8 +139,9 @@ schooling <- net_tidy %>%
 
 milieu <- species(spp_names$Species) %>% #could also do length
   select(Species, BodyShapeI, DemersPelag, AnaCat) %>% 
+  mutate(DemersPelag = ifelse(DemersPelag == "pelagic-neritic", "pelagic", DemersPelag)) %>% #simplify this category because there is only one pelagic and two pelagic-neritic species
   mutate(migrations = ifelse(is.na(AnaCat), "non-migratory", AnaCat)) %>% #presumed non migratory if no information is available
-  select(!AnaCat) 
+  select(!AnaCat)
 
 feeding_guild1 <- fooditems(spp_names$Species) %>% 
   select(Species, FoodI, FoodII, PredatorStage) %>% 
@@ -185,7 +186,8 @@ feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>%
 fish_traits <- full_join(fork_length, milieu) %>% 
   select(3,1,2,4,5,6) %>% 
   left_join(schooling) %>% 
-  left_join(feeding_guild)
+  left_join(feeding_guild) %>% 
+  arrange(ComName)
 
 # write_csv(fish_traits, "data/fish_traits.csv")
 
@@ -193,7 +195,9 @@ fish_trait_mat <- fish_traits %>%
   select(-c(Species, ComName)) %>% 
   mutate_if(is.character, as.factor) %>% 
   clean_names() %>% 
-  magrittr::set_rownames(colnames(fish_MaxN))
+  as.matrix()
+
+rownames(fish_trait_mat) <- colnames(fish_MaxN)
   
 return(list("trait" = fish_trait_mat, "abund" = fish_MaxN))
 
