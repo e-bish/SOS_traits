@@ -187,6 +187,7 @@ fish_traits <- full_join(fork_length, milieu) %>%
   select(3,1,2,4,5,6) %>% 
   left_join(schooling) %>% 
   left_join(feeding_guild) %>% 
+  mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>%
   arrange(ComName)
 
 # write_csv(fish_traits, "data/fish_traits.csv")
