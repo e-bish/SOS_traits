@@ -22,7 +22,8 @@ net_2022 <- here::here("data","net_2022.csv") %>%
 net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
   filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
   mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island
-  # mutate(site_ipa = paste(site, ipa, sep = "_")) %>% 
+  mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
+  mutate(site_month = paste(site, month, sep = "_")) %>% 
   mutate(date = make_date(year, month, day)) %>% 
   mutate(species_count = as.numeric(species_count)) %>%
   mutate(species_count = ifelse(is.na(org_type), 0, species_count)) %>% 
@@ -64,7 +65,7 @@ net_tidy <- load_data()
 create_fish_matrices <- function(net_tidy) {
   
 fish_N <- net_tidy %>% 
-  select(date, site, ComName, species_count) %>% #fish counts summed by site/day
+  select(date, site_month, ComName, species_count) %>% #fish counts summed by site/day
   arrange(ComName)
 
 spp_names <- fish_N %>% 
@@ -97,19 +98,19 @@ spp_names <- spp_names %>%
 #   mutate(Species2 = str_to_sentence(ComName))
 
 MaxN <- fish_N %>% 
-  group_by(site, ComName) %>%
+  group_by(site_month, ComName) %>%
   filter(species_count == max(species_count)) %>% 
   ungroup() %>% 
   rename(MaxN = "species_count") %>% 
   select(!date) %>% 
-  distinct(site, ComName, MaxN)
+  distinct(site_month, ComName, MaxN)
  
 fish_MaxN <- MaxN %>% 
-  complete(site, ComName) %>% 
+  complete(site_month, ComName) %>% 
   replace(is.na(.), 0) %>% 
   pivot_wider(names_from = ComName, values_from = MaxN) %>% 
   select(-contains("UnID")) %>% 
-  column_to_rownames(var="site") %>% 
+  column_to_rownames(var="site_month") %>% 
   clean_names() %>% 
   as.matrix()
 

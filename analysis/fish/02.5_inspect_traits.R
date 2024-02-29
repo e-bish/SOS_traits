@@ -2,10 +2,9 @@ library(tidyverse)
 library(here)
 library(FD)
 
-here("analysis", "fish", "02_tidy_data.R") %>% source()
+load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
 
-fish.list <- create_fish_matrices(net_tidy)
-fish.traits <- fish.list$trait
+fish.traits <- fish.list$traits
 
 #### inspect continuous traits ####
 

@@ -3,6 +3,9 @@ library(here)
 library(janitor)
 library(rfishbase)
 
+############################## this was a test but ultimately doesn't work because some species have all zeros
+############################## which throws an error when you run FD
+
 # If common_to_sci gives issues, install the duckdb package
 # options(timeout=100)
 # install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))
@@ -64,8 +67,10 @@ net_tidy <- load_data()
 create_fish_matrices <- function(net_tidy) {
   
 fish_N <- net_tidy %>% 
-  select(date, site, ComName, species_count) %>% #fish counts summed by site/day
-  arrange(ComName)
+  mutate(month = factor(month, labels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
+  select(month, site, ComName, species_count) %>% #fish counts summed by site/day
+  arrange(ComName) %>% 
+  mutate(month = replace(month, site == "MA", "Jun")) # we did a July 1st survey at Maylor that we want to count as a June survey
 
 spp_names <- fish_N %>% 
   distinct(ComName) %>% 
@@ -91,27 +96,40 @@ spp_names <- spp_names %>%
   arrange(ComName) %>% 
   filter(!str_detect(ComName, 'UnID'))
 
+spp_names$Clean <- make_clean_names(spp_names$ComName)
+
 # spp_names <- milieu %>% 
 #   select(Species, SpecCode) %>% 
 #   inner_join(spp_names) %>% 
 #   mutate(Species2 = str_to_sentence(ComName))
 
-MaxN <- fish_N %>% 
-  group_by(site, ComName) %>%
+Max_N <- fish_N %>% 
+  group_by(month, site, ComName) %>%
   filter(species_count == max(species_count)) %>% 
   ungroup() %>% 
   rename(MaxN = "species_count") %>% 
-  select(!date) %>% 
-  distinct(site, ComName, MaxN)
- 
-fish_MaxN <- MaxN %>% 
+  distinct(month, site, ComName, MaxN) %>% 
+  filter(!str_detect(ComName, 'UnID'))
+
+MaxN_list <- split(Max_N, Max_N$month)
+
+prep_count_dfs <- function(df){
+  
+fish_counts <- df %>% 
+  select(!month) %>% 
+  add_row(site = NA, ComName = setdiff(spp_names$ComName, df$ComName), MaxN = 0) %>% 
   complete(site, ComName) %>% 
+  filter(!is.na(site)) %>% 
   replace(is.na(.), 0) %>% 
   pivot_wider(names_from = ComName, values_from = MaxN) %>% 
-  select(-contains("UnID")) %>% 
   column_to_rownames(var="site") %>% 
   clean_names() %>% 
   as.matrix()
+
+return(fish_counts)
+}
+
+prepped_MaxN_list <- lapply(MaxN_list, FUN = prep_count_dfs)
 
 # trait data
 
@@ -196,11 +214,10 @@ fish_trait_mat <- fish_traits %>%
   select(-c(Species, ComName)) %>% 
   mutate_if(is.character, as.factor) %>% 
   clean_names() %>% 
+  column_to_rownames(var = "clean") %>% 
   as.matrix()
-
-rownames(fish_trait_mat) <- colnames(fish_MaxN)
   
-return(list("trait" = fish_trait_mat, "abund" = fish_MaxN))
+return(list("traits" = fish_trait_mat, "abund" = prepped_MaxN_list))
 
 }
 
