@@ -2,12 +2,12 @@ library(tidyverse)
 library(here)
 library(FD)
 
-load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
+load(here("data", "fish.listIPA.Rdata")) #object created in 02_tidy_data
 here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
 here("analysis", "general_functions", "scree.r") %>% source()
 
 
-fish.traits <- fish.list$trait %>% 
+fish.traits <- fish.listIPA$trait %>% 
   as.data.frame() %>% 
   mutate(mean_length_mm = as.numeric(mean_length_mm)) %>% 
   mutate_if(is.character, as.factor)
@@ -45,7 +45,7 @@ scree(hclust.obj = fish.hclust) # not a solid answer here but 5 is generally at 
 
 #### FD indices calculation ####################################################
 fishFD <- dbFD(fish.traits, #must be a df where character columns are factors
-               fish.list$abund, 
+               fish.listIPA$abund, 
                m = 4, #seems to keep 4 axis no matter how many you specify?
                calc.FGR = TRUE, 
                clust.type = "ward.D2",
@@ -114,9 +114,6 @@ index_plots$FEve <- FD_results %>%
 #         axis.text = element_text(size = 16))
 
 index_plots[[6]]
-
-
-#### RLQ analysis ###############################################################
 
 
             
