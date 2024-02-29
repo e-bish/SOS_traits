@@ -2,11 +2,10 @@ library(tidyverse)
 library(here)
 library(FD)
 
-here("analysis", "fish", "02_tidy_data.R") %>% source()
+load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
 here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
 here("analysis", "general_functions", "scree.r") %>% source()
 
-fish.list <- create_fish_matrices(net_tidy)
 
 fish.traits <- fish.list$trait
 

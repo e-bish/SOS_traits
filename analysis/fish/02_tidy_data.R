@@ -204,4 +204,8 @@ return(list("trait" = fish_trait_mat, "abund" = fish_MaxN))
 
 }
 
+fish.list <- create_fish_matrices(net_tidy)
+
+save(fish.list, file = here("data", "fish.list.Rdata"))
+
 
