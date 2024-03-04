@@ -1,0 +1,10 @@
+---
+title: "Salish Sea Functional Diversity Analysis"
+author: "Emily Bishop"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Analysis updates 
+
+This website will contain the most up-to-date information on methods and preliminary results for Chapter 2 of my dissertation, an exploration of the functional diversity of fish and birds in the Salish Sea.

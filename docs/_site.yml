@@ -1,0 +1,16 @@
+name: "Salish Sea Functional Diversity Analysis"
+output_dir: "."
+navbar:
+  title: "Salish Sea Functional Diversity Analysis"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "FD Overview"
+      href: FD_overview.html    
+    - text: "Fish Results"
+      href: fish_results.html      
+    - text: "Bird Results"
+      href: bird_results.html    
+output:
+  html_document:
+    theme: flatly
