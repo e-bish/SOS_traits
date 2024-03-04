@@ -275,9 +275,72 @@ $(document).ready(function () {
 </div>
 
 
-<div id="description" class="section level2">
-<h2>Description</h2>
 <p>This page will contain preliminary analyses for fish data.</p>
+<div id="fish-trait-pcoas" class="section level2">
+<h2>Fish trait PCoAs</h2>
+<div class="figure">
+<img src="figures/fish_pcoa.png" alt="Fig 1. A graphical visualization of the variation in traits among fish species" width="100%" />
+<p class="caption">
+Fig 1. A graphical visualization of the variation in traits among fish
+species
+</p>
+</div>
+<p>Generally this looks like what I would expect. The salmon are
+generally similar, as are the flatfish and the eelgrass-associated fish.
+Could investigate further by tube-snout are more similar to other forage
+fish than anchovy.</p>
+<div class="figure">
+<img src="figures/fish_pcoa2.png" alt="Fig 2. A slightly better looking graphical visualization of the variation in traits among fish species" width="100%" />
+<p class="caption">
+Fig 2. A slightly better looking graphical visualization of the
+variation in traits among fish species
+</p>
+</div>
+<p>This plot shows the same points as the previous plot, broken into 7
+groupings. I determined the most parsimonious number of groupings by
+performing a hierarchical cluster analysis. In the I could add some
+species labels or trait loadings to this plot to make it more
+informative.</p>
+</div>
+<div id="fish-functional-diversity-indices-at-core-sites"
+class="section level2">
+<h2>Fish functional diversity indices at
+<ins><strong>core</strong></ins> sites</h2>
+<div class="figure">
+<img src="figures/fish_FDcorepatch.png" alt="Fig 3. Results of the FD analysis for core sites" width="100%" />
+<p class="caption">
+Fig 3. Results of the FD analysis for core sites
+</p>
+</div>
+<p>To create these plots, I used an abundance matrix with MaxN (maximum
+count in a single tow at any station) for each species by month. So rows
+were named SITE_month and the values in all of the columns represented
+the maximum count for each species that we captured in a single tow at
+that site in that month. I then used that matrix with the trait matrix
+in the FD function to calculate the various indices. I think this looks
+pretty interesting!</p>
+<div class="figure">
+<img src="figures/fish_seasonalFDcorepatch.png" alt="Fig 4. Seasonal variation in results of the FD analysis for core sites" width="100%" />
+<p class="caption">
+Fig 4. Seasonal variation in results of the FD analysis for core sites
+</p>
+</div>
+<p>These plots were created with the same methods above but displayed by
+month to see how diversity varies by month. Will need to look at these
+more to decide if there are interesting things to explore.</p>
+</div>
+<div id="fish-functional-diversity-indices-at-all-sites"
+class="section level2">
+<h2>Fish functional diversity indices at <ins><strong>all</strong></ins>
+sites</h2>
+<div class="figure">
+<img src="figures/fish_FDallpatch.png" alt="Fig 5. Results of the FD analysis for all sites in June only" width="100%" />
+<p class="caption">
+Fig 5. Results of the FD analysis for all sites in June only
+</p>
+</div>
+<p>There is probably a better way to display these data. This shows the
+snapshot of June data for all sites.</p>
 </div>
 
 
