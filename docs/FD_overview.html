@@ -11,7 +11,7 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-03-04" />
+<meta name="date" content="2024-03-05" />
 
 <title>Functional Diversity</title>
 
@@ -270,16 +270,38 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Functional Diversity</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-03-04</h4>
+<h4 class="date">2024-03-05</h4>
 
 </div>
 
 
-<div id="description" class="section level2">
-<h2>Description</h2>
-<p>This page will contain an overview of Functional Diversity terms,
-analysis, and methods.</p>
-</div>
+<p>Functional diversity, is defined as “the value and the range of those
+species and organismal traits that influence ecosystem functioning”
+(Tillman, 2001).</p>
+<p>Alpha Diversity Indices: <strong>Functional richness</strong>
+represents the area within the trait space occupied by the assemblage,
+<strong>evenness</strong> describes how equally species are distributed
+within the trait space, and <strong>divergence</strong> accounts for the
+distances of species away from the center of the trait space (Laliberté
+et al. 2022). These metrics are calculated using the corrected distance
+matrix, so they do not account for species abundances.</p>
+<p>The following diagrams are from Mouillot et al. 2013 and represent
+hypothetical changes in FD indices after a disturbance to an
+ecosystem.</p>
+<p><img src="figures/FD_indices_diagrams/FRic.jpg" /> <img
+src="figures/FD_indices_diagrams/Feve.jpg" /> <img
+src="figures/FD_indices_diagrams/FDiv.jpg" /></p>
+<p><strong>Functional dispersion</strong> represents the average
+distance to the group centroid, where distances are weighted by
+abundance, and is calculated using the uncorrected distance matrix
+(Laliberté and Legendre 2010).</p>
+<p><img src="figures/FD_indices_diagrams/FDis.jpg" /></p>
+<p><strong>Rao’s quadratic entropy</strong> is another measure of
+overall functional diversity, which represents the average distance
+between two randomly selected individuals (Botta-Dukát 2005). This
+metric is also calculated using the uncorrected distance matrix and so
+it also accounts for species abundances.</p>
+<p><img src="figures/FD_indices_diagrams/Rao.jpg" /></p>
 
 
 

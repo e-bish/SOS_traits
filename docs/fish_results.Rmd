@@ -17,13 +17,16 @@ This page will contain preliminary analyses for fish data.
 knitr::include_graphics(here("docs", "figures", "fish_pcoa.png"))
 ```
 
+
 Generally this looks like what I would expect. The salmon are generally similar, as are the flatfish and the eelgrass-associated fish. Could investigate further by tube-snout are more similar to other forage fish than anchovy. 
+
 
 ```{r PCoA2, echo=FALSE, fig.cap="Fig 2. A slightly better looking graphical visualization of the variation in traits among fish species", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_pcoa2.png"))
 ```
 
-This plot shows the same points as the previous plot, broken into 7 groupings. I determined the most parsimonious number of groupings by performing a hierarchical cluster analysis. In the I could add some species labels or trait loadings to this plot to make it more informative.
+This plot shows the same points as the previous plot, broken into 7 groupings. I determined the most parsimonious number of groupings by performing a hierarchical cluster analysis. In the future I could add some species labels or trait loadings to this plot to make it more informative.
+
 
 ## Fish functional diversity indices at <ins>**core**</ins> sites
 
@@ -36,6 +39,7 @@ To create these plots, I used an abundance matrix with MaxN (maximum count in a 
 knitr::include_graphics(here("docs", "figures", "fish_seasonalFDcorepatch.png"))
 ```
 These plots were created with the same methods above but displayed by month to see how diversity varies by month. Will need to look at these more to decide if there are interesting things to explore. 
+
 
 ## Fish functional diversity indices at <ins>**all**</ins> sites
 ```{r FD_all, echo=FALSE, fig.cap="Fig 5. Results of the FD analysis for all sites in June only", out.width = '100%'}
