@@ -9,11 +9,24 @@ output: html_document
 library(here)
 ```
 
-This page will contain preliminary analyses for fish data.
+This page will contain preliminary analyses for fish data. To generate these data, I created an **abundance** matrix and a **trait** matrix.
+
+For **abundance** matrix I used MaxN (maximum count in a single tow at any station) for each species by month. So rows were named SITE_month and the values in all of the columns represented the maximum count for each species that we captured in a single tow at that site in that month.
+
+For the **trait** matrix, I used the following traits: mean length (from field data), body shape, water column position, schooling behavior, migratory behavior, and feeding guild. Length is a continuous variable while the others are categorical. 
+
+## NMDS representing abundances by site
+NMDS is a distance based ordination technique. In this ordination, the space between the points represents the distance (dissimilarity) between them. Here I used Bray-curtis distances, a common method for abundance data. 
+
+```{r nmds, echo=FALSE, fig.cap="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code.", out.width = '100%'}
+knitr::include_graphics(here("docs", "figures", "fish_nmds_sites.png"))
+```
+This plot generally aligns with my impression of which sites should be similar, though there are some interesting patterns.  
+
 
 ## Fish trait PCoAs
 
-```{r PCoA1, echo=FALSE, fig.cap="Fig 1. A graphical visualization of the variation in traits among fish species", out.width = '100%'}
+```{r PCoA1, echo=FALSE, fig.cap="Fig 2. A graphical visualization of the variation in traits among fish species", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_pcoa.png"))
 ```
 
@@ -21,7 +34,7 @@ knitr::include_graphics(here("docs", "figures", "fish_pcoa.png"))
 Generally this looks like what I would expect. The salmon are generally similar, as are the flatfish and the eelgrass-associated fish. Could investigate further by tube-snout are more similar to other forage fish than anchovy. 
 
 
-```{r PCoA2, echo=FALSE, fig.cap="Fig 2. A slightly better looking graphical visualization of the variation in traits among fish species", out.width = '100%'}
+```{r PCoA2, echo=FALSE, fig.cap="Fig 3. A slightly better looking graphical visualization of the variation in traits among fish species", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_pcoa2.png"))
 ```
 
@@ -30,19 +43,19 @@ This plot shows the same points as the previous plot, broken into 7 groupings. I
 
 ## Fish functional diversity indices at <ins>**core**</ins> sites
 
-```{r FD_core, echo=FALSE, fig.cap="Fig 3. Results of the FD analysis for core sites", out.width = '100%'}
+```{r FD_core, echo=FALSE, fig.cap="Fig 4. Results of the FD analysis for core sites", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_FDcorepatch.png"))
 ```
-To create these plots, I used an abundance matrix with MaxN (maximum count in a single tow at any station) for each species by month. So rows were named SITE_month and the values in all of the columns represented the maximum count for each species that we captured in a single tow at that site in that month. I then used that matrix with the trait matrix in the FD function to calculate the various indices. I think this looks pretty interesting!
+I then used the species abundance matrix with the trait matrix in the FD function to calculate the various indices. I think this looks pretty interesting!
 
-```{r FD_seasonal, echo=FALSE, fig.cap="Fig 4. Seasonal variation in results of the FD analysis for core sites", out.width = '100%'}
+```{r FD_seasonal, echo=FALSE, fig.cap="Fig 5. Seasonal variation in results of the FD analysis for core sites", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_seasonalFDcorepatch.png"))
 ```
-These plots were created with the same methods above but displayed by month to see how diversity varies by month. Will need to look at these more to decide if there are interesting things to explore. 
+These plots were created with the same methods above but displayed by month to see how diversity varies by month. Will need to look at these more to decide if there are interesting things to explore, but an initial glance shows that sites appear to be most similar in June. 
 
 
 ## Fish functional diversity indices at <ins>**all**</ins> sites
-```{r FD_all, echo=FALSE, fig.cap="Fig 5. Results of the FD analysis for all sites in June only", out.width = '100%'}
+```{r FD_all, echo=FALSE, fig.cap="Fig 6. Results of the FD analysis for all sites in June only", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_FDallpatch.png"))
 ```
 There is probably a better way to display these data. This shows the snapshot of June data for all sites. 

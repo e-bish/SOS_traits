@@ -11,11 +11,11 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-03-04" />
+<meta name="date" content="2024-03-08" />
 
 <title>Fish Results</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -270,18 +270,47 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Fish Results</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-03-04</h4>
+<h4 class="date">2024-03-08</h4>
 
 </div>
 
 
-<p>This page will contain preliminary analyses for fish data.</p>
+<p>This page will contain preliminary analyses for fish data. To
+generate these data, I created an <strong>abundance</strong> matrix and
+a <strong>trait</strong> matrix.</p>
+<p>For <strong>abundance</strong> matrix I used MaxN (maximum count in a
+single tow at any station) for each species by month. So rows were named
+SITE_month and the values in all of the columns represented the maximum
+count for each species that we captured in a single tow at that site in
+that month.</p>
+<p>For the <strong>trait</strong> matrix, I used the following traits:
+mean length (from field data), body shape, water column position,
+schooling behavior, migratory behavior, and feeding guild. Length is a
+continuous variable while the others are categorical.</p>
+<div id="nmds-representing-abundances-by-site" class="section level2">
+<h2>NMDS representing abundances by site</h2>
+<p>NMDS is a distance based ordination technique. In this ordination,
+the space between the points represents the distance (dissimilarity)
+between them. Here I used Bray-curtis distances, a common method for
+abundance data.</p>
+<div class="figure">
+<img src="figures/fish_nmds_sites.png" alt="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code." width="100%" />
+<p class="caption">
+Fig 1. A graphical visualization of the variation in abundances of
+different species between sites. Core sites are displayed with the
+corresponding month for each data point while jubilee sites are
+displayed with their site code.
+</p>
+</div>
+<p>This plot generally aligns with my impression of which sites should
+be similar, though there are some interesting patterns.</p>
+</div>
 <div id="fish-trait-pcoas" class="section level2">
 <h2>Fish trait PCoAs</h2>
 <div class="figure">
-<img src="figures/fish_pcoa.png" alt="Fig 1. A graphical visualization of the variation in traits among fish species" width="100%" />
+<img src="figures/fish_pcoa.png" alt="Fig 2. A graphical visualization of the variation in traits among fish species" width="100%" />
 <p class="caption">
-Fig 1. A graphical visualization of the variation in traits among fish
+Fig 2. A graphical visualization of the variation in traits among fish
 species
 </p>
 </div>
@@ -290,16 +319,16 @@ generally similar, as are the flatfish and the eelgrass-associated fish.
 Could investigate further by tube-snout are more similar to other forage
 fish than anchovy.</p>
 <div class="figure">
-<img src="figures/fish_pcoa2.png" alt="Fig 2. A slightly better looking graphical visualization of the variation in traits among fish species" width="100%" />
+<img src="figures/fish_pcoa2.png" alt="Fig 3. A slightly better looking graphical visualization of the variation in traits among fish species" width="100%" />
 <p class="caption">
-Fig 2. A slightly better looking graphical visualization of the
+Fig 3. A slightly better looking graphical visualization of the
 variation in traits among fish species
 </p>
 </div>
 <p>This plot shows the same points as the previous plot, broken into 7
 groupings. I determined the most parsimonious number of groupings by
-performing a hierarchical cluster analysis. In the I could add some
-species labels or trait loadings to this plot to make it more
+performing a hierarchical cluster analysis. In the future I could add
+some species labels or trait loadings to this plot to make it more
 informative.</p>
 </div>
 <div id="fish-functional-diversity-indices-at-core-sites"
@@ -307,36 +336,33 @@ class="section level2">
 <h2>Fish functional diversity indices at
 <ins><strong>core</strong></ins> sites</h2>
 <div class="figure">
-<img src="figures/fish_FDcorepatch.png" alt="Fig 3. Results of the FD analysis for core sites" width="100%" />
+<img src="figures/fish_FDcorepatch.png" alt="Fig 4. Results of the FD analysis for core sites" width="100%" />
 <p class="caption">
-Fig 3. Results of the FD analysis for core sites
+Fig 4. Results of the FD analysis for core sites
 </p>
 </div>
-<p>To create these plots, I used an abundance matrix with MaxN (maximum
-count in a single tow at any station) for each species by month. So rows
-were named SITE_month and the values in all of the columns represented
-the maximum count for each species that we captured in a single tow at
-that site in that month. I then used that matrix with the trait matrix
-in the FD function to calculate the various indices. I think this looks
-pretty interesting!</p>
+<p>I then used the species abundance matrix with the trait matrix in the
+FD function to calculate the various indices. I think this looks pretty
+interesting!</p>
 <div class="figure">
-<img src="figures/fish_seasonalFDcorepatch.png" alt="Fig 4. Seasonal variation in results of the FD analysis for core sites" width="100%" />
+<img src="figures/fish_seasonalFDcorepatch.png" alt="Fig 5. Seasonal variation in results of the FD analysis for core sites" width="100%" />
 <p class="caption">
-Fig 4. Seasonal variation in results of the FD analysis for core sites
+Fig 5. Seasonal variation in results of the FD analysis for core sites
 </p>
 </div>
 <p>These plots were created with the same methods above but displayed by
 month to see how diversity varies by month. Will need to look at these
-more to decide if there are interesting things to explore.</p>
+more to decide if there are interesting things to explore, but an
+initial glance shows that sites appear to be most similar in June.</p>
 </div>
 <div id="fish-functional-diversity-indices-at-all-sites"
 class="section level2">
 <h2>Fish functional diversity indices at <ins><strong>all</strong></ins>
 sites</h2>
 <div class="figure">
-<img src="figures/fish_FDallpatch.png" alt="Fig 5. Results of the FD analysis for all sites in June only" width="100%" />
+<img src="figures/fish_FDallpatch.png" alt="Fig 6. Results of the FD analysis for all sites in June only" width="100%" />
 <p class="caption">
-Fig 5. Results of the FD analysis for all sites in June only
+Fig 6. Results of the FD analysis for all sites in June only
 </p>
 </div>
 <p>There is probably a better way to display these data. This shows the
