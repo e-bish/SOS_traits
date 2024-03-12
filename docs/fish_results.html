@@ -11,11 +11,11 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-03-08" />
+<meta name="date" content="2024-03-09" />
 
 <title>Fish Results</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -270,7 +270,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Fish Results</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-03-08</h4>
+<h4 class="date">2024-03-09</h4>
 
 </div>
 
@@ -287,12 +287,24 @@ that month.</p>
 mean length (from field data), body shape, water column position,
 schooling behavior, migratory behavior, and feeding guild. Length is a
 continuous variable while the others are categorical.</p>
+<p>I used ordinations to view the differences between data points,
+specifically NMDS and PCoA. Both of these types of ordinations allow
+specification of a distance measure, which is good because euclidian
+distances aren’t appropriate for every data type (e.g. species
+abundances). These two methods differ in how they determine the axes.
+PCoAs use eigenanalysis, thereby imposing a linear relationship between
+samples, while NMDS uses an iterative, non-metric (rank-order), approach
+that doesn’t make any assumptions of linearity. The rank-order approach
+is good for when you don’t necessarily expect samples to be correlated,
+for example abundance counts of different species.</p>
 <div id="nmds-representing-abundances-by-site" class="section level2">
 <h2>NMDS representing abundances by site</h2>
 <p>NMDS is a distance based ordination technique. In this ordination,
 the space between the points represents the distance (dissimilarity)
 between them. Here I used Bray-curtis distances, a common method for
-abundance data.</p>
+abundance data. You can use any distance measure for NMDS, and it uses
+an iterative non-parametric approach to minimize stress (vs the
+eigenanalysis approach used in PCoA).</p>
 <div class="figure">
 <img src="figures/fish_nmds_sites.png" alt="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code." width="100%" />
 <p class="caption">
@@ -307,6 +319,10 @@ be similar, though there are some interesting patterns.</p>
 </div>
 <div id="fish-trait-pcoas" class="section level2">
 <h2>Fish trait PCoAs</h2>
+<p>Principle coordinates analysis (PCoA) can be applied to semi-metric
+distance measures because it finds euclidian distances that represent a
+set of non-euclidean distances. It then creates the ordination axes from
+the eigenvectors of the euclidean association matrix.</p>
 <div class="figure">
 <img src="figures/fish_pcoa.png" alt="Fig 2. A graphical visualization of the variation in traits among fish species" width="100%" />
 <p class="caption">
