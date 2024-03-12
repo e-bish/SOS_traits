@@ -35,8 +35,9 @@ fish_pcoa <- pcoa %>%
 ggsave(plot = fish_pcoa, "docs/figures/fish_pcoa.png")
 
 #### test the quality of the functional space ####
-space_qual <- qual_funct_space(mat_funct = fish.gowdist, nbdim = 6, metric = "Gower")
-space_qual$meanSD # very little difference between 4 and >4 dimensions (we're shooting for 0 here)
+space_qual <- qual_funct_space(fish.traits, nbdim = 6, metric = "Gower")
+#needs to be df with no NAs
+space_qual$meanSD #  (we're shooting for 0 here)
 #"The mSD is 0 when the functional space perfectly represents the initial distance and increases as pairs of species become less represented in the functional space (Maire et al., 2015)."
 
 #### test to see how many groups to use ####
@@ -48,7 +49,7 @@ plot(fish.hclust, hang = -1,
      main = "Method = Ward’s minimum variance",
      xlab = "Species",
      sub = "BC dissimilarity; ward.D2 linkage")
-scree(hclust.obj = fish.hclust) # not a solid answer here but 7 is generally at the bottom of the elbow, so we'll try 5 groups
+scree(hclust.obj = fish.hclust) # not a solid answer here but 5-7 is generally at the bottom of the elbow, so we'll try 5 groups
 
 #### FD indices calculation ####################################################
 fishFD <- dbFD(fish.traits, #must be a df where character columns are factors
