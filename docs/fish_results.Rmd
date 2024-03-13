@@ -27,7 +27,7 @@ This plot generally aligns with my impression of which sites should be similar, 
 
 ## NMDS representing abundances by month
 
-```{r nmds, echo=FALSE, fig.cap="Fig 2. A graphical visualization of the variation in abundances of different species between months.", out.width = '100%'}
+```{r nmds_season, echo=FALSE, fig.cap="Fig 2. A graphical visualization of the variation in abundances of different species between months.", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_nmds_months.png"))
 ```
 There is clearly more variation between sites than months in these data. Months account for only 16.5% of the variation in species composition (p = 0.022). 
