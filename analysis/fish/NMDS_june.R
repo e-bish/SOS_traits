@@ -3,34 +3,30 @@ library(here)
 library(ggrepel)
 library(vegan)
 
-load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
-fish.adj.abund <- fish.list[[2]] 
+load(here("data", "fish.list.june.Rdata")) #object created in 02_tidy_data
+load(here("data", "RLQ1.Rdata"))
+
+fish.adj.abund <- fish.list.june[[2]] 
 #need to add a dummy species because you can't calculate BC distances on a zero (SHR_04)
 fish.adj.abund <- cbind(fish.adj.abund, dummy = rep(1, times = nrow(fish.adj.abund)))
 fish.adj.abund <- sqrt(fish.adj.abund) #data transformation (sqrt) to avoid weighting by very abundant taxa
 
-K <- 3 #number of dimensions, more than 3 generally gets unweildy
+K <- 2 #number of dimensions, more than 3 generally gets unweildy
 nmds <- metaMDS(fish.adj.abund, distance="bray", k= K, trymax=1000, plot = FALSE)
 S <- round(nmds$stress, 2) #stress decreases with increasing K, >0.2 is generally a poor fit
 #though stress is just one piece of the puzzle and shouldn't be the only thing considered
 
-points <- data.frame(nmds$points) %>% 
-  mutate(site_month = rownames(fish.list$abund)) %>% 
-  separate_wider_delim(site_month, delim = "_", names = c("site", "month"), cols_remove = FALSE) %>% 
-  mutate(site_type = ifelse(site %in% c("MA", "WA", "HO", "TL", "LL", "PR"), "jubilee", "core"))
+points <- data.frame(nmds$points) %>% mutate(site = rownames(fish.list.june$abund))
 
-hulls <- points %>%
-  group_by(site) %>% 
-  slice(chull(MDS1,MDS2))
+# hulls <- points %>%
+#   slice(chull(MDS1,MDS2))
 
 #all
 ggplot() +
-  geom_point(data = points, aes(x = MDS1, y = MDS2, color = site, shape = site_type), size = 3) + 
-  geom_text_repel(data = points %>% filter(!site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, color = site, label = month)) +
-  geom_text_repel(data = points %>% filter(site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, color = site, label = site)) +
-  geom_polygon(data = hulls, aes(x = MDS1, y = MDS2, fill = site), alpha = 0.2) +
-  annotate("text", x = Inf, y = Inf, label = paste("stress = ", S), vjust = 2, hjust = 2) +
-  annotate("text", x = Inf, y = Inf, label = paste("k = ", K), vjust = 2, hjust = 2) +
+  geom_point(data = points, aes(x = MDS1, y = MDS2, color = RLQ1), size = 3) + 
+  geom_text_repel(data = points, aes(x = MDS1, y = MDS2, color = RLQ1, label = site)) +
+  # annotate("text", x = Inf, y = Inf, label = paste("stress = ", S), vjust = 2, hjust = 2) +
+  # annotate("text", x = Inf, y = Inf, label = paste("k = ", K), vjust = 2, hjust = 2) +
   theme_minimal() 
 
 ggsave("docs/figures/fish_nmds_sites.png")
