@@ -2,7 +2,9 @@ library(tidyverse)
 library(here)
 library(sf)
 library(leaflet)
+library(terra)
 
+#### load data ####
 national_HU12 <- here("data","spatial","NWBD_HUC_12-Digit_Basins_of_WA","WBDHU12.shp") %>% 
   read_sf()
 
@@ -10,9 +12,7 @@ shoreline <- here("data","spatial","shorezone_shoreline_only","shorezone_shoreli
   read_sf() %>% 
   st_transform(crs = 2927) 
 
-
-site_names <- factor(c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"), 
-                     levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))
+site_levels <- c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG")
 
 #GPS locations for our survey stations with each ipa
 SOS_sites <- here("data","spatial","reupdatingthearmoringgeodatabase", "Shoreline_armoring_shore_origin_sites_UTM.shp") %>% 
@@ -30,29 +30,20 @@ SOS_sites <- here("data","spatial","reupdatingthearmoringgeodatabase", "Shorelin
                           Site_name == "Waterman Shoreline Preserve" ~ "WA" ,
                           Site_name == "Howarth Park" ~ "HO" ,
                           Site_name == "Maylor Point" ~ "MA"), .after = "Site_name") %>% 
-  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG")))
+  mutate(site = factor(site, levels = site_levels))
 
-#set a center point for each site 
-SOS_site_cents <- SOS_sites %>%
-  group_by(site) %>%
-  summarize(geometry = st_union(geometry)) %>%
-  st_centroid()
+#create a buffer around sites that will overlap with the HUCs
+site_buffers <- st_buffer(SOS_sites, 1000)
 
-#snap it to the closest shoreline
-closest_points <- SOS_site_cents %>%
-  rowwise() %>%
-  mutate(
-    nearest_segment = shoreline[st_nearest_feature(geometry,
-                                                   shoreline),],
-    line_to_point = st_nearest_points(geometry, nearest_segment),
-    closest_point = st_cast(line_to_point, 'POINT')[2],
-    snapped_point_cond = st_sfc(st_geometry(closest_point),
-                                crs = st_crs(shoreline)))
+#remove HUCs in the Salish Sea that only represent water
+land_HU12 <- national_HU12 %>% 
+  filter(!Name %in% c("Puget Sound", "Skagit Bay", "Haro Strait-Strait of Georgia", "South Puget Sound"))
 
-SOS_site_cents_sn <- closest_points %>% 
-  select(site, snapped_point_cond) %>% 
-  st_drop_geometry() %>% 
-  st_as_sf()
+SOS_HUCS_all <- st_filter(land_HU12, site_buffers)
+#note this number matches the number of sites because while COR overlaps two HUCs, there are two sites on Vashon
+
+SOS_HUCS <- SOS_HUCS_all %>% 
+  select(c(HUC12, Name, geometry)) 
 
 #### map it ####
 
@@ -62,42 +53,37 @@ SOS_site_cents_sn$lat <- st_coordinates(SOS_site_cents_sn)[,2]
 leaflet(st_transform(SOS_site_cents_sn, crs = 4326)) %>%
   addProviderTiles(providers$Esri.WorldGrayCanvas, group =  "Esri") %>%
   setView(lng =-122.420429, lat = 47.886010, zoom = 8) %>%
-  addPolylines(data = st_transform(national_HU12, crs = 4326), label = ~Name) %>% 
-  addPolylines(data = st_transform(SOS_HUCS, crs = 4326), color = "red", label = ~Name) %>% 
+  addPolylines(data = st_transform(national_HU12, crs = 4326), popup = national_HU12$Name) %>%
+  addPolylines(data = st_transform(SOS_HUCS, crs = 4326), color = "red", label = ~Name) %>%
   addCircleMarkers(lng = ~lon, lat = ~lat, color = "purple")
 
 ####################
+#### format to add SOS sites ####
+# #create centroid points to make ordering N to S easier
+# SOS_HUC_cents <- st_centroid(SOS_HUCS) %>% 
+#   cbind(st_coordinates(.)) 
+# 
+# #this is only working in base r for some reason
+# SOS_HUC_cents <- SOS_HUC_cents[order(SOS_HUC_cents$Y, decreasing = T),]
+# 
+# #reorder from north to south and add SOS site names
+# SOS_HUCS_full <- SOS_HUCS %>% 
+#   slice(rep(1:n(), times = c(1,1,1,4,1,1,1,2)))  %>% #multiple sites in some HUC12s 
+#   mutate(Name = factor(Name, levels = unique(SOS_HUC_cents$Name))) %>% 
+#   arrange(Name) %>% 
+#   mutate(site = site_levels, .after = "Name")
 
-#extract the right HUC12s and manually assign them to sites
-SOS_HUCS <- st_filter(national_HU12, SOS_site_cents_sn) %>%
-  bind_rows(national_HU12 %>% filter(Name %in% "Vashon Island")) %>% 
-  slice(rep(1:n(), times = c(1,1,1,4,1,1,1,2)))
+#### load C-CAP data ####
 
-#create centroid points to make ordering N to S easier
-SOS_HUC_cents <- st_centroid(SOS_HUCS) %>% 
-  cbind(st_coordinates(.)) 
+#load 1m resolution impervious surface data
+ccap_imperv <- rast(here("data", "spatial", "wa_2021_ccap_v2_hires_impervious_20231119", "wa_2021_ccap_v2_hires_impervious_20231119.tif"))
 
-#this is only working in base r for some reason
-SOS_HUC_cents <- SOS_HUC_cents[order(SOS_HUC_cents$Y, decreasing = T),]
+SOS_HUCS_proj<- st_transform(SOS_HUCS, crs = 5070)
 
-#reorder from north to south and add SOS site names
-SOS_HUCS <- SOS_HUCS %>% 
-  mutate(Name = factor(Name, levels = unique(SOS_HUC_cents$Name))) %>% 
-  arrange(Name) %>% 
-  mutate(site = site_names, .after = "Name")
+#crop imperv to HUCs
+ccap_imperv_HUCs <- crop(ccap_imperv, SOS_HUCS_proj) #this only crops the raster to the extent of the HUCs
 
-#other ways to get the right order
-# Method 1
-# tmp <- SOS_HUC_cents %>%
-#   mutate(Name = factor(Name, unique(Name))) %>%
-#   pull(Name)
-# test <- SOS_HUCS[match(tmp, SOS_HUCS$Name),] #success!
-# Method 2
-# tmp <- SOS_HUC_cents %>% pull(Name)
-# SOS_HUCS$Name <- factor(SOS_HUCS$Name, levels = unique(tmp)) 
-# SOS_HUCS <- SOS_HUCS[order(SOS_HUCS$Name), ] #success again!
+plot(ccap_imperv_HUCs)
 
-
-
-
+test <- terra::extract(ccap_imperv, SOS_HUCS_proj) #this takes forever, maybe need to crop by HUC then do calculations using apply or something
 
