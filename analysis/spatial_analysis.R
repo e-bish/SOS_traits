@@ -10,6 +10,10 @@ shoreline <- here("data","spatial","shorezone_shoreline_only","shorezone_shoreli
   read_sf() %>% 
   st_transform(crs = 2927) 
 
+
+site_names <- factor(c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"), 
+                     levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))
+
 #GPS locations for our survey stations with each ipa
 SOS_sites <- here("data","spatial","reupdatingthearmoringgeodatabase", "Shoreline_armoring_shore_origin_sites_UTM.shp") %>% 
   read_sf() %>% #UTM zone 10 32610
@@ -25,7 +29,8 @@ SOS_sites <- here("data","spatial","reupdatingthearmoringgeodatabase", "Shorelin
                           Site_name == "Penrose Point" ~ "PR",
                           Site_name == "Waterman Shoreline Preserve" ~ "WA" ,
                           Site_name == "Howarth Park" ~ "HO" ,
-                          Site_name == "Maylor Point" ~ "MA"), .after = "Site_name")
+                          Site_name == "Maylor Point" ~ "MA"), .after = "Site_name") %>% 
+  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG")))
 
 #set a center point for each site 
 SOS_site_cents <- SOS_sites %>%
@@ -49,22 +54,7 @@ SOS_site_cents_sn <- closest_points %>%
   st_drop_geometry() %>% 
   st_as_sf()
 
-#this extracts the right HUC12s but would have to manually assign them to sites
-SOS_HUCS <- st_filter(national_HU12, SOS_site_cents_sn) %>%
-  bind_rows(national_HU12 %>% filter(Name %in% "Vashon Island")) 
-
-
-#this assigns the correct information but not the right geometry
-# Vashon_HUCS <- national_HU12 %>% 
-#   filter(Name %in% "Vashon Island") %>% 
-#   bind_rows(., .) %>% 
-#   mutate(site = c("DOK", "LL"), .after = "Name")
-# 
-# SOS_HUCS <- st_intersection(SOS_site_cents_sn[,2], national_HU12, sparse = F) %>% 
-#   mutate(site = SOS_site_cents$site, .after = "Name") %>% 
-#   filter(!site %in% c("DOK", "LL")) %>% 
-#   bind_rows(Vashon_HUCS)
-  
+#### map it ####
 
 SOS_site_cents_sn$lon <- st_coordinates(SOS_site_cents_sn)[,1]
 SOS_site_cents_sn$lat <- st_coordinates(SOS_site_cents_sn)[,2]
@@ -76,8 +66,37 @@ leaflet(st_transform(SOS_site_cents_sn, crs = 4326)) %>%
   addPolylines(data = st_transform(SOS_HUCS, crs = 4326), color = "red", label = ~Name) %>% 
   addCircleMarkers(lng = ~lon, lat = ~lat, color = "purple")
 
-# WA_HU12_l <- st_intersects(national_HU12, shoreline[,1], sparse = F) 
-# WA_HU12 <- national_HU12[WA_HU12_l,]
+####################
+
+#extract the right HUC12s and manually assign them to sites
+SOS_HUCS <- st_filter(national_HU12, SOS_site_cents_sn) %>%
+  bind_rows(national_HU12 %>% filter(Name %in% "Vashon Island")) %>% 
+  slice(rep(1:n(), times = c(1,1,1,4,1,1,1,2)))
+
+#create centroid points to make ordering N to S easier
+SOS_HUC_cents <- st_centroid(SOS_HUCS) %>% 
+  cbind(st_coordinates(.)) 
+
+#this is only working in base r for some reason
+SOS_HUC_cents <- SOS_HUC_cents[order(SOS_HUC_cents$Y, decreasing = T),]
+
+#reorder from north to south and add SOS site names
+SOS_HUCS <- SOS_HUCS %>% 
+  mutate(Name = factor(Name, levels = unique(SOS_HUC_cents$Name))) %>% 
+  arrange(Name) %>% 
+  mutate(site = site_names, .after = "Name")
+
+#other ways to get the right order
+# Method 1
+# tmp <- SOS_HUC_cents %>%
+#   mutate(Name = factor(Name, unique(Name))) %>%
+#   pull(Name)
+# test <- SOS_HUCS[match(tmp, SOS_HUCS$Name),] #success!
+# Method 2
+# tmp <- SOS_HUC_cents %>% pull(Name)
+# SOS_HUCS$Name <- factor(SOS_HUCS$Name, levels = unique(tmp)) 
+# SOS_HUCS <- SOS_HUCS[order(SOS_HUCS$Name), ] #success again!
+
 
 
 
