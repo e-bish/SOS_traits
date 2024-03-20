@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="https://www.ngdc.noaa.gov/metadata/published/xsd/ngdcSchema/schema.xsd">
+   <idinfo>
+      <datsetid>gov.noaa.nmfs.inport:48336</datsetid>
+      <citation>
+         <citeinfo>
+            <pubdate>20161017</pubdate>
+            <title>NOAA's Coastal Change Analysis Program (C-CAP) 2016 Regional Land Cover Data - Coastal United States</title>
+         </citeinfo>
+      </citation>
+      <descript>
+         <abstract>
+              This metadata record was derived from an ISO format record and may be missing components. See the ISO version for more information.
+                The NOAA Coastal Change Analysis Program (C-CAP) produces national standardized land cover and change products for the coastal regions of the U.S.  C-CAP products inventory coastal intertidal areas, wetlands, and adjacent uplands with the goal of monitoring changes in these habitats, on a one-to-five year repeat cycle. The timeframe for this metadata is reported as 2016-Era, but the actual dates of the Landsat imagery used to create the land cover may have been acquired a few years before or after each era.  These maps are developed utilizing Landsat Thematic Mapper imagery, and can be used to track changes in the landscape through time.  This trend information gives important feedback to managers on the success or failure of management policies and programs and aid in developing a scientific understanding of the Earth system and its response to natural and human-induced changes. This understanding allows for the prediction of impacts due to these changes and the assessment of their cumulative effects, helping coastal resource managers make more informed regional decisions. NOAA C-CAP is a contributing member to the Multi-Resolution Land Characteristics consortium and C-CAP products are included as the coastal expression of land cover within the National Land Cover Database.
+This data set is a raster file with 15886 columns and 14081 rows and may have been mosaiced, reprojected, and clipped from the original tiles. The data set was generated from a larger data set and includes all valid data within the requested geographic bounds.
+		</abstract>
+         <purpose>C-CAP is dedicated to the development, distribution, and application of land cover and change data for the coastal regions of the U.S. This effort is being conducted in close coordination with state coastal management agencies, the interagency Multi-Resolution Land Characteristics (MRLC) consortium, and the National Land Cover Database (NLCD).</purpose>
+      </descript>
+      <status>
+         <progress>In work</progress>
+         <update>missing</update>
+      </status>
+      <spdom>
+         <bounding>
+            <westbc>
+		-124.89020277999978
+		</westbc>
+            <eastbc>
+		-119.56605153355139
+		</eastbc>
+            <northbc>51.07</northbc>
+            <southbc>22.6</southbc>
+         </bounding>
+      </spdom>
+      <keywords>
+         <theme>
+            <themekt>Global Change Master Directory (GCMD) Science Keywords</themekt>
+            <themekey>EARTH SCIENCE &gt; HUMAN DIMENSIONS &gt; ENVIRONMENTAL GOVERNANCE/MANAGEMENT &gt; LAND MANAGEMENT &gt; LAND USE/LAND COVER CLASSIFICATION</themekey>
+            <themekey>EARTH SCIENCE &gt; LAND SURFACE &gt; LAND USE/LAND COVER</themekey>
+            <themekey>EARTH SCIENCE &gt; LAND SURFACE &gt; LAND USE/LAND COVER &gt; LAND USE CLASSES</themekey>
+            <themekey>EARTH SCIENCE &gt; LAND SURFACE &gt; LAND USE/LAND COVER &gt; LAND USE/LAND COVER CLASSIFICATION</themekey>
+         </theme>
+         <theme>
+            <themekey>CCAP</themekey>
+            <themekey>Coastal Change Analysis Program</themekey>
+            <themekey>Land Cover Analysis</themekey>
+            <themekey>Remotely Sensed Imagery/Photos</themekey>
+         </theme>
+         <place>
+            <placekt>Global Change Master Directory (GCMD) Location Keywords</placekt>
+            <placekey>CONTINENT &gt; NORTH AMERICA &gt; UNITED STATES OF AMERICA &gt; MICHIGAN</placekey>
+            <placekey>CONTINENT &gt; NORTH AMERICA &gt; UNITED STATES OF AMERICA &gt; MINNESOTA</placekey>
+            <placekey>CONTINENT &gt; NORTH AMERICA &gt; UNITED STATES OF AMERICA &gt; WISCONSIN</placekey>
+         </place>
+         <place>
+            <placekey>Michigan</placekey>
+            <placekey>Minnesota</placekey>
+            <placekey>U.S.</placekey>
+            <placekey>U.S. Coastal Zone</placekey>
+            <placekey>Wisconsin</placekey>
+         </place>
+      </keywords>
+      <accconst>Restriction Code: otherRestrictions;  </accconst>
+      <useconst>Use Limitation: NOAA provides no warranty, nor accepts any liability occurring from any incomplete, incorrect, or misleading data, or from any incorrect, incomplete, or misleading use of the data. It is the responsibility of the user to determine whether or not the data is suitable for the intended purpose.;   Use Limitation: ;   Other: 
+		This data set was compiled dynamically, and will exist on https://chs.coast.noaa.gov/pickup/dav/987470/2016_CCAP_J987470.zip until 10 days after 03/20/2024. The file will then be deleted from the system.
+			Cite As: Office for Coastal Management, [Date of Access]: NOAA's Coastal Change Analysis Program (C-CAP) 2016 Regional Land Cover Data - Coastal United States [Data Date Range], https://www.fisheries.noaa.gov/inport/item/48336.;   Other: 
+		This data set was compiled dynamically, and will exist on https://chs.coast.noaa.gov/pickup/dav/987470/2016_CCAP_J987470.zip until 10 days after 03/20/2024. The file will then be deleted from the system.
+			Access Constraints: None;   Other: 
+		This data set was compiled dynamically, and will exist on https://chs.coast.noaa.gov/pickup/dav/987470/2016_CCAP_J987470.zip until 10 days after 03/20/2024. The file will then be deleted from the system.
+			Use Constraints: Data set is not for use in litigation. While efforts have been made to ensure that these data are accurate and reliable, NOAA, cannot assume liability for any damages, or misrepresentations, caused by any inaccuracies in the data. NOAA makes no warranty, expressed or implied, nor does the fact of distribution constitute such a warranty.;   Other: 
+		This data set was compiled dynamically, and will exist on https://chs.coast.noaa.gov/pickup/dav/987470/2016_CCAP_J987470.zip until 10 days after 03/20/2024. The file will then be deleted from the system.
+			Distribution Liability: Users must assume responsibility to determine the appropriate use of these data. DATA SHOULD NOT BE USED FOR LEGALLY BINDING APPLICATIONS.;   </useconst>
+   </idinfo>
+   <distinfo>
+      <distrib>
+         <cntinfo>
+            <cntorgp>
+               <cntorg>NOAA Office for Coastal Management</cntorg>
+            </cntorgp>
+            <cntaddr>
+               <addrtype>physical and mailing</addrtype>
+               <address>2234 South Hobson Ave</address>
+               <city>Charleston</city>
+               <state>SC</state>
+               <postal>29405-2413</postal>
+            </cntaddr>
+            <cntvoice>(843) 740-1202</cntvoice>
+            <cntemail>coastal.info@noaa.gov</cntemail>
+         </cntinfo>
+      </distrib>
+      <distliab>Unknown </distliab>
+   </distinfo>
+   <metainfo>
+      <metd>20240229</metd>
+      <metc>
+         <cntinfo>
+            <cntperp>
+               <cntorg>Office for Coastal Management</cntorg>
+            </cntperp>
+            <cntaddr>
+               <addrtype>mailing and physical</addrtype>
+            </cntaddr>
+            <cntvoice>missing</cntvoice>
+         </cntinfo>
+      </metc>
+      <metc>
+         <cntinfo>
+            <cntperp>
+               <cntorg>NOAA Office for Coastal Management</cntorg>
+            </cntperp>
+            <cntaddr>
+               <addrtype>mailing and physical</addrtype>
+               <address>2234 South Hobson Ave</address>
+               <city>Charleston</city>
+               <state>SC</state>
+               <postal>29405-2413</postal>
+            </cntaddr>
+            <cntvoice>(843) 740-1202</cntvoice>
+            <cntemail>coastal.info@noaa.gov</cntemail>
+         </cntinfo>
+      </metc>
+      <metstdn>Content Standard for Digital Geospatial Metadata: Extensions for Remote Sensing Metadata</metstdn>
+      <metstdv>FGDC-STD-012-2002</metstdv>
+   </metainfo>
+</metadata>

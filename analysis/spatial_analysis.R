@@ -76,14 +76,51 @@ leaflet(st_transform(SOS_site_cents_sn, crs = 4326)) %>%
 #### load C-CAP data ####
 
 #load 1m resolution impervious surface data
-ccap_imperv <- rast(here("data", "spatial", "wa_2021_ccap_v2_hires_impervious_20231119", "wa_2021_ccap_v2_hires_impervious_20231119.tif"))
+# ccap_2023imperv <- rast(here("data", "spatial", "wa_2021_ccap_v2_hires_impervious_20231119", "wa_2021_ccap_v2_hires_impervious_20231119.tif"))
+# 
+# SOS_HUCS_proj<- st_transform(SOS_HUCS, crs = 5070)
+# 
+# #extract imperv by HUCs
+# start.time <- Sys.time()
+# ccap_imperv_HUCs <- terra::extract(ccap_2023imperv, SOS_HUCS_proj) #this takes forever
+# end.time <- Sys.time()
+# time.taken <- round(end.time - start.time,2)
+# time.taken #36.39 minutes
+# imperv_table <- table(ccap_imperv_HUCs)
+# save(imperv_table, file = here("data", "imperv.table.Rdata"))
+load(here("data", "imperv.table.Rdata")) #load the table instead of running the extract again
 
-SOS_HUCS_proj<- st_transform(SOS_HUCS, crs = 5070)
+env_table <- as_tibble(imperv_table) %>% 
+  pivot_wider(names_from = wa_2021_ccap_v2_hires_impervious_20231119, values_from = n) %>% 
+  rename(natural = "0", imperv = "1") %>% 
+  cbind(SOS_HUCS_proj) %>% 
+  select(!c(ID,geometry)) %>% 
+  select(HUC12, Name, natural, imperv) %>%
+  mutate(perc.imperv23 = round(100*(imperv/(natural + imperv)),2)) %>% 
+  mutate(perc.natural23 = 100 - perc.imperv23)
 
-#crop imperv to HUCs
-ccap_imperv_HUCs <- crop(ccap_imperv, SOS_HUCS_proj) #this only crops the raster to the extent of the HUCs
+#load 30m resolution land cover data
+#load 1m resolution impervious surface data
+ccap_2016lc <- rast(here("data", "spatial", "2016_CCAP_Job987470", "2016_CCAP_J987470.tif"))
 
-plot(ccap_imperv_HUCs)
+cover <- c("background", "unclassified", "high intensity developed",
+           "medium intensity developed", "low intensity developed",
+           "developed open space", "cultivated land", "pasture/hay", 
+           "grassland", "deciduous forest", "evergreen forest",
+           "mixed forest", "shrub/scrub", "palustrine forested wetland",
+           "palustrine scrub/shrub wetland", "palustrine emergent wetland",
+           "estuarine forested wetland", "estuarine scrub/shrub wetland",
+           "estuarine emergent wetland", "unconsolidated shore", "bare land",
+           "open water", "palustrine aquatic bed", "estuarine aquatic bed","tundra", "snow/ice")
 
-test <- terra::extract(ccap_imperv, SOS_HUCS_proj) #this takes forever, maybe need to crop by HUC then do calculations using apply or something
+levels(ccap_2016lc) <- data.frame(id=0:25, cover=cover)
+
+start.time <- Sys.time()
+ccap_lc_HUCs <- terra::extract(ccap_2016lc, SOS_HUCS_proj) 
+end.time <- Sys.time()
+time.taken <- round(end.time - start.time,2)
+time.taken #2.14 seconds
+
+lc_table <- table(ccap_lc_HUCs)
+
 
