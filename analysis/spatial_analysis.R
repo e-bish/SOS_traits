@@ -78,7 +78,7 @@ leaflet(st_transform(SOS_site_cents_sn, crs = 4326)) %>%
 #load 1m resolution impervious surface data
 # ccap_2023imperv <- rast(here("data", "spatial", "wa_2021_ccap_v2_hires_impervious_20231119", "wa_2021_ccap_v2_hires_impervious_20231119.tif"))
 # 
-# SOS_HUCS_proj<- st_transform(SOS_HUCS, crs = 5070)
+SOS_HUCS_proj<- st_transform(SOS_HUCS, crs = 5070)
 # 
 # #extract imperv by HUCs
 # start.time <- Sys.time()
@@ -119,8 +119,13 @@ start.time <- Sys.time()
 ccap_lc_HUCs <- terra::extract(ccap_2016lc, SOS_HUCS_proj) 
 end.time <- Sys.time()
 time.taken <- round(end.time - start.time,2)
-time.taken #2.14 seconds
+time.taken # <5 seconds 
 
-lc_table <- table(ccap_lc_HUCs)
+lc_table <- table(ccap_lc_HUCs) %>% 
+  as_tibble() %>% 
+  filter(!n == 0) %>% 
+  pivot_wider(names_from = cover, values_from = n, values_fill = 0) %>% 
+  column_to_rownames(var="ID") %>% 
+  mutate(rowsum = rowSums(.))
 
 
