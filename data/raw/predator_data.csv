@@ -1,0 +1,601 @@
+year,month,day,weather,beaufort_sea_state,observer,start_time,site,ipa,species,species_group,time_into_survey,abundance,behaviour,notes
+2021,6,7,Clouds,,"JS, NT",1899-12-30T10:23:00Z,EDG,Armored,crow,bird,,1,flying,NA
+2021,6,7,Sun,,"JS, NT",1899-12-30T08:23:00Z,EDG,Natural,harbor_seal,marine_mammal,,3,diving,NA
+2021,6,7,Sun,,"JS, NT",1899-12-30T08:23:00Z,EDG,Natural,pigeon_guillemot,bird,,3,flying,NA
+2021,6,7,Sun,,"JS, NT",1899-12-30T08:23:00Z,EDG,Natural,common_murre,bird,,1,flying,NA
+2021,6,7,Sun,,TE,1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,3,flying,"Incorretly written down as Nat, JS clarified that it was actually restored"
+2021,6,7,Sun,,TE,1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,1,flying,"Incorretly written down as Nat, JS clarified that it was actually restored"
+2021,6,7,Sun,,TE,1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,1,flying,"Incorretly written down as Nat, JS clarified that it was actually restored"
+2021,6,7,Sun,,TE,1899-12-30T09:35:00Z,EDG,Restored,glaucous_gull,bird,,1,flying,"Incorretly written down as Nat, JS clarified that it was actually restored"
+2021,6,7,Sun,,TE,1899-12-30T09:35:00Z,EDG,Restored,glaucous_gull,bird,,1,flying,"Incorretly written down as Nat, JS clarified that it was actually restored"
+2021,6,18,Sun,,"EB, TF, GS",1899-12-30T10:37:00Z,TUR,Natural,american_robin,bird,,1,flying,NA
+2021,6,18,Sun,,"EB, TF, GS",1899-12-30T10:37:00Z,TUR,Natural,harbor_seal,marine_mammal,,1,scoping,NA
+2021,6,18,Sun,,"EB, TF, GS",1899-12-30T10:37:00Z,TUR,Natural,american_robin,bird,,1,flying,NA
+2021,6,18,Sun,,"JS, EB",1899-12-30T11:24:00Z,TUR,Restored,bald_eagle,bird,,1,flying,NA
+2021,6,18,Sun,,"JS, EB",1899-12-30T11:24:00Z,TUR,Restored,swallow,bird,,4,flying_perching,NA
+2021,6,18,Sun,,"JS, EB",1899-12-30T12:01:00Z,TUR,Armored,NA,NA,,NA,NA,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T13:21:00Z,FAM,Armored,humans,mammal,,12,sailing,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T13:21:00Z,FAM,Armored,swallow,bird,,3,flying,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T13:59:00Z,FAM,Restored,pigeon,bird,,3,flying,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T13:59:00Z,FAM,Restored,swallow,bird,,3,flying,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T13:59:00Z,FAM,Restored,sparrow,bird,,1,flying,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T13:59:00Z,FAM,Restored,bald_eagle,bird,,1,flying,NA
+2021,6,18,Sun,,"TF, JS, GS, EB",1899-12-30T14:45:00Z,FAM,Natural,crow,bird,,2,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T09:25:00Z,DOK,Natural,tern,bird,,2,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T09:25:00Z,DOK,Natural,great_blue_heron,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T09:25:00Z,DOK,Natural,tern,bird,,2,flying_diving,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T09:25:00Z,DOK,Natural,harbor_seal,marine_mammal,,1,scoping,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T09:25:00Z,DOK,Natural,crow,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T09:25:00Z,DOK,Natural,humans,mammal,,13,walking,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,tern,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,gull,bird,,2,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,crow,bird,,1,perched,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,crow,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,crow,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,purple_martin,bird,,2,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,crow,bird,,1,perched_on_dock,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,gull,bird,,1,eating,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:03:00Z,DOK,Armored,great_blue_heron,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:40:00Z,DOK,Restored,tern,bird,,2,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:40:00Z,DOK,Restored,crow,bird,,2,perched_on_beach,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:40:00Z,DOK,Restored,osprey,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:40:00Z,DOK,Restored,tern,bird,,1,diving,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:40:00Z,DOK,Restored,crow,bird,,1,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T10:40:00Z,DOK,Restored,kingfisher,bird,,1,eating,eating a gunnel
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T12:07:00Z,SHR,Restored,crow,bird,,1,perched_on_beach,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T12:07:00Z,SHR,Restored,gull,bird,,1,perched_on_beach,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T12:07:00Z,SHR,Restored,crow,bird,,5,flying,NA
+2021,6,23,Clouds,,"TF, JT, EB",1899-12-30T12:07:00Z,SHR,Restored,gull,bird,,2,flying,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T12:42:00Z,SHR,Armored,great_blue_heron,bird,,1,foraging,in the intertidal
+2021,6,23,Clouds,,"JT, EB",1899-12-30T12:42:00Z,SHR,Armored,dog,mammal,,2,walking,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T12:42:00Z,SHR,Armored,humans,mammal,,1,walking,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,crow,bird,,2,flying,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,kingfisher,bird,,1,flying,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,dog,mammal,,1,walking,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,humans,mammal,,1,walking,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,great_blue_heron,bird,,1,foraging,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,tern,bird,,1,flying,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,crow,bird,,4,perched_on_beach,NA
+2021,6,23,Clouds,,"JT, EB",1899-12-30T13:17:00Z,SHR,Natural,crow,bird,,5,flying,NA
+2021,7,13,Clouds,,"JI, TE, EB, KA",1899-12-30T08:47:00Z,DOK,Natural,NA,NA,,NA,NA,nothing observed except a dog and three deer adjacent to the IPA
+2021,7,13,Clouds,,"JI, TE, EB, KA",1899-12-30T09:28:00Z,DOK,Armored,swallow,bird,,2,flying,NA
+2021,7,13,Clouds,,"JI, TE, EB, KA",1899-12-30T10:07:00Z,DOK,Restored,great_blue_heron,bird,,1,perched,on boat
+2021,7,13,Clouds,,"JI, TE, EB, KA",1899-12-30T10:07:00Z,DOK,Restored,swallow,bird,,1,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,gull,bird,,4,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,gull,bird,,2,flying_perching,landed in intertidal
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,osprey,bird,,1,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,crow,bird,,7,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,tern,bird,,2,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,humans,mammal,,8,walking,"no behavior specifically listed, this behavior fits typical behavior of humans and dogs"
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T11:23:00Z,SHR,Restored,dog,mammal,,1,walking,"no behavior specifically listed, this behavior fits typical behavior of humans and dogs"
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T12:05:00Z,SHR,Armored,gull,bird,,9,floating_on_water,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T12:05:00Z,SHR,Armored,crow,bird,,2,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T12:05:00Z,SHR,Armored,crow,bird,,5,perched_on_beach,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T12:05:00Z,SHR,Armored,tern,bird,,1,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T12:05:00Z,SHR,Armored,gull,bird,,3,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T13:01:00Z,SHR,Natural,gull,bird,,7,floating_on_water,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T13:01:00Z,SHR,Natural,gull,bird,,1,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T13:01:00Z,SHR,Natural,gull,bird,,1,perched_on_beach,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T13:01:00Z,SHR,Natural,crow,bird,,3,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T13:01:00Z,SHR,Natural,osprey,bird,,2,flying,NA
+2021,7,13,Sun,,"JI, TE, EB, KA",1899-12-30T13:01:00Z,SHR,Natural,tern,bird,,2,flying,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T08:46:00Z,EDG,Armored,gull,bird,,1,swimming,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T08:46:00Z,EDG,Armored,swallow,bird,,1,flying,flew through
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,pigeon_guillemot,bird,,1,swimming,flew through high
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,canada_geese,bird,,3,flying,flew through high
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,pigeon_guillemot,bird,,1,flying_diving,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,gull,bird,,1,flying,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,tern,bird,,1,flying,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,pigeon_guillemot,bird,,2,swimming,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T09:36:00Z,EDG,Restored,pigeon_guillemot,bird,,3,swimming,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T10:13:00Z,EDG,Natural,pigeon_guillemot,bird,,2,swimming,then flying
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T10:13:00Z,EDG,Natural,pigeon_guillemot,bird,,1,flying,flew in and landed
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T10:13:00Z,EDG,Natural,cormorant,bird,,1,flying,NA
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T10:13:00Z,EDG,Natural,pigeon_guillemot,bird,,1,flying,flew through
+2021,8,10,Sun,,"JS, JI, EB",1899-12-30T10:13:00Z,EDG,Natural,cormorant,bird,,1,flying,flew through
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T09:11:00Z,TUR,Natural,harbor_seal,marine_mammal,,1,swimming,in kelp
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T09:11:00Z,TUR,Natural,racoon,mammal,,4,walking,walking though on ridge not on beach
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T09:11:00Z,TUR,Natural,unk_terrestrial_bird,bird,,1,flying,NA
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T09:53:00Z,TUR,Restored,harbor_seal,marine_mammal,,1,foraging,in the shallows
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T09:53:00Z,TUR,Restored,kingfisher,bird,,1,flying,NA
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T09:53:00Z,TUR,Restored,gull,bird,,2,flying,flew through high
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T10:30:00Z,TUR,Armored,raven,bird,,2,flying,NA
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T10:30:00Z,TUR,Armored,gull,bird,,1,flying,NA
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T11:35:00Z,FAM,Armored,gull,bird,,1,flying,NA
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T11:35:00Z,FAM,Armored,humans,mammal,,6,perched_on_beach,juveniles
+2021,8,12,Smoke,,"TF, JS, KF, EB",1899-12-30T12:15:00Z,FAM,Natural,kingfisher,bird,,1,flying,NA
+2021,8,19,Sun,,"JI, EB",1899-12-30T10:47:00Z,COR,Armored,harbor_seal,marine_mammal,,1,scoping,NA
+2021,8,19,Sun,,"JI, EB",1899-12-30T10:47:00Z,COR,Armored,bald_eagle,bird,,1,flying,NA
+2021,8,19,Sun,,"JI, EB",1899-12-30T11:36:00Z,COR,Restored,harbor_seal,marine_mammal,,1,swimming,NA
+2021,8,19,Sun,,"JI, EB",1899-12-30T11:36:00Z,COR,Restored,sparrow,bird,,2,flying,NA
+2021,8,19,Sun,,"JI, EB",1899-12-30T12:10:00Z,COR,Natural,NA,NA,,NA,NA,No predators observed
+2021,8,24,Haze,,"JI, JT",1899-12-30T09:13:00Z,SHR,Natural,gull,bird,,3,flying,two landed
+2021,8,24,Haze,,"JI, JT",1899-12-30T09:13:00Z,SHR,Natural,osprey,bird,,1,flying,NA
+2021,8,24,Haze,,"JI, JT",1899-12-30T09:13:00Z,SHR,Natural,unk_bird,bird,,1,flying,NA
+2021,8,24,Haze,,"JI, JT",1899-12-30T09:13:00Z,SHR,Natural,gull,bird,,1,flying,NA
+2021,8,24,Haze,,"JI, JT",1899-12-30T09:13:00Z,SHR,Natural,gull,bird,,1,flying_perching,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,crow,bird,,18,perched_on_beach,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,gull,bird,,4,perched_on_beach,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,humans,mammal,,15,perched_on_beach,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,dog,mammal,,2,perched_on_beach,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,gull,bird,,2,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,gull,bird,,1,flying_perching,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,crow,bird,,5,perched_on_beach,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T10:04:00Z,SHR,Restored,osprey,bird,,1,foraging,NA
+2021,8,24,Sun,,"JI, JT, EB, BF",1899-12-30T12:23:00Z,DOK,Natural,gull,bird,,1,scoping,NA
+2021,8,24,Sun,,"JI, JT, EB, BF",1899-12-30T12:23:00Z,DOK,Natural,gull,bird,,1,floating_on_water,NA
+2021,8,24,Sun,,"JI, JT, EB, BF",1899-12-30T12:23:00Z,DOK,Natural,gull,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT, EB, BF",1899-12-30T12:23:00Z,DOK,Natural,gull,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT, EB, BF",1899-12-30T12:23:00Z,DOK,Natural,great_blue_heron,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,gull,bird,,2,scoping,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,crow,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,crow,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,gull,bird,,2,floating_on_water,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,crow,bird,,2,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,gull,bird,,1,flying_perching,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,crow,bird,,1,perched_on_beach,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T13:41:00Z,DOK,Restored,crow,bird,,1,flying,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T14:55:00Z,DOK,Armored,humans,mammal,,2,power_boating,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T14:55:00Z,DOK,Armored,crow,bird,,2,flying_perching,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T14:55:00Z,DOK,Armored,crow,bird,,6,flying_perching,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T14:55:00Z,DOK,Armored,gull,bird,,1,walking,NA
+2021,8,24,Sun,,"JI, JT",1899-12-30T14:55:00Z,DOK,Armored,crow,bird,,1,flying_perching,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T13:27:00Z,EDG,Natural,NA,NA,,NA,NA,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T14:18:00Z,EDG,Restored,gull,bird,,2,walking,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T14:18:00Z,EDG,Restored,gull,bird,,2,flying,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T14:18:00Z,EDG,Restored,gull,bird,,2,flying,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T15:02:00Z,EDG,Armored,gull,bird,,4,flying,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T15:09:00Z,EDG,Armored,unk_terrestrial_bird,bird,,1,flying,NA
+2022,4,6,Sun,,"TE, EB, BF",1899-12-30T15:10:00Z,EDG,Armored,gull,bird,,1,flying_perching,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T12:10:00Z,DOK,Natural,crow,bird,,2,perched_in_tree,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T12:10:00Z,DOK,Natural,bufflehead,bird,,12,foraging,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T12:10:00Z,DOK,Natural,harbor_seal,marine_mammal,,1,foraging,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:00:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:00:00Z,DOK,Armored,mallard,bird,,2,perched_on_beach,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:00:00Z,DOK,Armored,bufflehead,bird,,1,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:56:00Z,DOK,Restored,gull,bird,,2,flying_perching,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:56:00Z,DOK,Restored,gull,bird,,1,perched,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:56:00Z,DOK,Restored,bufflehead,bird,,3,foraging,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:56:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:56:00Z,DOK,Restored,bufflehead,bird,,3,foraging,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T13:56:00Z,DOK,Restored,gull,bird,,3,flying_perching,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T15:19:00Z,SHR,Restored,gull,bird,,2,perched_on_beach,lots of people on the beach (too many to count)
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T15:19:00Z,SHR,Restored,crow,bird,,3,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,bald_eagle,bird,,1,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,bufflehead,bird,,7,floating_on_water,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,gull,bird,,6,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,crow,bird,,1,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,humans,mammal,,7,walking,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,dog,mammal,,1,walking,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,crow,bird,,2,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,bufflehead,bird,,2,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:06:00Z,SHR,Armored,crow,bird,,2,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:49:00Z,SHR,Natural,crow,bird,,4,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:49:00Z,SHR,Natural,bufflehead,bird,,2,swimming,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:49:00Z,SHR,Natural,humans,mammal,,3,walking,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:49:00Z,SHR,Natural,crow,bird,,10,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:49:00Z,SHR,Natural,gull,bird,,2,flying,NA
+2022,4,7,Sun,,"BF, NT, JI, EB",1899-12-30T16:49:00Z,SHR,Natural,crow,bird,,4,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T10:23:00Z,COR,Restored,pigeon_guillemot,bird,,1,floating_on_water,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T10:23:00Z,COR,Restored,river_otter,mammal,,1,foraging,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T10:23:00Z,COR,Restored,bald_eagle,bird,,2,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T10:51:00Z,COR,Natural,gull,bird,,1,foraging,on shore
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T10:51:00Z,COR,Natural,crow,bird,,1,foraging,on shore
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T11:43:00Z,COR,Armored,gull,bird,,2,foraging,on shore
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T15:36:00Z,FAM,Restored,bufflehead,bird,,2,floating_on_water,juveniles
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T15:36:00Z,FAM,Restored,bufflehead,bird,,2,floating_on_water,juveniles
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T15:36:00Z,FAM,Restored,pigeon_guillemot,bird,,1,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T15:36:00Z,FAM,Restored,pigeon,bird,,1,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T15:36:00Z,FAM,Restored,canada_geese,bird,,1,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T15:49:00Z,FAM,Armored,gull,bird,,2,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T17:06:00Z,FAM,Natural,pigeon_guillemot,bird,,1,flying,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T17:06:00Z,FAM,Natural,kingfisher,bird,,1,flying_perching,NA
+2022,4,18,Clouds,,"EB, TF, JS",1899-12-30T17:06:00Z,FAM,Natural,turkey_vulture,bird,,1,flying,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T08:46:00Z,TUR,Natural,american_robin,bird,,2,perched,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T08:46:00Z,TUR,Natural,american_robin,bird,,1,flying,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T08:46:00Z,TUR,Natural,hummingbird,bird,,1,foraging,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T09:31:00Z,TUR,Restored,gull,bird,,2,perched,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T09:31:00Z,TUR,Restored,canada_geese,bird,,2,floating_on_water,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T09:31:00Z,TUR,Restored,gull,bird,,1,flying,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T10:13:00Z,TUR,Armored,bufflehead,bird,,10,foraging,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T10:13:00Z,TUR,Armored,harbor_seal,marine_mammal,,1,foraging,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T10:13:00Z,TUR,Armored,gull,bird,,1,flying_perching,NA
+2022,4,19,Clouds,,"EB, TF, JS",1899-12-30T10:13:00Z,TUR,Armored,crow,bird,,2,flying,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,crow,bird,,2,flying_perching,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,gull,bird,,1,flying,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,canada_geese,bird,,2,flying,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,bufflehead,bird,,8,floating_on_water,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,crow,bird,,1,flying,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,canada_geese,bird,,1,floating_on_water,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T08:54:00Z,DOK,Natural,gull,bird,,2,flying,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T09:48:00Z,DOK,Armored,gull,bird,,1,perched_on_beach,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T09:48:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T09:48:00Z,DOK,Armored,purple_martin,bird,,3,flying_flocking,NA
+2022,5,2,Rain,,"EB, BF, KF, JI",1899-12-30T09:48:00Z,DOK,Armored,gull,bird,,3,flying_perching,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T10:48:00Z,DOK,Restored,canada_geese,bird,,1,perched,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T10:48:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T10:48:00Z,DOK,Restored,gull,bird,,1,flying_perching,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T10:48:00Z,DOK,Restored,canada_geese,bird,,1,swimming,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T10:48:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,gull,bird,,4,perched_on_beach,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,gull,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,crow,bird,,4,perched_on_beach,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,gull,bird,,3,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T13:34:00Z,SHR,Natural,mallard,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T14:26:00Z,SHR,Armored,gull,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T14:26:00Z,SHR,Armored,gull,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T14:26:00Z,SHR,Armored,unk_bird,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T14:26:00Z,SHR,Armored,gull,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T14:26:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,humans,mammal,,3,perched_on_beach,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,gull,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,pigeon_guillemot,bird,,2,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,bald_eagle,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,gull,bird,,2,walking,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,humans,mammal,,3,walking,NA
+2022,5,2,Clouds,,"EB, BF, KF, JI",1899-12-30T15:11:00Z,SHR,Restored,tern,bird,,1,flying,NA
+2022,5,6,Rain,,"EB, BF, GW",1899-12-30T12:19:00Z,EDG,Armored,stellars_jay,bird,,1,perched_on_beach,NA
+2022,5,6,Rain,,"EB, BF, GW",1899-12-30T12:19:00Z,EDG,Armored,unk_terrestrial_bird,bird,,2,flying_perching,NA
+2022,5,6,Rain,,"EB, BF, GW",1899-12-30T12:19:00Z,EDG,Armored,crow,bird,,1,flying,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:15:00Z,EDG,Restored,pigeon_guillemot,bird,,1,foraging,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:15:00Z,EDG,Restored,gull,bird,,2,flying,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:57:00Z,EDG,Natural,gull,bird,,2,perched_on_beach,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:57:00Z,EDG,Natural,crow,bird,,1,perched_on_beach,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:57:00Z,EDG,Natural,humans,mammal,,1,walking,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:57:00Z,EDG,Natural,dog,mammal,,2,walking,NA
+2022,5,6,Clouds,,"EB, BF, GW",1899-12-30T13:57:00Z,EDG,Natural,california_sea_lion,marine_mammal,,1,swimming,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:32:00Z,FAM,Armored,harbor_seal,marine_mammal,,2,hauled_out,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:32:00Z,FAM,Armored,crow,bird,,2,flying,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,pigeon,bird,,6,foraging,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,gull,bird,,2,flying,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,turkey_vulture,bird,,1,flying,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,pigeon,bird,,2,walking,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,kingfisher,bird,,1,flying_perching,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,unk_terrestrial_bird,bird,,1,flying_perching,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T10:58:00Z,FAM,Restored,starling,bird,,1,flying_perching,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T11:16:00Z,FAM,Natural,kingfisher,bird,,1,flying,NA
+2022,5,13,Clouds,,"JT, TF, JI, JS",1899-12-30T11:16:00Z,FAM,Natural,bald_eagle,bird,,1,flying,NA
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T13:27:00Z,TUR,Armored,canada_geese,bird,,2,flying,NA
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T13:27:00Z,TUR,Armored,starling,bird,,1,flying,NA
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T14:13:00Z,TUR,Restored,harbor_seal,marine_mammal,,1,foraging,NA
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T15:11:00Z,TUR,Natural,kingfisher,bird,,1,flying_perching,really perching_flying
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T15:11:00Z,TUR,Natural,racoon,mammal,,1,foraging,NA
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T15:11:00Z,TUR,Natural,starling,bird,,1,flying,NA
+2022,5,13,Sun,,"JT, TF, JI, JS",1899-12-30T15:11:00Z,TUR,Natural,stellars_jay,bird,,1,flying_perching,NA
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T11:33:00Z,COR,Natural,canada_geese,bird,,1,perched_on_beach,NA
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T11:33:00Z,COR,Natural,american_robin,bird,,1,foraging,NA
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T11:33:00Z,COR,Natural,unk_terrestrial_bird,bird,,2,foraging,NA
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T12:50:00Z,COR,Restored,unk_terrestrial_bird,bird,,1,flying,"lots of boat activity, people returning to dock from shrimp opener"
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T12:50:00Z,COR,Restored,unk_terrestrial_bird,bird,,1,flying,"lots of boat activity, people returning to dock from shrimp opener"
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T12:50:00Z,COR,Restored,unk_terrestrial_bird,bird,,1,flying,"lots of boat activity, people returning to dock from shrimp opener"
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T12:50:00Z,COR,Restored,unk_terrestrial_bird,bird,,1,flying,"lots of boat activity, people returning to dock from shrimp opener"
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T10:38:00Z,COR,Armored,harbor_seal,marine_mammal,,1,foraging,NA
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T10:38:00Z,COR,Armored,unk_terrestrial_bird,bird,,2,flying,NA
+2022,5,26,Clouds,,"JS, TE, EB",1899-12-30T10:38:00Z,COR,Armored,unk_terrestrial_bird,bird,,2,flying_perching,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T10:18:00Z,SHR,Armored,gull,bird,,2,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T10:18:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T10:18:00Z,SHR,Armored,gull,bird,,1,flying_perching,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T10:18:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T10:18:00Z,SHR,Armored,humans,mammal,,1,walking,NA
+2022,6,2,Fog,,"BF, KA, JI, EB",1899-12-30T09:34:00Z,SHR,Restored,humans,mammal,,2,walking,NA
+2022,6,2,Fog,,"BF, KA, JI, EB",1899-12-30T09:34:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,6,2,Fog,,"BF, KA, JI, EB",1899-12-30T09:34:00Z,SHR,Restored,crow,bird,,3,flying,NA
+2022,6,2,Fog,,"BF, KA, JI, EB",1899-12-30T09:34:00Z,SHR,Restored,gull,bird,,2,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,crow,bird,,3,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,gull,bird,,2,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,crow,bird,,2,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,gull,bird,,2,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,crow,bird,,3,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,tern,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,gull,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T11:01:00Z,SHR,Natural,gull,bird,,1,swimming,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T14:48:00Z,DOK,Restored,crow,bird,,1,flying_perching,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T14:48:00Z,DOK,Restored,gull,bird,,1,walking,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T14:48:00Z,DOK,Restored,unk_terrestrial_bird,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T14:48:00Z,DOK,Restored,gull,bird,,1,flying_perching,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T15:23:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T15:23:00Z,DOK,Armored,crow,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T15:23:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T15:23:00Z,DOK,Armored,crow,bird,,1,flying_perching,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T15:23:00Z,DOK,Armored,tern,bird,,1,foraging,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T16:04:00Z,DOK,Natural,crow,bird,,1,walking,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T16:04:00Z,DOK,Natural,osprey,bird,,1,flying,NA
+2022,6,2,Sun,,"BF, KA, JI, EB",1899-12-30T16:04:00Z,DOK,Natural,tern,bird,,1,flying,NA
+2022,6,3,Clouds,,"JS, TE, JI, JK",1899-12-30T10:54:00Z,EDG,Natural,pigeon_guillemot,bird,,2,flying,seal sighting right after survey ended!
+2022,6,3,Rain,,"JS, TE, JI, JK",1899-12-30T11:57:00Z,EDG,Restored,pigeon_guillemot,bird,,1,flying,NA
+2022,6,3,Rain,,"JS, TE, JI, JK",1899-12-30T12:32:00Z,EDG,Restored,kingfisher,bird,,1,flying,NA
+2022,6,3,Rain,,"JS, TE, JI, JK",1899-12-30T12:32:00Z,EDG,Armored,NA,NA,,NA,NA,nothing! pigu and seal outside the zone
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T14:33:00Z,PR,Armored,gull,bird,,2,flying,NA
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T14:47:00Z,PR,Restored,gull,bird,,1,flying,NA
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T14:47:00Z,PR,Restored,bald_eagle,bird,,1,flying,NA
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T14:47:00Z,PR,Restored,bald_eagle,bird,,1,fighting,had a spat with a racoon
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T14:47:00Z,PR,Restored,racoon,mammal,,1,foraging,NA
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T14:47:00Z,PR,Restored,bald_eagle,bird,,1,fighting,same as the 1st
+2022,6,3,Sun,,"JS, TE, JI, JK",1899-12-30T15:01:00Z,PR,Natural,gull,bird,,1,foraging,"in the intertidal, harbor seal just outside at 15:10"
+2022,6,7,Clouds,,"BF, NT, JK, EB",1899-12-30T13:38:00Z,TL,Armored,humans,mammal,,2,perched_on_beach,one kayaking
+2022,6,7,Clouds,,"BF, NT, JK, EB",1899-12-30T13:38:00Z,TL,Armored,tern,bird,,1,flying,NA
+2022,6,7,Clouds,,"BF, NT, JK, EB",1899-12-30T13:38:00Z,TL,Armored,humans,mammal,,1,walking,NA
+2022,6,7,Sun,,"BF, NT, JK, EB",1899-12-30T14:03:00Z,TL,Restored,crow,bird,,4,flying_perching,all gathered to forage in intertidal
+2022,6,7,Sun,,"BF, NT, JK, EB",1899-12-30T14:03:00Z,TL,Restored,crow,bird,,2,flying_perching,all gathered to forage in intertidal
+2022,6,7,Sun,,"BF, NT, JK, EB",1899-12-30T14:03:00Z,TL,Restored,crow,bird,,1,flying_perching,all gathered to forage in intertidal
+2022,6,7,Sun,,"BF, NT, JK, EB",1899-12-30T14:03:00Z,TL,Restored,crow,bird,,3,flying_perching,all gathered to forage in intertidal
+2022,6,7,Sun,,"BF, NT, JK, EB",1899-12-30T14:03:00Z,TL,Restored,crow,bird,,1,flying_perching,all gathered to forage in intertidal
+2022,6,7,Sun,,"BF, NT, JK, EB",1899-12-30T14:03:00Z,TL,Restored,humans,mammal,,2,walking,eelgrass and fish swimming at this site
+2022,6,7,Clouds,,"BF, NT, JK, EB",1899-12-30T16:07:00Z,TL,Natural,california_sea_lion,marine_mammal,,1,swimming,NA
+2022,6,7,Clouds,,"BF, NT, JK, EB",1899-12-30T16:07:00Z,TL,Natural,unk_terrestrial_bird,bird,,20,flying,NA
+2022,6,7,Clouds,,"BF, NT, JK, EB",1899-12-30T16:07:00Z,TL,Natural,humans,mammal,,2,walking,NA
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T10:42:00Z,TUR,Natural,NA,NA,,NA,NA,NA
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T11:27:00Z,TUR,Restored,harbor_seal,marine_mammal,,1,swimming,also observed at the natural site
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T11:27:00Z,TUR,Restored,kingfisher,bird,,1,flying,also observed at the natural site
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T12:19:00Z,TUR,Armored,NA,NA,,NA,NA,NA
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T13:25:00Z,FAM,Restored,pigeon,bird,,1,flying_perching,perching then flying
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T13:25:00Z,FAM,Restored,crow,bird,,1,flying,NA
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T15:11:00Z,FAM,Armored,NA,NA,,NA,NA,NA
+2022,6,9,Rain,,"JS, TF,  CM, EB",1899-12-30T15:27:00Z,FAM,Natural,great_blue_heron,bird,,1,flying,"GBH nearby, deer was resting at the site before we disturbed it"
+2022,6,10,Fog,,"JS, TF,  CM, EB",1899-12-30T07:27:00Z,COR,Armored,unk_terrestrial_bird,bird,,1,flying_perching,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,crow,bird,,1,flying,carying nest supplies
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,unk_terrestrial_bird,bird,,1,flying,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,crow,bird,,1,flying,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,unk_terrestrial_bird,bird,,1,flying,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,great_blue_heron,bird,,1,flying,3 GBH perched on trees upland
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,swallow,bird,,1,flying,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T08:35:00Z,COR,Restored,gull,bird,,2,perched_on_dock,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,great_blue_heron,bird,,1,foraging,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,gull,bird,,1,flying,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,crow,bird,,1,perched_in_tree,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,crow,bird,,1,flying,boat motored through at 9:38
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,gull,bird,,1,flying,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,humans,mammal,,1,walking,NA
+2022,6,10,Clouds,,"JS, TF,  CM, EB",1899-12-30T09:33:00Z,COR,Natural,dog,mammal,,1,walking,NA
+2022,6,20,Clouds,,"BF, TE, JI, EB",1899-12-30T13:22:00Z,WA,Natural,crow,bird,,2,flying_perching,NA
+2022,6,20,Clouds,,"BF, TE, JI, EB",1899-12-30T13:22:00Z,WA,Natural,gull,bird,,1,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:04:00Z,WA,Restored,gull,bird,,1,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:04:00Z,WA,Restored,gull,bird,,1,flying_perching,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:04:00Z,WA,Restored,crow,bird,,1,flying_perching,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:42:00Z,WA,Armored,gull,bird,,1,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:42:00Z,WA,Armored,gull,bird,,1,floating_on_water,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:42:00Z,WA,Armored,crow,bird,,1,perched_on_beach,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T14:42:00Z,WA,Armored,gull,bird,,1,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T15:31:00Z,HO,Natural,great_blue_heron,bird,,1,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T15:31:00Z,HO,Natural,crow,bird,,5,foraging,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T15:31:00Z,HO,Natural,gull,bird,,2,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T15:31:00Z,HO,Natural,humans,mammal,,1,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T15:31:00Z,HO,Natural,crow,bird,,1,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T16:20:00Z,HO,Armored,humans,mammal,,3,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T16:20:00Z,HO,Armored,dog,mammal,,1,swimming,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T16:20:00Z,HO,Armored,crow,bird,,1,flying,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T16:20:00Z,HO,Armored,humans,mammal,,1,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T16:20:00Z,HO,Armored,dog,mammal,,1,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T17:08:00Z,HO,Restored,humans,mammal,,12,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T17:08:00Z,HO,Restored,dog,mammal,,2,walking,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T17:08:00Z,HO,Restored,crow,bird,,1,flying_perching,NA
+2022,6,20,Sun,,"BF, TE, JI, EB",1899-12-30T17:08:00Z,HO,Restored,harbor_seal,marine_mammal,,1,swimming,NA
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T13:36:00Z,FAM,Natural,kingfisher,bird,,1,flying_perching,N/A
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T13:36:00Z,FAM,Natural,american_robin,bird,,1,walking,NA
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T12:31:00Z,FAM,Restored,pigeon,bird,,3,perched,NA
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T12:31:00Z,FAM,Restored,swallow,bird,,2,flying_perching,barn swallow
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T14:43:00Z,FAM,Armored,unk_terrestrial_bird,bird,,1,flying_perching,camp active
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T14:43:00Z,FAM,Armored,american_robin,bird,,1,flying_perching,camp active
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T14:43:00Z,FAM,Armored,unk_terrestrial_bird,bird,,1,flying_perching,camp active
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T14:43:00Z,FAM,Armored,swallow,bird,,2,flying,"violet green swallow, camp active"
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T15:33:00Z,TUR,Natural,NA,NA,,NA,NA,N/A
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T16:28:00Z,TUR,Restored,turkey_vulture,bird,,1,flying,NA
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T16:28:00Z,TUR,Restored,unk_terrestrial_bird,bird,,1,flying,NA
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T16:28:00Z,TUR,Restored,unk_terrestrial_bird,bird,,1,walking,on beach
+2022,7,7,Clouds,,"BF, TF, EB",1899-12-30T17:18:00Z,TUR,Armored,canada_geese,bird,,6,swimming,NA
+2022,7,8,Clouds,,"BF, JI, EB",1899-12-30T08:21:00Z,COR,Restored,swallow,bird,,1,flying,NA
+2022,7,8,Clouds,,"BF, JI, EB",1899-12-30T08:21:00Z,COR,Restored,american_robin,bird,,1,walking,on beach
+2022,7,8,Clouds,,"BF, JI, EB",1899-12-30T08:21:00Z,COR,Restored,swallow,bird,,1,flying,NA
+2022,7,8,Clouds,,"BF, JI, EB",1899-12-30T08:21:00Z,COR,Restored,swallow,bird,,1,flying,NA
+2022,7,8,Clouds,,"BF, JI, EB",1899-12-30T08:21:00Z,COR,Restored,gull,bird,,1,flying,NA
+2022,7,8,Sun,,"BF, JI, EB",1899-12-30T10:16:00Z,COR,Armored,turkey_vulture,bird,,1,flying,seal just outside the zone
+2022,7,8,Sun,,"BF, JI, EB",1899-12-30T10:16:00Z,COR,Armored,sparrow,bird,,1,walking,seal just outside the zone
+2022,7,8,Sun,,"BF, JI, EB",1899-12-30T11:28:00Z,COR,Natural,NA,NA,,NA,NA,"N/A, seal observed during net setting prior to survey"
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:20:00Z,EDG,Armored,NA,NA,,NA,NA,N/A
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,2,foraging,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,humans,mammal,,1,walking,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,crow,bird,,2,perched,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,1,flying,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,crow,bird,,1,walking,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,1,flying,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,unk_terrestrial_bird,bird,,2,flying,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,harbor_seal,marine_mammal,,1,foraging,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:35:00Z,EDG,Restored,pigeon_guillemot,bird,,2,flying,geoduck raft tied to mooring
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:45:00Z,EDG,Natural,pigeon_guillemot,bird,,1,floating_on_water,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:45:00Z,EDG,Natural,pigeon_guillemot,bird,,1,flying,out of burrow
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:45:00Z,EDG,Natural,gull,bird,,1,flying,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:45:00Z,EDG,Natural,kingfisher,bird,,1,flying,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:45:00Z,EDG,Natural,gull,bird,,1,flying,NA
+2022,7,15,Sun,,"BF, EB, OL, JL",1899-12-30T09:45:00Z,EDG,Natural,pigeon_guillemot,bird,,3,floating_on_water,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T12:59:00Z,SHR,Restored,humans,mammal,,7,walking,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T12:59:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T12:59:00Z,SHR,Restored,humans,mammal,,2,walking,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T12:59:00Z,SHR,Restored,crow,bird,,1,perched_on_beach,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,humans,mammal,,1,walking,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,crow,bird,,2,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,gull,bird,,1,flying_perching,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,gull,bird,,2,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,great_blue_heron,bird,,1,flying_perching,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,crow,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:11:00Z,SHR,Armored,crow,bird,,3,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:22:00Z,SHR,Natural,gull,bird,,1,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:27:00Z,SHR,Natural,humans,mammal,,11,walking,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:22:00Z,SHR,Natural,crow,bird,,3,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:22:00Z,SHR,Natural,horned_grebe,bird,,1,floating_on_water,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T13:23:00Z,SHR,Natural,crow,bird,,1,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,humans,mammal,,8,walking,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,purple_martin,bird,,2,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,gull,bird,,1,perched_on_dock,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,dog,mammal,,1,perched_on_dock,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,humans,mammal,,3,power_boating,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,great_blue_heron,bird,,2,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,crow,bird,,4,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,humans,mammal,,2,walking,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,purple_martin,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,gull,bird,,1,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,gull,bird,,1,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,gull,bird,,1,flying_perching,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T14:55:00Z,DOK,Restored,gull,bird,,1,flying_perching,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T15:19:00Z,DOK,Natural,gull,bird,,3,foraging,NA
+2022,7,18,Sun,,"JS, TE, JI, GW",1899-12-30T15:27:00Z,DOK,Natural,great_blue_heron,bird,,1,flying,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:26:00Z,EDG,Armored,tern,bird,,1,flying,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:26:00Z,EDG,Armored,pigeon_guillemot,bird,,2,floating_on_water,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:26:00Z,EDG,Armored,purple_martin,bird,,1,flying,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:26:00Z,EDG,Armored,gull,bird,,1,flying,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:43:00Z,EDG,Restored,double_crested_cormorant,bird,,1,foraging,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:43:00Z,EDG,Restored,great_blue_heron,bird,,2,foraging,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:43:00Z,EDG,Restored,pigeon_guillemot,bird,,4,floating_on_water,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:49:00Z,EDG,Restored,double_crested_cormorant,bird,,1,flying,landed on water
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,pigeon_guillemot,bird,,2,floating_on_water,NA
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,gull,bird,,1,foraging,geoduck boats operating in the facility
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,gull,bird,,1,foraging,geoduck boats operating in the facility
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,gull,bird,,1,flying,geoduck boats operating in the facility
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,double_crested_cormorant,bird,,1,foraging,geoduck boats operating in the facility
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,double_crested_cormorant,bird,,1,flying,geoduck boats operating in the facility
+2022,8,9,Clouds,,"JS, JT, EB",1899-12-30T11:56:00Z,EDG,Natural,double_crested_cormorant,bird,,1,flying,geoduck boats operating in the facility
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,crow,bird,,1,foraging,osprey foraging before survey started
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,crow,bird,,2,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,crow,bird,,2,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,humans,mammal,,12,walking,assorted activities on the beach
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,unk_bird,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T09:57:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,crow,bird,,22,foraging,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,gull,bird,,1,floating_on_water,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,crow,bird,,1,flying_perching,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,gull,bird,,1,swimming,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,tern,bird,,2,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,unk_duck,bird,,1,floating_on_water,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,dog,mammal,,1,fighting,ran down beach and flushed all the birds
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,gull,bird,,1,floating_on_water,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:17:00Z,SHR,Armored,humans,mammal,,2,walking,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,great_blue_heron,bird,,1,foraging,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,crow,bird,,8,foraging,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,gull,bird,,2,floating_on_water,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,tern,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,gull,bird,,1,flying_perching,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,gull,bird,,2,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,tern,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,gull,bird,,2,flying_perching,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T10:32:00Z,SHR,Natural,humans,mammal,,2,walking,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,gull,bird,,3,foraging,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,purple_martin,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,crow,bird,,2,flying_perching,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,purple_martin,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,crow,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,humans,mammal,,2,walking,clam digging
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:17:00Z,DOK,Restored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,humans,mammal,,15,swimming,jumping into water
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,humans,mammal,,2,walking,clamming
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,purple_martin,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,purple_martin,bird,,2,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,gull,bird,,2,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:35:00Z,DOK,Armored,gull,bird,,5,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:51:00Z,DOK,Natural,great_blue_heron,bird,,1,foraging,not labeled natural on the datasheet but EB thinks this was the natural site
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:51:00Z,DOK,Natural,gull,bird,,1,flying,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:51:00Z,DOK,Natural,kingfisher,bird,,1,perched_in_tree,NA
+2022,8,12,Sun,,"JS, JI, EB, KS",1899-12-30T13:51:00Z,DOK,Natural,humans,mammal,,2,walking,on dock
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T10:50:00Z,FAM,Armored,harbor_seal,marine_mammal,,1,swimming,campers on the beach but not making much disturbance
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T11:37:00Z,FAM,Natural,NA,NA,,NA,NA,Nothing observed
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T12:19:00Z,FAM,Restored,kingfisher,bird,,1,flying,NA
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T12:19:00Z,FAM,Restored,swallow,bird,,2,flying,NA
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T12:19:00Z,FAM,Restored,pigeon,bird,,2,perched_on_beach,NA
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T13:47:00Z,TUR,Armored,NA,NA,,NA,NA,NA
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T14:38:00Z,TUR,Restored,racoon,mammal,,4,foraging,mom and three babies!
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T14:38:00Z,TUR,Restored,harbor_seal,marine_mammal,,1,swimming,NA
+2022,8,15,Sun,,"BF, TF, EB",1899-12-30T15:22:00Z,TUR,Natural,humans,mammal,,2,walking,lots of seals on nearby haulouts
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:25:00Z,COR,Restored,humans,mammal,,1,walking,NA
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:25:00Z,COR,Restored,swallow,bird,,5,flying,"at least 5, possibly more flying around so difficult to count"
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:25:00Z,COR,Restored,great_blue_heron,bird,,1,perched_on_dock,NA
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:25:00Z,COR,Restored,gull,bird,,1,flying,NA
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:37:00Z,COR,Natural,humans,mammal,,1,walking,NA
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:54:00Z,COR,Armored,tern,bird,,1,flying,NA
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:54:00Z,COR,Armored,pigeon_guillemot,bird,,1,foraging,NA
+2022,8,16,Sun,,"BF, TF, EB, TE",1899-12-30T11:54:00Z,COR,Armored,gull,bird,,2,flying,NA
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T11:48:00Z,EDG,Armored,humans,mammal,,1,walking,Jason Toft!
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T12:13:00Z,EDG,Restored,humans,mammal,,7,walking,Boots on the beach folks surveying the beach
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T12:13:00Z,EDG,Restored,gull,bird,,1,perched_on_beach,NA
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T12:13:00Z,EDG,Restored,gull,bird,,1,flying_perching,NA
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T12:13:00Z,EDG,Restored,gull,bird,,1,flying,NA
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T12:13:00Z,EDG,Restored,gull,bird,,1,flying,NA
+2022,9,8,Sun,,"KF, JI, EB",1899-12-30T12:29:00Z,EDG,Natural,gull,bird,,3,perched_on_beach,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,gull,bird,,2,flying,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,gull,bird,,1,floating_on_water,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,humans,mammal,,2,walking,"one scrubbing the boat bottom, one walking on the dock"
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,gull,bird,,1,flying,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,crow,bird,,1,foraging,on the beach
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,gull,bird,,1,flying,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,gull,bird,,1,flying,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T11:09:00Z,COR,Restored,gull,bird,,1,flying,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T12:04:00Z,COR,Natural,NA,NA,,NA,NA,nothing observed
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T12:43:00Z,COR,Armored,cormorant,bird,,1,foraging,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T12:43:00Z,COR,Armored,gull,bird,,1,flying,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T14:22:00Z,FAM,Natural,great_blue_heron,bird,,1,foraging,from dock
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T15:07:00Z,FAM,Restored,pigeon,bird,,1,perched,on boathouse
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T15:07:00Z,FAM,Restored,gull,bird,,2,perched,on boathouse
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T15:07:00Z,FAM,Restored,gull,bird,,3,perched,on boathouse
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T15:07:00Z,FAM,Restored,kingfisher,bird,,1,flying_perching,NA
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T15:55:00Z,FAM,Armored,harbor_seal,marine_mammal,,3,hauled_out,on dock
+2022,9,12,Smoke,,"JS, TF, EB",1899-12-30T15:55:00Z,FAM,Armored,kingfisher,bird,,1,flying_perching,NA
+2022,9,13,Sun,,"JS, TF, EB",1899-12-30T09:42:00Z,TUR,Natural,NA,NA,,NA,NA,nothing observed
+2022,9,13,Sun,,"JS, TF, EB",1899-12-30T09:59:00Z,TUR,Restored,racoon,mammal,,4,foraging,"in intertidal, right at water line.. looks to be same family as observed last month"
+2022,9,13,Sun,,"JS, TF, EB",1899-12-30T10:16:00Z,TUR,Armored,gull,bird,,1,flying,NA
+2022,9,13,Sun,,"JS, TF, EB",1899-12-30T10:16:00Z,TUR,Armored,harbor_seal,marine_mammal,,1,swimming,activity might be foraging in the tide line
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:01:00Z,SHR,Restored,gull,bird,,14,perched_on_beach,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:01:00Z,SHR,Restored,crow,bird,,6,perched_on_beach,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:01:00Z,SHR,Restored,gull,bird,,1,flying_perching,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:01:00Z,SHR,Restored,gull,bird,,1,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:01:00Z,SHR,Restored,crow,bird,,18,flying_perching,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:01:00Z,SHR,Restored,crow,bird,,20,flying_perching,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:47:00Z,SHR,Armored,crow,bird,,9,perched_on_beach,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:47:00Z,SHR,Armored,gull,bird,,2,floating_on_water,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:47:00Z,SHR,Armored,horned_grebe,bird,,3,foraging,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:47:00Z,SHR,Armored,cormorant,bird,,1,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T08:47:00Z,SHR,Armored,gull,bird,,1,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T09:19:00Z,SHR,Natural,surf_scoter,bird,,9,floating_on_water,we scared them away when we arrived
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T09:19:00Z,SHR,Natural,crow,bird,,1,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T09:19:00Z,SHR,Natural,surf_scoter,bird,,3,swimming,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T09:19:00Z,SHR,Natural,gull,bird,,2,swimming,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T09:19:00Z,SHR,Natural,gull,bird,,1,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T09:19:00Z,SHR,Natural,gull,bird,,2,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T10:54:00Z,DOK,Natural,NA,NA,,NA,NA,Nothing observed
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T11:37:00Z,DOK,Armored,gull,bird,,1,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T11:37:00Z,DOK,Armored,gull,bird,,1,flying_perching,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T11:37:00Z,DOK,Armored,gull,bird,,1,flying_perching,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T11:37:00Z,DOK,Armored,gull,bird,,1,flying,dropped shell on beach
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T11:37:00Z,DOK,Armored,gull,bird,,3,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T12:36:00Z,DOK,Restored,grebe,bird,,1,foraging,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T12:36:00Z,DOK,Restored,gull,bird,,2,flying,NA
+2022,9,23,Clouds,,"BF, TF, EB",1899-12-30T12:36:00Z,DOK,Restored,kingfisher,bird,,1,flying,NA

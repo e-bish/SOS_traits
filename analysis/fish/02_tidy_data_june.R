@@ -3,6 +3,8 @@ library(here)
 library(janitor)
 library(rfishbase)
 
+###### This creates a list of matrices for trait and abundance data for fish species only in June across all sites and years ######
+
 # If common_to_sci gives issues, install the duckdb package
 # options(timeout=100)
 # install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))

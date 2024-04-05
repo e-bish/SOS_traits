@@ -6,7 +6,9 @@ library(PNWColors)
 library(patchwork)
 library(vegan)
 
-load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
+load(here("data", "fish.list.month.Rdata")) #object created in 02_tidy_data_month
+# or 
+# load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data if you don't care about seasonality
 here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
 here("analysis", "general_functions", "scree.r") %>% source()
 
@@ -40,7 +42,7 @@ space_qual <- qual_funct_space(fish.traits, nbdim = 6, metric = "Gower")
 space_qual$meanSD #  (we're shooting for 0 here)
 #"The mSD is 0 when the functional space perfectly represents the initial distance and increases as pairs of species become less represented in the functional space (Maire et al., 2015)."
 
-#### test to see how many groups to use ####
+#### test each of these by plotting to see how many groups to use ####
 test1 <- hclust(fish.gowdist, method = "average") #meh
 test2 <- hclust(fish.gowdist, method = "complete") #not terrible
 test3 <- hclust(fish.gowdist, method = "median") #terrible
@@ -49,7 +51,7 @@ plot(fish.hclust, hang = -1,
      main = "Method = Ward’s minimum variance",
      xlab = "Species",
      sub = "BC dissimilarity; ward.D2 linkage")
-scree(hclust.obj = fish.hclust) # not a solid answer here but 5-7 is generally at the bottom of the elbow, so we'll try 5 groups
+scree(hclust.obj = fish.hclust) # not a solid answer here but 5-7 is generally at the bottom of the elbow, so we'll try 7 groups
 
 #### FD indices calculation ####################################################
 fishFD <- dbFD(fish.traits, #must be a df where character columns are factors

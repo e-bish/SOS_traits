@@ -3,6 +3,8 @@ library(here)
 library(janitor)
 library(rfishbase)
 
+###### This creates a list of matrices for trait and abundance data for fish species separated out by site and month ######
+
 # If common_to_sci gives issues, install the duckdb package
 # options(timeout=100)
 # install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))
@@ -207,6 +209,6 @@ return(list("trait" = fish_trait_mat, "abund" = fish_MaxN))
 
 fish.list <- create_fish_matrices(net_tidy)
 
-save(fish.list, file = here("data", "fish.list.Rdata"))
+save(fish.list, file = here("data", "fish.list.month.Rdata"))
 
 
