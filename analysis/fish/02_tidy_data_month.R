@@ -99,18 +99,13 @@ spp_names <- spp_names %>%
 #   inner_join(spp_names) %>% 
 #   mutate(Species2 = str_to_sentence(ComName))
 
-MaxN <- fish_N %>% 
+fish_MaxN <- fish_N %>% 
   group_by(site_month, ComName) %>%
-  filter(species_count == max(species_count)) %>% 
+  filter(MaxN == max(species_count)) %>% 
   ungroup() %>% 
-  rename(MaxN = "species_count") %>% 
-  select(!date) %>% 
-  distinct(site_month, ComName, MaxN)
- 
-fish_MaxN <- MaxN %>% 
-  complete(site_month, ComName) %>% 
-  replace(is.na(.), 0) %>% 
-  pivot_wider(names_from = ComName, values_from = MaxN) %>% 
+  # select(!date) %>% 
+  # distinct(site_month, ComName, MaxN) %>% 
+  pivot_wider(names_from = ComName, values_from = MaxN, values_fill = 0) %>% 
   select(-contains("UnID")) %>% 
   column_to_rownames(var="site_month") %>% 
   clean_names() %>% 
@@ -211,4 +206,7 @@ fish.list <- create_fish_matrices(net_tidy)
 
 save(fish.list, file = here("data", "fish.list.month.Rdata"))
 
+CV <- function(x) { 100 * sd(x) / mean(x) } #function from Jon Bakker
+
+CV(x = rowSums(fish.list$abund)) #84 is a moderate CV McCune & Grace (2002, p.70)
 

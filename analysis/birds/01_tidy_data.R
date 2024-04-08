@@ -15,7 +15,7 @@ library(auk) #for bird species names
 ###############################################################################
 # #use this to download raw data from the shared project drive
 # predator_import <- drive_get("https://docs.google.com/spreadsheets/d/1Z_WaqjGCvTRWk1azulz5lBsPZXWBEb9IWa6Z1RNM3RM/edit#gid=0") %>%
-#   read_sheet( ) 
+#   read_sheet() 
 # 
 # #write to csv
 # write_csv(predator_import, here("data", "raw", "predator_import.csv")) 
@@ -23,10 +23,10 @@ library(auk) #for bird species names
 predator_data <- read_csv("data/raw/predator_import.csv", col_names = TRUE) %>% 
   rename(comm_name = "species") %>% 
   mutate_if(is.numeric, ~replace_na(., 0)) 
-#   
-# summary <- predator_data %>% 
-#   group_by(year, month, day, site, ipa) %>% 
-#   summarize(n())
+
+#load trait data from Tobias et al. 2021 (Ecology Letters) AVONET: morphological, ecological and geographical data for all birds.
+AVONET <- here("data", "AVONET Supplementary dataset 1.xlsx") %>% 
+  read_excel(sheet = "AVONET2_eBird")
 
 ##### look at representative species for unknowns ####
 # Larus <- AVONET %>% 
@@ -91,6 +91,21 @@ birds <- predator_data %>%
   select(-c(weather, beaufort_sea_state, observer, start_time, 
             time_into_survey, species_group, behaviour, notes)) 
 
+#create abundance matrix
+bird_MaxN <- birds %>% 
+  mutate(site_month = paste(site, month, sep = "_")) %>% 
+  select(site_month, spp_code, abundance) %>% 
+  group_by(site_month, spp_code) %>% 
+  summarize(MaxN = max(abundance)) %>% 
+  ungroup() %>% 
+  arrange(spp_code) %>% 
+  pivot_wider(names_from = spp_code, values_from = MaxN, values_fill = 0) %>% 
+  column_to_rownames(var="site_month")
+
+CV <- function(x) { 100 * sd(x) / mean(x) } #function from Jon Bakker
+
+CV(x = rowSums(bird_MaxN)) #84 is a moderate CV McCune & Grace (2002, p.70)
+
 #load species ids for birds observed in the field
 spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
   unite(Species2, c("genus", "species"), sep = " ") %>% 
@@ -120,11 +135,7 @@ spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>%
   mutate(spp_no = seq(1:nrow(.)))
 
 ### create the trait matrix
-#load trait data
-AVONET <- here("data", "AVONET Supplementary dataset 1.xlsx") %>% 
-  read_excel(sheet = "AVONET2_eBird")
-
-traits <- AVONET %>% 
+bird_traits <- AVONET %>% 
   select(Species2, 
          Trophic.Level, 
          Trophic.Niche, 
@@ -143,36 +154,33 @@ traits <- AVONET %>%
 
 # write.csv(traits, "data/bird_traits.csv", row.names = TRUE)
 
-
 library(moments)
-library(janitor)
-library(StatMatch)
+# library(janitor)
+# library(StatMatch)
 
-#relativize
+#apply data transformation to continuous traits
 
-# skewness(traits$Mass)
-# range(traits$Mass)
-# 
-# skewness(traits$Secondary1)
-# range(traits$Secondary1)
-# 
-# skewness(traits$Wing.Length)
-# range(traits$Wing.Length)
+skewness(bird_traits$Mass)
+range(bird_traits$Mass)
 
-traits.r <- traits %>% 
-  mutate_at(3:5, log) %>% 
+skewness(bird_traits$Secondary1)
+range(bird_traits$Secondary1)
+
+skewness(bird_traits$Wing.Length)
+range(bird_traits$Wing.Length)
+
+bird_traits.t <- bird_traits %>% 
+  mutate_if(is.numeric, log) %>% 
   as.data.frame()
 
-# skewness(traits.r$Mass)
-# range(traits.r$Mass)
+# skewness(bird_traits.t$Mass)
+# range(bird_traits.t$Mass)
 # 
-# skewness(traits.r$Secondary1)
-# range(traits.r$Secondary1)
+# skewness(bird_traits.t$Secondary1)
+# range(bird_traits.t$Secondary1)
 # 
-# skewness(traits.r$Wing.Length)
-# range(traits.r$Wing.Length)
-# 
-# traits.dist <- StatMatch::gower.dist(traits.r)
-# 
-# source("functions/geb12299-sup-0002-si.r")
-# test <- quality_funct_space(traits.r, nbdim = 4, metric = "Gower", plot = NA)
+# skewness(bird_traits.t$Wing.Length)
+# range(bird_traits.t$Wing.Length)
+
+bird.list <- list("trait" = bird_traits.t, "abund" = bird_MaxN)
+save(bird.list, file = here("data", "bird.list.month.Rdata"))
