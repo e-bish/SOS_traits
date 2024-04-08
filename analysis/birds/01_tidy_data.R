@@ -1,14 +1,14 @@
 library(tidyverse)
 library(here)
-# library(readxl)
-# library(lubridate)
 library(googlesheets4)
 library(googledrive)
+library(readxl)
+library(auk) #for bird species names
 
 #load field data
 #first get data from google
 
-## AUTHENTICATE ACCOUNT -- select the box that enables access to google (may have to do this 20x to make it actually work, 
+## AUTHENTICATE ACCOUNT -- select the box that enables access to google (may have to do this 2x to make it actually work, 
 # also if selecting an already authenticated account doesn't work then select 0 for a "new" account)
 #drive_auth()
 
@@ -55,33 +55,6 @@ predator_data <- read_csv("data/raw/predator_import.csv", col_names = TRUE) %>%
 # cor <- predator_data %>% 
 #   filter(comm_name == "cormorant")
 
-#load species ids for birds observed in the field
-spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
-  unite(Species2, c("genus", "species"), sep = " ") %>% 
-  filter(!(comm_name == "unk_bird" |
-             comm_name == "unk_terrestrial_bird" |
-             comm_name == "unk_duck" |
-             comm_name == "Harbor Seal")) %>%
-  mutate(spp_code = case_when(comm_name == "Common/Caspian" ~ "CATE", 
-                              comm_name == "Sparrow" ~ 'HOSP',
-                              comm_name == "grebe" ~ 'WEGR', 
-                              comm_name == "Hummingbird" ~ 'RUHU',
-                              comm_name == "Cormorant" ~ 'PECO',
-                              comm_name == "swallow" ~ "BARS", 
-                              comm_name == "Glaucus winged gull" ~ 'GWGU',
-                              comm_name == "gull" ~ 'HERG',
-                              TRUE ~ spp_code)) %>% 
-  mutate(Species2 = case_when(comm_name == "Common/Caspian" ~ 'Hydroprogne caspia', 
-                              comm_name == "Double-crested cormorant" ~ 'Nannopterum auritum', #updated species name in 2014
-                              comm_name == "Sparrow" ~ 'Passer domesticus',
-                              comm_name == "grebe" ~ 'Aechmophorus occidentalis', 
-                              comm_name == "Hummingbird" ~ 'Selasphorus rufus',
-                              comm_name == "Cormorant" ~ 'Urile pelagicus',
-                              comm_name == "swallow" ~ 'Hirundo rustica', 
-                              comm_name == "Glaucus winged gull" ~ 'Larus glaucescens',
-                              comm_name == "gull" ~ 'Larus argentatus',
-                              TRUE ~ Species2)) #%>% select(-c(comm_name))
-
 #format field data and add species ids
 birds <- predator_data %>% 
   filter(species_group == "bird") %>% 
@@ -108,27 +81,98 @@ birds <- predator_data %>%
                            'surf_scoter'='SUSC',
                            'double_crested_cormorant' = 'DCCO',
                            'tern' = "CATE", #representative tern species: Hydroprogne caspia
-                           'glaucous_gull' = "GWGU", #don't necessarily trust this
+                           'glaucous_gull' = "GWGU", #could be part of the western complex
                            'gull' = 'HERG', #representative gull species: Laurus argentatus
                            'swallow' = 'BARS', #representative swallow species: Hirundo rustica
                            'cormorant' = 'PECO', #representative cormorant species: Pelagic Cormorants 
                            'hummingbird' = 'RUHU', #representative hummingbird species: Selasphorus rufus
                            'grebe' = 'WEGR', #representative grebe species: Western Grebes
                            'sparrow' = 'HOSP')) %>% #representative sparrow species
-  filter(year == 2022) %>% #same number of sampling events for each site_ipa this year
-  mutate(date = make_date(year, month, day)) %>% 
-  filter(!site == "TUR") %>% #remove Turn Island samples from this analysis until we figure out what to do with them
-  filter(nchar(site) == 3) %>% #only core sites for now
-  mutate(site_ipa = paste(site, ipa, sep = "_")) %>% 
-  select(-c(year, month, day, ipa, site, weather, beaufort_sea_state, observer, start_time, 
-            time_into_survey, comm_name, species_group, behaviour, notes))
+  select(-c(weather, beaufort_sea_state, observer, start_time, 
+            time_into_survey, species_group, behaviour, notes)) 
 
-#only keep species present in 2022
-spp_id <- spp_id %>% 
-  filter(spp_code %in% birds$spp_code) %>% 
-  arrange(spp_code) 
+#load species ids for birds observed in the field
+spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
+  unite(Species2, c("genus", "species"), sep = " ") %>% 
+  filter(!(comm_name == "unk_bird" |
+             comm_name == "unk_terrestrial_bird" |
+             comm_name == "unk_duck" | 
+             comm_name == "Harbor Seal")) %>%
+  mutate(spp_code = case_when(comm_name == "Common/Caspian" ~ "CATE", 
+                              comm_name == "Sparrow" ~ 'HOSP',
+                              comm_name == "grebe" ~ 'WEGR', 
+                              comm_name == "Hummingbird" ~ 'RUHU',
+                              comm_name == "Cormorant" ~ 'PECO',
+                              comm_name == "swallow" ~ "BARS", 
+                              comm_name == "Glaucus winged gull" ~ 'GWGU',
+                              comm_name == "gull" ~ 'HERG',
+                              TRUE ~ spp_code)) %>% 
+  mutate(Species2 = case_when(comm_name == "Common/Caspian" ~ 'Hydroprogne caspia', 
+                              comm_name == "Double-crested cormorant" ~ 'Nannopterum auritum', #updated species name in 2014
+                              comm_name == "Sparrow" ~ 'Passer domesticus',
+                              comm_name == "grebe" ~ 'Aechmophorus occidentalis', 
+                              comm_name == "Hummingbird" ~ 'Selasphorus rufus',
+                              comm_name == "Cormorant" ~ 'Urile pelagicus',
+                              comm_name == "swallow" ~ 'Hirundo rustica', 
+                              comm_name == "Glaucus winged gull" ~ 'Larus glaucescens',
+                              comm_name == "gull" ~ 'Larus argentatus',
+                              TRUE ~ Species2)) %>% 
+  mutate(spp_no = seq(1:nrow(.)))
+
+### create the trait matrix
+#load trait data
+AVONET <- here("data", "AVONET Supplementary dataset 1.xlsx") %>% 
+  read_excel(sheet = "AVONET2_eBird")
+
+traits <- AVONET %>% 
+  select(Species2, 
+         Trophic.Level, 
+         Trophic.Niche, 
+         Migration, 
+         Primary.Lifestyle, 
+         Mass, 
+         Secondary1, 
+         Wing.Length) %>% 
+  mutate(Trophic.Niche = str_replace(Trophic.Niche, " ", "_")) %>% 
+  mutate_if(is.character, as.factor) %>% 
+  right_join(spp_id) %>% 
+  select(-c(Species2, comm_name, spp_no)) %>% 
+  select(spp_code, everything()) %>% 
+  arrange(spp_code) %>% 
+  column_to_rownames(var="spp_code")
+
+# write.csv(traits, "data/bird_traits.csv", row.names = TRUE)
 
 
-spp_id <- spp_id %>% mutate(spp_no = seq(1:nrow(spp_id)))
+library(moments)
+library(janitor)
+library(StatMatch)
 
-#write.csv(traits, "project/traits_export.csv", row.names = TRUE)
+#relativize
+
+# skewness(traits$Mass)
+# range(traits$Mass)
+# 
+# skewness(traits$Secondary1)
+# range(traits$Secondary1)
+# 
+# skewness(traits$Wing.Length)
+# range(traits$Wing.Length)
+
+traits.r <- traits %>% 
+  mutate_at(3:5, log) %>% 
+  as.data.frame()
+
+# skewness(traits.r$Mass)
+# range(traits.r$Mass)
+# 
+# skewness(traits.r$Secondary1)
+# range(traits.r$Secondary1)
+# 
+# skewness(traits.r$Wing.Length)
+# range(traits.r$Wing.Length)
+# 
+# traits.dist <- StatMatch::gower.dist(traits.r)
+# 
+# source("functions/geb12299-sup-0002-si.r")
+# test <- quality_funct_space(traits.r, nbdim = 4, metric = "Gower", plot = NA)

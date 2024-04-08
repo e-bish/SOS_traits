@@ -1,0 +1,33 @@
+﻿comm_name,spp_code,genus,species
+Turkey vulture,TUVU,Cathartes,aura
+Common/Caspian,TERN,,
+Surf scoter,SUSC,Melanitta,perspicillata
+stellars jay,STJA,Cyanocitta,stelleri
+Rock dove/pigeon,RODO,Columba,livia
+purple martin,PUMA,Progne,subis
+Pigeon Guillemot,PIGU,Cepphus,columba
+Harbor Seal,PHVI,Phoca,vitulina
+Osprey,OSPR,Pandion,haliaetus
+mallard ,MALL,Anas,platyrhynchos
+Glaucus winged gull ,LAR,Larus,spp.
+Horned grebe,HOGR,Podiceps,auritus
+Great Blue Heron,GBHE,Ardea,herodias
+starling,EUST,Sturnus,vulgaris
+Double-crested cormorant,DCCO,Phalacrocorax,auritus
+Common raven,CORA,Corvus,corax
+Common murre,COMU,Uria,aalge
+Crow,COBR,Corvus,brachyrhynchos
+Canada goose,CCGO,Branta,canadensis
+Bufflehead,BUFF,Bucephala,albeola
+Belted kingfisher,BEKI,Megaceryle,alcyon
+Bald Eagle,BAEA,Haliaeetus,leucocephalus
+American Robin,AMRO,Turdus,migratorius
+Sparrow,9SPAR,,
+grebe,08GREB,,
+Hummingbird,07HUM,,
+Cormorant,06COR,,
+swallow,05SWA,,
+gull,04GULL,,
+unk_bird,01UNK,,
+unk_terrestrial_bird,02UNK,,
+unk_duck,03UNK,,
