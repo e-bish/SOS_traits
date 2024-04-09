@@ -11,7 +11,13 @@ here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
 here("analysis", "general_functions", "scree.r") %>% source()
 
 bird.traits <- as.data.frame(bird.list$trait)
-bird.abund <- as.data.frame(bird.list$abund)
+bird.abund <- as.data.frame(bird.list$abund) %>% 
+  rownames_to_column("site_month") %>% 
+  # adorn_totals("row") %>% 
+  # adorn_totals("col")
+  # filter(!site_month %in% c("PR_6","TL_6", "HO_6", "WA_6")) %>% #remove jubilee sites
+  filter(!site_month %in% c("COR_5", "TUR_9")) %>%  #remove sites with <3 species observed
+  column_to_rownames(var="site_month")
 
 #create species x species matrix
 bird.gowdist <- gowdis(bird.traits)
@@ -52,9 +58,10 @@ scree(hclust.obj = bird.hclust) # not a solid answer here but 6-8 is generally a
 #### FD indices calculation ####################################################
 birdFD <- dbFD(bird.traits, #must be a df where character columns are factors
                bird.abund, 
-                 m = 4, #seems to keep 4 axis no matter how many you specify?
+                 m = 3, #seems to keep 4 axis no matter how many you specify?
                  calc.FGR = TRUE, 
                  clust.type = "ward.D2",
+                 calc.FRic = FALSE, #turn off if you have less species than traits
                  calc.FDiv = TRUE, #won't return a value if there are only categorical traits
                  print.pco = TRUE)
 #it will prompt to see if you want to separate by groups (g) and ask how many (6)
