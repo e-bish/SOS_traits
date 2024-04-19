@@ -132,7 +132,7 @@ schooling <- net_tidy %>%
   mutate(schooling = ifelse(species_count > 10, "school", "nonschool")) %>% #arbitrary schooling cutoff
   filter(ComName %in% spp_names$ComName) %>% 
   group_by(ComName, schooling) %>% 
-  summarize(count = n()) %>%  #see which spp had schooling and nonschooling results
+  summarize(count = n()) %>%  #see how often a species is observed schooling
   ungroup() %>% 
   pivot_wider(names_from = schooling, values_from = count) %>% 
   replace(is.na(.), 0) %>% 
