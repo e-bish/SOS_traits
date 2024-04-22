@@ -1,6 +1,7 @@
 library(tidyverse)
 library(here)
-
+library(lme4)
+library(sjPlot)
 
 load_data <- function() {
   #Load data
@@ -55,10 +56,36 @@ spp_richness <- net_tidy %>%
   summarize(richness = n_distinct(ComName, na.rm = FALSE)) %>% 
   ungroup() %>% 
   complete(nesting(year, month, site, ipa), station) %>% #use nesting to only include combinations already present in the data
-  replace(is.na(.),0)
-  
-library(lme4)
+  replace(is.na(.),0) %>% 
+  mutate(ipa = factor(ipa, levels = c("Natural", "Armored", "Restored")), 
+         station = factor(station, labels = c("shallow", "mid", "deep"))) %>% 
+  mutate(season = ifelse(month %in% c("04", "05", "06"), "spring", "summer"))
 
-summary(lmer(richness ~ ipa + (1|site), data = spp_richness))
-summary(lmer(richness ~ station + (1|ipa:site) + (1|site), data = spp_richness))
 
+ggplot(spp_richness) + 
+  geom_violin(aes(x = station, y = richness))
+
+ggplot(spp_richness) + 
+  geom_violin(aes(x = ipa, y = richness))
+
+ggplot(spp_richness) + 
+  geom_violin(aes(x = site, y = richness))
+
+ggplot(spp_richness) + 
+  geom_violin(aes(x = season, y = richness))
+
+summary(aov(richness ~ station, data = spp_richness))
+summary(aov(richness ~ ipa, data = spp_richness))
+summary(aov(richness ~ site, data = spp_richness))
+
+station_mod <- lmer(richness ~ station + (1|ipa:site) + (1|site), data = spp_richness)
+summary(station_mod)
+
+plot_model(station_mod)
+tab_model(station_mod)
+
+season_mod <- lmer(richness ~ season + (1|site), data = spp_richness)
+summary(season_mod)
+
+plot_model(season_mod)
+tab_model(season_mod)
