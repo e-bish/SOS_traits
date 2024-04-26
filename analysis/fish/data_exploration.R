@@ -53,26 +53,33 @@ load_data <- function() {
 
 net_tidy <- load_data()
 
+
+#in how many sites does each species occur?
+#what is the abundance of each species when it occurs?
+#is the mean abundance correlated with the number of sites where it occurs?
+#is the total abundance of fish correlated with the number of species in each site?
+
 #species accumulation curves for each site
-make_spp_mat <- function(site_ID) {
-  site_mat <- net_tidy %>% 
+make_filtered_spp_mat <- function(site_ID) {
+
+  spp_mat <- net_tidy %>% 
     mutate(year_month = ym(paste(year, month, sep = "-"))) %>% 
     filter(site == site_ID) %>% 
     group_by(ComName, year_month) %>% 
-    summarize(mean_count = mean(species_count)) %>% 
-    pivot_wider(names_from = ComName, values_from = mean_count) %>% 
+    summarize(spp_sum = sum(species_count)) %>% 
+    pivot_wider(names_from = ComName, values_from = spp_sum) %>% 
     select(-contains("UnID")) %>% 
     arrange(year_month) %>% 
     clean_names() %>% 
     replace(is.na(.), 0) %>% 
     select(-1)
   
-  return(site_mat)
+  return(spp_mat)
 }
 
 make_spp_curve <- function(site_ID) {
 
-  site_mat <- make_spp_mat(site_ID)
+  site_mat <- make_filtered_spp_mat(site_ID)
   site_curve <- specaccum(site_mat, method = "collector", permutations = 100) #collector method preserves the order
   return(site_curve)
 
@@ -96,6 +103,14 @@ ggplot() +
   geom_line(data = curve_df, aes(x = samples, y = richness, color = factor(site, level = SOS_sites))) +
   theme_classic() +
   labs(x = "Times sampled", y = "Number of species", color = "Site")
+
+### rarefaction curve
+# spp_mat <- make_spp_mat()
+# S <- specnumber(spp_mat)
+# (raremax <- min(rowSums(spp_mat)))
+# Srare <- rarefy(spp_mat, raremax)
+# plot(S, Srare, xlab = "Observed No. of Species", ylab = "Rarefied No. of Species")
+# rarecurve(spp_mat, step = 20, sample = raremax, col = "blue", cex = 0.6)
 
 #for each species, how many sites were they encountered?
 times_encountered <- net_tidy %>% 
@@ -134,6 +149,49 @@ spp_by_site <- net_tidy %>%
   ungroup()
 
 #beta diversity by site
+make_spp_mat <- function(pa) {
+  
+  spp_mat <- net_tidy %>% 
+    mutate(site_month = paste(site, month, sep = "_")) %>% 
+    group_by(site_month, ComName) %>% 
+    summarize(spp_sum = sum(species_count)) %>% 
+    ungroup() %>% 
+    pivot_wider(names_from = ComName, values_from = spp_sum) %>% 
+    select(-contains("UnID")) %>% 
+    clean_names() %>% 
+    replace(is.na(.), 0) %>% 
+    select(-1) 
+  
+  spp_pa_mat <- decostand(spp_mat, method = "pa") #change from abundance to presence absence
+  
+  if (pa == T) {
+    return(spp_pa_mat)
+  } else {
+    return(spp_mat)
+  }
+}
+
+spp_mat <- make_spp_mat(pa = T)
+rownames(spp_mat) <- SOS_sites
+
+spp_dist_mat <- betadiver(spp_mat, method = "sor") #sorensen dissimilarity index that accounts for the fact that you inherently see more spp with larger sample sizes
+#but actually need a different index for PA data??!
+plot(spp_dist_mat)
+str(spp_dist_mat)
+metaMDS(spp_dist_mat)
+
+
+spp_b_disp <- betadisper(spp_dist_mat, group = SOS_sites)
+spp_b_disp
+
+adonis2(spp_dist_mat~net_tidy$site)
+
+anova(spp_b_disp)
+plot(spp_b_disp)
+boxplot(spp_b_disp)
+
+permutest(spp_b_disp, pairwise = TRUE, permutations = 99)
+
 
 #species frequency by site
 spp_freq <- net_tidy %>% 
