@@ -8,3 +8,20 @@ output: html_document
 ## Analysis updates 
 
 This website will contain the most up-to-date information on methods and preliminary results for Chapter 2 of my dissertation, an exploration of the functional diversity of fish and birds in the Salish Sea.
+
+## Major analysis decisions
+
+**Will only use data from core sites and not include Jubilee sites**
+Rarefaction curve reveals that 2 sampling events per Jubilee site isn't enough to describe the community
+
+**Will use 4 years of data for fish and 1 year of data for birds**
+The sampling design is pretty well balanced for core sites. We only implemented bird surveys in 2021, part way through the season, so coverage is spotty. We had good coverage at core sites in 2022. 
+
+**Will sum abundances across depths and then average across stations to get an abundance of each species on each sample day**
+There are significant differences between depths because we just generally caught more fish in shallower water. No evidence of differences between shoreline types but we didn't have totally equal effort at all stations within each site (missed an ipa on two days -- that I know of)
+
+Sum across shoreline type for birds. Or average to match the fish approach??
+
+**Each row in the species abundance matrix will represent a sample day**
+Instead of averaging abundances across months to get a row for each site
+

@@ -13,7 +13,7 @@ net_2022 <- here::here("data","net_2022.csv") %>%
   read_csv()
 
 SOS_sites <- c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG")
-SOS_core_sites <- c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")
+SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))
 
 ##### tidy the imported data
 
@@ -49,7 +49,7 @@ net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>%
   filter(!grepl("UnID", ComName)) %>% #remove unidentified species
   select(!c(day, org_type, tax_group, mean_length_mm)) %>% 
   mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
-  mutate(year = factor(year), month = factor(month))
+  mutate(year = factor(year), month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept")))
 
 #### create alternative abundance matrices
 #retain 4 years of data at the core sites
@@ -66,7 +66,7 @@ Core_4years.mat <- sqrt(Core_4years[4:45]) #square root transformation for count
 Core_1year <- net_tidy %>% 
   filter(site %in% SOS_core_sites & year == 2022) %>% 
   group_by(month, site, ComName) %>% 
-  summarize(species_count = sum(species_count)) %>% #sum across shorelines and stations
+  summarize(species_count = sum(species_count)) %>% #sum across shorelines and stations, need to account for sampling effort?
   pivot_wider(names_from = ComName, values_from = species_count, values_fill = 0) %>% 
   clean_names()
 
@@ -76,7 +76,11 @@ Core_1year.mat <- sqrt(Core_1year[3:32]) #square root transformation for count d
 All_2years <- net_tidy %>% 
   filter(year == 2021 | year == 2022 & month == "Jun") %>% #all sites but only june in the last two years when we sampled 12
   group_by(year, site, ComName) %>% 
-  summarize(species_count = sum(species_count)) #need to account for sampling effort
+  summarize(species_count = sum(species_count)) %>%  #need to account for sampling effort?
+  pivot_wider(names_from = ComName, values_from = species_count, values_fill = 0) %>%
+  clean_names()
+
+All_2years.mat <- sqrt(All_2years[3:35]) #square root transformation for count data
 
 #### NMDS 4 years core
 Core_4years.mds <- metaMDS(Core_4years.mat) 
@@ -99,8 +103,15 @@ ggplot(data = Core_4years.site.scores) +
   theme_classic()
 
 #### PERMANOVA 4 years core
-Core_4years.perm <- adonis2(Core_1year1.mat ~ Core_4years$site + Core_4years$year + Core_4years$month, method = "bray", perm = 999)
+Core_4years.perm <- adonis2(Core_4years.mat ~ Core_4years$site + Core_4years$year + Core_4years$month, method = "bray", perm = 999)
 print(Core_4years.perm) #significant differences between sites, years, and months
+#but this isn't correct because it isn't restricting permutations??
+#don't need to restrict between depths and stations because we summed across them
+#what would we restrict?
+# between years? months?
+
+Core_4years.aov <- aov(Core_4years ~ site + month + Error(year), data = Core_4years)
+
 
 #### NMDS 1 year core
 Core_1year.mds <- metaMDS(Core_1year.mat) 
@@ -121,11 +132,23 @@ ggplot(data = Core_1year.site.scores) +
 Core_1year.perm <- adonis2(Core_1year.mat ~ Core_1year$site + Core_1year$month, method = "bray", perm = 999)
 print(Core_1year.perm) #significant differences between sites, years, and months
 
+#### NMDS all sites June 2 years
+All_2years.mds <- metaMDS(All_2years.mat)
+All_2years.scores <- scores(All_2years.mds)
+All_2years.site.scores <- as.data.frame(All_2years.scores$sites)
 
+u_group <- All_2years %>% 
+  mutate(armor_group = case_when(site %in% c("FAM", "TUR", "WA", "EDG") ~ "low_urbanization",
+                                 site %in% c("COR", "DOK", "PR", "LL") ~ "med_urbanization",
+                                 site %in% c("HO", "SHR", "MA", "TL") ~ "high_urbanization")) %>% #one idea for post-hoc groupings
+  ungroup() %>% 
+  mutate(armor_group = factor(armor_group, levels = c("low_urbanization", "med_urbanization", "high_urbanization"))) %>% 
+  pull(armor_group)
 
-
-
-
+ggplot(data = All_2years.site.scores) +
+  #stat_ellipse(aes(x = NMDS1, y = NMDS2, color = All_2years$site), level = 0.5) + #too few points
+  geom_point(aes(x = NMDS1, y = NMDS2, color = u_group), size = 4) + 
+  theme_classic() 
 
 
 

@@ -6,7 +6,9 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "FD Overview"
-      href: FD_overview.html    
+      href: FD_overview.html
+    - text: "Data Matrices"
+      href: data_matrices.html  
     - text: "Fish Results"
       href: fish_results.html      
     - text: "Bird Results"

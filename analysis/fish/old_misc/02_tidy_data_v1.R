@@ -10,8 +10,6 @@ library(rfishbase)
 # options(timeout=100)
 # install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))
 
-SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))
-
 load_data <- function() {
 #Load data
 #load field data (raw data downloaded/formatted in "import_data.R")
@@ -25,11 +23,10 @@ net_2022 <- here::here("data","net_2022.csv") %>%
   read_csv()
 
 net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-  filter(site %in% SOS_core_sites) %>% #if using Jubilee sites, remove second armored site from Titlow in 2021 and recode MA from June to July
+  filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
   mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island
-  # mutate(date = make_date(year, month, day)) %>% 
-  mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
-  mutate(year = factor(year), month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
+  # mutate(site_ipa = paste(site, ipa, sep = "_")) %>% 
+  mutate(date = make_date(year, month, day)) %>% 
   mutate(species_count = as.numeric(species_count)) %>%
   mutate(species_count = ifelse(is.na(org_type), 0, species_count)) %>% 
   filter(org_type == "Fish") %>% #### this is where you lose zero counts, if those are needed later
@@ -54,9 +51,7 @@ net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>%
                              TRUE ~ ComName)) %>% 
   mutate(ComName = case_when(ComName == "Steelhead salmon" ~ "Steelhead trout",
                              ComName == "Cutthroat salmon" ~ "Cutthroat trout",
-                             TRUE ~ ComName)) %>% 
-  filter(!grepl("UnID", ComName)) #remove unidentified species
-  
+                             TRUE ~ ComName)) 
 return(net_tidy)
 }
 
@@ -70,8 +65,12 @@ net_tidy <- load_data()
 ################################################################################
 #prepare field abundance data for analysis
 create_fish_matrices <- function(net_tidy) {
+  
+fish_N <- net_tidy %>% 
+  select(date, site, ComName, species_count) %>% #fish counts summed by site/day
+  arrange(ComName)
 
-spp_names <- net_tidy %>% 
+spp_names <- fish_N %>% 
   distinct(ComName) %>% 
   mutate(Species = NA) 
 
@@ -100,21 +99,22 @@ spp_names <- spp_names %>%
 #   inner_join(spp_names) %>% 
 #   mutate(Species2 = str_to_sentence(ComName))
 
-fish_L_df <- net_tidy %>% 
-  group_by(year, month, site, ipa, ComName) %>%
-  summarize(spp_sum = sum(species_count)) %>% 
+MaxN <- fish_N %>% 
+  group_by(site, ComName) %>%
+  filter(species_count == max(species_count)) %>% 
   ungroup() %>% 
-  complete(nesting(year, month, site), ipa, ComName, fill = list(spp_sum = 0)) %>% #fill in zeros for shorelines we sampled
-  group_by(year, month, site, ComName) %>% 
-  summarize(spp_mean = round(mean(spp_sum), 2)) %>% 
-  pivot_wider(names_from = ComName, values_from = spp_mean, values_fill = 0) %>% 
+  rename(MaxN = "species_count") %>% 
+  select(!date) %>% 
+  distinct(site, ComName, MaxN)
+ 
+fish_MaxN <- MaxN %>% 
+  complete(site, ComName) %>% 
+  replace(is.na(.), 0) %>% 
+  pivot_wider(names_from = ComName, values_from = MaxN) %>% 
+  select(-contains("UnID")) %>% 
+  column_to_rownames(var="site") %>% 
   clean_names() %>% 
-  ungroup()
-
-fish_L_mat <- fish_L_df %>% 
-  mutate(sample = paste(year, month, site, sep = "_"), .after = site) %>% 
-  select(!1:3) %>% 
-  column_to_rownames(var = "sample")
+  as.matrix()
 
 # trait data
 
@@ -199,11 +199,11 @@ fish_trait_mat <- fish_traits %>%
   select(-c(Species, ComName)) %>% 
   mutate_if(is.character, as.factor) %>% 
   clean_names() %>% 
-  as.data.frame()
+  as.matrix()
 
-rownames(fish_trait_mat) <- colnames(fish_L_mat)
+rownames(fish_trait_mat) <- colnames(fish_MaxN)
   
-return(list("trait" = fish_trait_mat, "abund" = fish_L_mat))
+return(list("trait" = fish_trait_mat, "abund" = fish_MaxN))
 
 }
 
