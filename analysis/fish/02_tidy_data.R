@@ -116,6 +116,8 @@ fish_L_mat <- fish_L_df %>%
   select(!1:3) %>% 
   column_to_rownames(var = "sample")
 
+fish_L_mat.t <- round(sqrt(fish_L_mat),2)
+
 # trait data
 
 fork_length <- net_tidy %>% 
@@ -128,17 +130,17 @@ fork_length <- net_tidy %>%
   inner_join(spp_names) %>% 
   mutate(mean_length_mm = ifelse(ComName == "Tidepool Sculpin", 89.0, mean_length_mm)) #no length in our df so taking the max length from fishbase
 
-schooling <- net_tidy %>% 
-  mutate(schooling = ifelse(species_count > 10, "school", "nonschool")) %>% #arbitrary schooling cutoff
-  filter(ComName %in% spp_names$ComName) %>% 
-  group_by(ComName, schooling) %>% 
-  summarize(count = n()) %>%  #see how often a species is observed schooling
-  ungroup() %>% 
-  pivot_wider(names_from = schooling, values_from = count) %>% 
-  replace(is.na(.), 0) %>% 
-  mutate(schooling = ifelse(school > 3, "schooling", "nonschooling")) %>% #arbitrary cuttoff
-  mutate(schooling = ifelse(ComName == "Tube-snout", "schooling", schooling)) %>% 
-  select(-c(nonschool, school))
+# schooling <- net_tidy %>% 
+#   mutate(schooling = ifelse(species_count > 10, "school", "nonschool")) %>% #arbitrary schooling cutoff
+#   filter(ComName %in% spp_names$ComName) %>% 
+#   group_by(ComName, schooling) %>% 
+#   summarize(count = n()) %>%  #see how often a species is observed schooling
+#   ungroup() %>% 
+#   pivot_wider(names_from = schooling, values_from = count) %>% 
+#   replace(is.na(.), 0) %>% 
+#   mutate(schooling = ifelse(school > 3, "schooling", "nonschooling")) %>% #arbitrary cuttoff
+#   mutate(schooling = ifelse(ComName == "Tube-snout", "schooling", schooling)) %>% 
+#   select(-c(nonschool, school))
 
 milieu <- species(spp_names$Species) %>% #could also do length
   select(Species, BodyShapeI, DemersPelag, AnaCat) %>% 
@@ -188,7 +190,7 @@ feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>%
 
 fish_traits <- full_join(fork_length, milieu) %>% 
   select(3,1,2,4,5,6) %>% 
-  left_join(schooling) %>% 
+  # left_join(schooling) %>% 
   left_join(feeding_guild) %>% 
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>%
   arrange(ComName)
@@ -202,8 +204,10 @@ fish_trait_mat <- fish_traits %>%
   as.data.frame()
 
 rownames(fish_trait_mat) <- colnames(fish_L_mat)
+
+fish_trait_mat.t <- fish_trait_mat %>% mutate_if(is.numeric, log)
   
-return(list("trait" = fish_trait_mat, "abund" = fish_L_mat))
+return(list("trait" = fish_trait_mat.t, "abund" = fish_L_mat.t))
 
 }
 
