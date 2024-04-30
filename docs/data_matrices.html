@@ -11,7 +11,7 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-04-29" />
+<meta name="date" content="2024-04-30" />
 
 <title>Data Matrices</title>
 
@@ -34,6 +34,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -248,10 +250,10 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="FD_overview.html">FD Overview</a>
+  <a href="data_matrices.html">Data Matrices</a>
 </li>
 <li>
-  <a href="data_matrices.html">Data Matrices</a>
+  <a href="FD_overview.html">FD Overview</a>
 </li>
 <li>
   <a href="fish_results.html">Fish Results</a>
@@ -273,138 +275,272 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Data Matrices</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-04-29</h4>
+<h4 class="date">2024-04-30</h4>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#the-r-environmental-matrix"
+id="toc-the-r-environmental-matrix">The R (environmental)
+matrix</a></li>
+<li><a href="#the-l-communityspecies-distribution-matrices"
+id="toc-the-l-communityspecies-distribution-matrices">The L
+(community/species distribution) matrices</a>
+<ul>
+<li><a href="#fish" id="toc-fish">Fish</a></li>
+<li><a href="#birds" id="toc-birds">Birds</a></li>
+</ul></li>
+<li><a href="#the-q-trait-matrices" id="toc-the-q-trait-matrices">The Q
+(trait) matrices</a>
+<ul>
+<li><a href="#fish-1" id="toc-fish-1">Fish</a></li>
+<li><a href="#birds-1" id="toc-birds-1">Birds</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p>The following matrices were constructed as a result of the decisions
 described on the home page.</p>
-<div id="the-r-environmental-matrix" class="section level3">
-<h3>The R (environmental) matrix</h3>
+<div id="the-r-environmental-matrix" class="section level2">
+<h2>The R (environmental) matrix</h2>
 <p>For this analysis, we’re focusing on indices of urbanization that are
 likely to impact the functional traits of the nearshore community. This
 matrix will have rows associated with each site and columns for
 urbanization indices within a buffer of the shoreline.</p>
-<p>One potential approach would be to crop NOAA C-CAP data by USGS
-HUC-12 (watershed) to get the % developed, % natural, and % agricultural
-area in the watershed, in addition to % armor of surrounding
-shorelines.</p>
+<p>One potential approach would be to crop 2016 NOAA C-CAP 30-m
+resolution data by USGS HUC-12 (watershed) to get the % developed, %
+natural, and % agricultural area in the watershed, in addition to %
+armor of surrounding shorelines.</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["site"],"name":[1],"type":["chr"],"align":["left"]},{"label":["perc.ag"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["perc.natural"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["perc.developed"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["armor.500m"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["armor.10km"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"FAM","2":"3.88","3":"85.23","4":"8.87","5":"0.62","6":"6.45","_rn_":"1","_row":"1"},{"1":"TUR","2":"20.22","3":"64.24","4":"13.60","5":"17.07","6":"9.27","_rn_":"2","_row":"2"},{"1":"COR","2":"7.18","3":"65.63","4":"24.18","5":"3.18","6":"29.06","_rn_":"3","_row":""},{"1":"SHR","2":"0.00","3":"15.74","4":"83.48","5":"27.25","6":"51.70","_rn_":"4","_row":"8"},{"1":"DOK","2":"4.64","3":"74.97","4":"19.48","5":"46.33","6":"52.74","_rn_":"5","_row":"9"},{"1":"EDG","2":"1.42","3":"83.31","4":"14.69","5":"39.54","6":"28.37","_rn_":"6","_row":"12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Could create this same table but instead of using the entire
+watershed, could crop to a buffer of the shoreline or use inverse
+distance weighting within the watershed (e.g., within 500m of shoreline
+as in Deluca et al. 2008 who compared three methods and found that the
+buffer and IDW methods were had better support in the data than
+watershed alone) or without watershed boundaries (e.g., a radius of 250m
+or 720m as in Lowe and Peterson 2014).</p>
+<p>Alternatively, there is now 1m resolution 2021 CCAP data for
+impervious surface.</p>
+<p>Other than CCAP data, could consider other indices such as the NCEAS
+Cumulative Human Impacts (Halpern et al. 2019). Likely useful metrics
+include organic chemical pollution, nutrient pollution, and direct human
+disturbance.</p>
 </div>
 <div id="the-l-communityspecies-distribution-matrices"
-class="section level3">
-<h3>The L (community/species distribution) matrices</h3>
+class="section level2">
+<h2>The L (community/species distribution) matrices</h2>
+<div id="fish" class="section level3">
+<h3>Fish</h3>
 <p>For fish, abundances will be pooled across depths within sites. There
 were a couple of instances where we didn’t sample at every shoreline
 within a site so the abundance matrix needs to account for differences
 in survey effort. We also didn’t sample at every site in every month
 each year.</p>
-<p>Approach: treat ipas (shorelines) as replicates? calculate average
-number of each species caught per sampling event (single day)?</p>
-<pre class="r"><code>head(fish.list[[2]])</code></pre>
-<pre><code>##              bay_pipefish buffalo_sculpin c_o_sole chinook_salmon chum_salmon
-## 2018_Jun_COR            0            0.00     0.00           3.33        0.00
-## 2018_Jun_DOK            0            0.00     0.00           0.67        0.00
-## 2018_Jun_EDG            0            0.00     0.33           1.33        0.00
-## 2018_Jun_FAM            0            0.33     0.00           0.00        0.67
-## 2018_Jun_SHR            0            0.00     0.00           1.33       15.67
-## 2018_Jun_TUR            0            0.33     0.00           0.00        0.33
-##              coho_salmon crescent_gunnel cutthroat_trout english_sole
-## 2018_Jun_COR        0.67               2               0            0
-## 2018_Jun_DOK        0.00               0               0            0
-## 2018_Jun_EDG        0.00               0               0            0
-## 2018_Jun_FAM        0.00               0               0            0
-## 2018_Jun_SHR        0.67               0               0            0
-## 2018_Jun_TUR        0.00               0               0            0
-##              great_sculpin kelp_greenling lingcod northern_anchovy pacific_cod
-## 2018_Jun_COR             0           0.00    0.00                0           0
-## 2018_Jun_DOK             0           0.00    0.00                0           0
-## 2018_Jun_EDG             0           0.00    0.00                0           0
-## 2018_Jun_FAM             0           0.33    0.33                0           0
-## 2018_Jun_SHR             0           0.00    0.67                0           0
-## 2018_Jun_TUR             0           0.00    0.00                0           0
-##              pacific_sandfish pacific_herring pacific_sand_lance
-## 2018_Jun_COR                0            0.33                  0
-## 2018_Jun_DOK                0            0.00                  0
-## 2018_Jun_EDG                0            0.00                  0
-## 2018_Jun_FAM                0            6.33                  0
-## 2018_Jun_SHR                0            0.00                  0
-## 2018_Jun_TUR                0            0.00                  0
-##              pacific_sand_sole pacific_snake_prickleback
-## 2018_Jun_COR                 0                      4.00
-## 2018_Jun_DOK                 0                      0.00
-## 2018_Jun_EDG                 3                      0.00
-## 2018_Jun_FAM                 0                      0.33
-## 2018_Jun_SHR                 1                      0.00
-## 2018_Jun_TUR                 0                      0.00
-##              pacific_staghorn_sculpin pacific_tomcod padded_sculpin
-## 2018_Jun_COR                        6              0              0
-## 2018_Jun_DOK                        0              0              0
-## 2018_Jun_EDG                        0              0              0
-## 2018_Jun_FAM                        0              0              0
-## 2018_Jun_SHR                        0              0              0
-## 2018_Jun_TUR                        0             72              0
-##              penpoint_gunnel pile_perch pink_salmon plainfin_midshipman
-## 2018_Jun_COR               0          0        0.33                   0
-## 2018_Jun_DOK               0          0        0.00                   0
-## 2018_Jun_EDG               0          0        0.00                   0
-## 2018_Jun_FAM               0          0        0.00                   0
-## 2018_Jun_SHR               0          0        0.00                   0
-## 2018_Jun_TUR               0          0      112.33                   0
-##              rock_sole saddleback_gunnel sand_dab shiner_perch
-## 2018_Jun_COR         0              1.00        0        10.00
-## 2018_Jun_DOK         0              0.00        0         4.00
-## 2018_Jun_EDG         0              0.00        0        18.33
-## 2018_Jun_FAM         0              0.33        0         0.00
-## 2018_Jun_SHR         0              0.33        0         1.33
-## 2018_Jun_TUR         0              0.00        0         0.33
-##              silverspotted_sculpin speckled_sanddab starry_flounder
-## 2018_Jun_COR                     0             0.00               0
-## 2018_Jun_DOK                     0             0.00               0
-## 2018_Jun_EDG                     0             0.00               0
-## 2018_Jun_FAM                     0             0.00               0
-## 2018_Jun_SHR                     0             0.33               0
-## 2018_Jun_TUR                     0             0.00               0
-##              steelhead_trout striped_seaperch surf_smelt tadpole_sculpin
-## 2018_Jun_COR               0             0.67          0               0
-## 2018_Jun_DOK               0             0.00          0               0
-## 2018_Jun_EDG               0             0.00          0               0
-## 2018_Jun_FAM               0             0.00          0               0
-## 2018_Jun_SHR               0             0.00          0               0
-## 2018_Jun_TUR               0             0.00          0               0
-##              three_spined_stickleback tidepool_sculpin tidepool_snailfish
-## 2018_Jun_COR                     0.00                0                  0
-## 2018_Jun_DOK                     0.00                0                  0
-## 2018_Jun_EDG                     9.67                0                  0
-## 2018_Jun_FAM                     0.00                0                  0
-## 2018_Jun_SHR                     0.00                0                  0
-## 2018_Jun_TUR                     0.00                0                  0
-##              tube_snout whitespotted_greenling
-## 2018_Jun_COR       0.00                      0
-## 2018_Jun_DOK       0.33                      0
-## 2018_Jun_EDG       1.00                      0
-## 2018_Jun_FAM       0.00                      0
-## 2018_Jun_SHR       0.00                      0
-## 2018_Jun_TUR       0.00                      0</code></pre>
+<p>Current approach: treat ipas (shorelines) as replicates - calculate
+average number of each species caught per sampling event (single
+day)</p>
+<p><strong>Data transformations</strong>: Applied a square root
+transformation so that relatively rare or abundant species don’t have an
+outsized impact. Did NOT remove rare species.</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["bay_pipefish"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["buffalo_sculpin"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["c_o_sole"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["chinook_salmon"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chum_salmon"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["coho_salmon"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["crescent_gunnel"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["cutthroat_trout"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["english_sole"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["great_sculpin"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["kelp_greenling"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["lingcod"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["northern_anchovy"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["pacific_cod"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["pacific_sandfish"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["pacific_herring"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["pacific_sand_lance"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["pacific_sand_sole"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["pacific_snake_prickleback"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["pacific_staghorn_sculpin"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["pacific_tomcod"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["padded_sculpin"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["penpoint_gunnel"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["pile_perch"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["pink_salmon"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["plainfin_midshipman"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["rock_sole"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["saddleback_gunnel"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["sand_dab"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["shiner_perch"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["silverspotted_sculpin"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["speckled_sanddab"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["starry_flounder"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["steelhead_trout"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["striped_seaperch"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["surf_smelt"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["tadpole_sculpin"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["three_spined_stickleback"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["tidepool_sculpin"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["tidepool_snailfish"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["tube_snout"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["whitespotted_greenling"],"name":[42],"type":["dbl"],"align":["right"]}],"data":[{"1":"0","2":"0.00","3":"0.00","4":"1.82","5":"0.00","6":"0.82","7":"1.41","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.57","17":"0","18":"0.00","19":"2.00","20":"2.45","21":"0.00","22":"0","23":"0","24":"0","25":"0.57","26":"0","27":"0","28":"1.00","29":"0","30":"3.16","31":"0","32":"0.00","33":"0","34":"0","35":"0.82","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_COR"},{"1":"0","2":"0.00","3":"0.00","4":"0.82","5":"0.00","6":"0.00","7":"0.00","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"0.00","19":"0.00","20":"0.00","21":"0.00","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.00","29":"0","30":"2.00","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.57","42":"0","_rn_":"2018_Jun_DOK"},{"1":"0","2":"0.00","3":"0.57","4":"1.15","5":"0.00","6":"0.00","7":"0.00","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"1.73","19":"0.00","20":"0.00","21":"0.00","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.00","29":"0","30":"4.28","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"3.11","39":"0","40":"0","41":"1.00","42":"0","_rn_":"2018_Jun_EDG"},{"1":"0","2":"0.57","3":"0.00","4":"0.00","5":"0.82","6":"0.00","7":"0.00","8":"0","9":"0","10":"0","11":"0.57","12":"0.57","13":"0","14":"0","15":"0","16":"2.52","17":"0","18":"0.00","19":"0.57","20":"0.00","21":"0.00","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.57","29":"0","30":"0.00","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_FAM"},{"1":"0","2":"0.00","3":"0.00","4":"1.15","5":"3.96","6":"0.82","7":"0.00","8":"0","9":"0","10":"0","11":"0.00","12":"0.82","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"1.00","19":"0.00","20":"0.00","21":"0.00","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.57","29":"0","30":"1.15","31":"0","32":"0.57","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_SHR"},{"1":"0","2":"0.57","3":"0.00","4":"0.00","5":"0.57","6":"0.00","7":"0.00","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"0.00","19":"0.00","20":"0.00","21":"8.49","22":"0","23":"0","24":"0","25":"10.60","26":"0","27":"0","28":"0.00","29":"0","30":"0.57","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_TUR"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
-<div id="the-q-trait-matrices" class="section level3">
-<h3>The Q (trait) matrices</h3>
-<p>Fish:</p>
-<pre class="r"><code>head(fish.list[[1]])</code></pre>
-<pre><code>##                 mean_length_mm        body_shape_i  demers_pelag    migrations
-## bay_pipefish         135.54422            eel-like      demersal non-migratory
-## buffalo_sculpin       81.24444   fusiform / normal      demersal non-migratory
-## c_o_sole              70.00000 short and / or deep      demersal non-migratory
-## chinook_salmon       107.47869   fusiform / normal benthopelagic    anadromous
-## chum_salmon           70.83002   fusiform / normal benthopelagic    anadromous
-## coho_salmon          123.98942   fusiform / normal       pelagic    anadromous
-##                    schooling   feeding_guild
-## bay_pipefish    nonschooling zoobenthivorous
-## buffalo_sculpin nonschooling zoobenthivorous
-## c_o_sole        nonschooling zoobenthivorous
-## chinook_salmon     schooling      omnivorous
-## chum_salmon        schooling      omnivorous
-## coho_salmon     nonschooling      omnivorous</code></pre>
+<p>With this setup, would it be necessary to restrict permutations
+between years and/or months while testing for differences between sites
+in a permANOVA?</p>
+</div>
+<div id="birds" class="section level3">
+<h3>Birds</h3>
+<p>Same approach as for fish, but we only have two years of data and
+didn’t always sample at every site.</p>
+<p><strong>Data transformations</strong>: Applied a square root
+transformation so that relatively rare or abundant species don’t have an
+outsized impact. Did NOT remove rare species.</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["AMRO"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["BAEA"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BARS"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["BEKI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["BUFF"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CATE"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["CCGO"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["COBR"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["COMU"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["CORA"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["DCCO"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["EUST"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["GBHE"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["GWGU"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["HERG"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["HOGR"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["HOSP"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["MALL"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["OSPR"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["PECO"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["PIGU"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["PUMA"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["RODO"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["RUHU"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["STJA"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["SUSC"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["TUVU"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["WEGR"],"name":[28],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.00","2":"0.00","3":"0.00","4":"0.57","5":"0","6":"1.26","7":"0","8":"1.07","9":"0.00","10":"0","11":"0","12":"0","13":"0.82","14":"0.00","15":"0.91","16":"0","17":"0.00","18":"0","19":"0.57","20":"0","21":"0.00","22":"0.82","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_DOK"},{"1":"0.00","2":"0.00","3":"0.00","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.57","9":"0.57","10":"0","11":"0","12":"0","13":"0.00","14":"0.71","15":"0.00","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"1.26","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_EDG"},{"1":"0.00","2":"0.57","3":"1.41","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.82","9":"0.00","10":"0","11":"0","12":"0","13":"0.00","14":"0.00","15":"0.00","16":"0","17":"0.57","18":"0","19":"0.00","20":"0","21":"0.00","22":"0.00","23":"1","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_FAM"},{"1":"0.00","2":"0.00","3":"0.00","4":"0.57","5":"0","6":"0.57","7":"0","8":"1.68","9":"0.00","10":"0","11":"0","12":"0","13":"0.82","14":"0.00","15":"0.87","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"0.00","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_SHR"},{"1":"0.71","2":"0.57","3":"1.15","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.00","9":"0.00","10":"0","11":"0","12":"0","13":"0.00","14":"0.00","15":"0.00","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"0.00","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_TUR"},{"1":"0.00","2":"0.00","3":"1.00","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.00","9":"0.00","10":"0","11":"0","12":"0","13":"0.57","14":"0.00","15":"0.00","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"0.00","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jul_DOK"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="the-q-trait-matrices" class="section level2">
+<h2>The Q (trait) matrices</h2>
+<div id="fish-1" class="section level3">
+<h3>Fish</h3>
+<p>Current justifications for trait selections:</p>
+<table style="width:100%;">
+<colgroup>
+<col width="12%" />
+<col width="24%" />
+<col width="9%" />
+<col width="15%" />
+<col width="14%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Full Name</th>
+<th align="left">FishBase Field Code</th>
+<th align="left">Type</th>
+<th align="center">Values/Units</th>
+<th align="left">Definition</th>
+<th align="left">Association with L</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mean length</td>
+<td align="left">N/A</td>
+<td align="left">Numeric</td>
+<td align="center">mm.</td>
+<td align="left">Fork length. Body size relates to resource use Baptista
+et al. 2014</td>
+<td align="left">use of shallow water?</td>
+</tr>
+<tr class="even">
+<td align="left">Body transverse shape</td>
+<td align="left">BodyShapeI</td>
+<td align="left">Factor</td>
+<td align="center">Fusiform/Normal, eel-like, short and/or deep,
+elongated</td>
+<td align="left">Physical structuring in the water column</td>
+<td align="left">similar to body size?</td>
+</tr>
+<tr class="odd">
+<td align="left">Feeding guild</td>
+<td align="left">FoodI</td>
+<td align="left">Factor</td>
+<td align="center">zooplanktivorous, omnivorous, piscivorous,
+planktivorous</td>
+<td align="left">Relates to position in the food web</td>
+<td align="left">altered prey field due to wq/nutrient transfer?</td>
+</tr>
+<tr class="even">
+<td align="left">Vertical distribution</td>
+<td align="left">DemersPelag</td>
+<td align="left">Factor</td>
+<td align="center">demersal, pelagic, benthopelagic</td>
+<td align="left">degree of dependence on substrate characteristics
+Baptista et al. 2014</td>
+<td align="left">strength of association with benthic habitat altered by
+armor?</td>
+</tr>
+<tr class="odd">
+<td align="left">Residence time</td>
+<td align="left">AnaCat</td>
+<td align="left">Factor</td>
+<td align="center">non-migratory, anadromous, oceanodromous,
+amphidromous, oceano-estuarine, catadromous</td>
+<td align="left">transfer of energy between geographies</td>
+<td align="left">dependence on local conditions?</td>
+</tr>
+</tbody>
+</table>
+<p>Others considered: social associations (schooling/nonschooling)</p>
+<p><strong>Data Transformations</strong>: Log transformation applied to
+continuous traits</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["mean_length_mm"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["body_shape_i"],"name":[2],"type":["fct"],"align":["left"]},{"label":["demers_pelag"],"name":[3],"type":["fct"],"align":["left"]},{"label":["migrations"],"name":[4],"type":["fct"],"align":["left"]},{"label":["feeding_guild"],"name":[5],"type":["fct"],"align":["left"]}],"data":[{"1":"4.909298","2":"eel-like","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"bay_pipefish"},{"1":"4.397462","2":"fusiform / normal","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"buffalo_sculpin"},{"1":"4.248495","2":"short and / or deep","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"c_o_sole"},{"1":"4.677293","2":"fusiform / normal","3":"benthopelagic","4":"anadromous","5":"omnivorous","_rn_":"chinook_salmon"},{"1":"4.260283","2":"fusiform / normal","3":"benthopelagic","4":"anadromous","5":"omnivorous","_rn_":"chum_salmon"},{"1":"4.820196","2":"fusiform / normal","3":"pelagic","4":"anadromous","5":"omnivorous","_rn_":"coho_salmon"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p><strong>Mean length</strong>: We didn’t get a length for Tidepool
+sculpin, so I used the max length listed in fishbase. <strong>Feeding
+guild</strong>: classified main food source if more than 60% of diet is
+in one category. Blepsias cirrhosus was not in the database but I found
+a description on fishbase. Don’t have a great source for Liparis florae
+so I just used other snailfish.<br />
+<strong>DemersPelag</strong>: simplified this category because there was
+only one pelagic and two pelagic-neritic species, so I combined both
+into pelagic.<br />
+<strong>Schooling</strong>: I counted the number of times we caught each
+species as a school (&gt;10 in a single tow). If it was schooling &gt;3
+times, I counted it as a schooling species, except for tube snout which
+we only caught in a school three times but I did count as schooling
+based on fishbase description.<br />
+<strong>Residence time</strong>: Assumed to be non-migratory if no
+information was available.</p>
+<p>Is it better to have a standardized way of making sure I’m extracting
+the correct life phase (i.e. take mean lengths for each species and
+relate that to the database to classify as adult/juvenile) or to
+generally assume juvenile salmonids and adult everything else?</p>
+</div>
+<div id="birds-1" class="section level3">
+<h3>Birds</h3>
+<p>Current justifications for trait selections:</p>
+<p><strong>Data Transformations</strong>: Log transformation applied to
+continuous traits</p>
+<table style="width:100%;">
+<colgroup>
+<col width="12%" />
+<col width="24%" />
+<col width="9%" />
+<col width="15%" />
+<col width="14%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Full Name</th>
+<th align="left">AVONET Field Code</th>
+<th align="left">Type</th>
+<th align="center">Values/Units</th>
+<th align="left">Definition</th>
+<th align="left">Association with L</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Body mass</td>
+<td align="left">Mass</td>
+<td align="left">Numeric</td>
+<td align="center">g</td>
+<td align="left">relates to resource use</td>
+<td align="left">availability of prey?</td>
+</tr>
+<tr class="even">
+<td align="left">Body length</td>
+<td align="left">Secondary1</td>
+<td align="left">Numeric</td>
+<td align="center">mm</td>
+<td align="left">relates to resource use</td>
+<td align="left">?</td>
+</tr>
+<tr class="odd">
+<td align="left">Feeding guild</td>
+<td align="left">Trophic.Level</td>
+<td align="left">Factor</td>
+<td align="center">herbivore, omnivore, carnivore, scavenger</td>
+<td align="left">position in the food web</td>
+<td align="left">availability of a variety of prey types?</td>
+</tr>
+<tr class="even">
+<td align="left">Foraging habit</td>
+<td align="left">Trophic.Niche</td>
+<td align="left">Factor</td>
+<td align="center">granivore, terrestrial, herbivore, aquatic herbivore,
+invertivore, aquatic predator, scavenger</td>
+<td align="left">space occupied within habitats</td>
+<td align="left">availability of a variety of habitats?</td>
+</tr>
+<tr class="odd">
+<td align="left">Wing Length</td>
+<td align="left">Wing.Length</td>
+<td align="left">Numeric</td>
+<td align="center">g</td>
+<td align="left">transfer of energy between geographies</td>
+<td align="left">dependence on local conditions?</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 

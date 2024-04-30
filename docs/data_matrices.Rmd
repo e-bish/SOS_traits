@@ -2,36 +2,102 @@
 title: "Data Matrices"
 author: "Emily Bishop"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: false
+    toc_depth: 3
 link-citations: true
 ---
 
 ```{r setup, echo=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = F)
+
 library(here)
 
 load(here("data", "fish.list.Rdata")) 
+load(here("data", "bird.list.Rdata")) 
+load(here("data", "env_table.Rdata")) 
 ```
 
 The following matrices were constructed as a result of the decisions described on the home page. 
 
-### The R (environmental) matrix
+## The R (environmental) matrix
 For this analysis, we're focusing on indices of urbanization that are likely to impact the functional traits of the nearshore community. This matrix will have rows associated with each site and columns for urbanization indices within a buffer of the shoreline. 
 
-One potential approach would be to crop NOAA C-CAP data by USGS HUC-12 (watershed) to get the % developed, % natural, and % agricultural area in the watershed, in addition to % armor of surrounding shorelines. 
+One potential approach would be to crop 2016 NOAA C-CAP 30-m resolution data by USGS HUC-12 (watershed) to get the % developed, % natural, and % agricultural area in the watershed, in addition to % armor of surrounding shorelines. 
 
-### The L (community/species distribution) matrices
+```{r load_env}
+head(env_table)
+```
+
+Could create this same table but instead of using the entire watershed, could crop to a buffer of the shoreline or use inverse distance weighting within the watershed (e.g., within 500m of shoreline as in Deluca et al. 2008 who compared three methods and found that the buffer and IDW methods were had better support in the data than watershed alone) or without watershed boundaries (e.g., a radius of 250m or 720m as in Lowe and Peterson 2014).
+
+Alternatively, there is now 1m resolution 2021 CCAP data for impervious surface.
+
+Other than CCAP data, could consider other indices such as the NCEAS Cumulative Human Impacts (Halpern et al. 2019). Likely useful metrics include organic chemical pollution, nutrient pollution, and direct human disturbance. 
+
+## The L (community/species distribution) matrices
+### Fish
 For fish, abundances will be pooled across depths within sites. There were a couple of instances where we didn't sample at every shoreline within a site so the abundance matrix needs to account for differences in survey effort. We also didn't sample at every site in every month each year. 
 
-Approach: treat ipas (shorelines) as replicates? calculate average number of each species caught per sampling event (single day)?
+Current approach: treat ipas (shorelines) as replicates - calculate average number of each species caught per sampling event (single day)
+
+**Data transformations**: Applied a square root transformation so that relatively rare or abundant species don't have an outsized impact. Did NOT remove rare species.
 
 ```{r load_fish_abund}
 head(fish.list[[2]])
 ```
+With this setup, would it be necessary to restrict permutations between years and/or months while testing for differences between sites in a permANOVA?
 
+### Birds
+Same approach as for fish, but we only have two years of data and didn't always sample at every site. 
 
-### The Q (trait) matrices
+**Data transformations**: Applied a square root transformation so that relatively rare or abundant species don't have an outsized impact. Did NOT remove rare species.
 
-Fish:
+```{r load_bird_abund}
+head(bird.list[[2]])
+```
+
+## The Q (trait) matrices
+### Fish
+Current justifications for trait selections:
+
+| Full Name   | FishBase Field Code | Type    | Values/Units | Definition | Association with L |
+| :---------  | :------------------ | :------ | :----------: | :---------- | :----------------- | 
+| Mean length | N/A                 | Numeric |      mm.     | Fork length. Body size relates to resource use Baptista et al. 2014 | use of shallow water? |
+| Body transverse shape | BodyShapeI | Factor | Fusiform/Normal, eel-like, short and/or deep, elongated | Physical structuring in the water column | similar to body size? |
+| Feeding guild | FoodI | Factor | zooplanktivorous, omnivorous, piscivorous, planktivorous | Relates to position in the food web | altered prey field due to wq/nutrient transfer? |
+| Vertical distribution | DemersPelag | Factor | demersal, pelagic, benthopelagic | degree of dependence on substrate characteristics Baptista et al. 2014 | strength of association with benthic habitat altered by armor? | 
+| Residence time | AnaCat | Factor | non-migratory, anadromous, oceanodromous, amphidromous, oceano-estuarine, catadromous | transfer of energy between geographies | dependence on local conditions? | 
+
+Others considered: social associations (schooling/nonschooling)
+
+**Data Transformations**: Log transformation applied to continuous traits
+
 ```{r load_fish_traits}
 head(fish.list[[1]])
 ```
+
+**Mean length**: We didn’t get a length for Tidepool sculpin, so I used the max length listed in fishbase. 
+**Feeding guild**: classified main food source if more than 60% of diet is in one category. Blepsias cirrhosus was not in the database but I found a description on fishbase. Don’t have a great source for Liparis florae so I just used other snailfish.    
+**DemersPelag**: simplified this category because there was only one pelagic and two pelagic-neritic species, so I combined both into pelagic.   
+**Schooling**: I counted the number of times we caught each species as a school (>10 in a single tow). If it was schooling >3 times, I counted it as a schooling species, except for tube snout which we only caught in a school three times but I did count as schooling based on fishbase description.    
+**Residence time**: Assumed to be non-migratory if no information was available. 
+
+Is it better to have a standardized way of making sure I'm extracting the correct life phase (i.e. take mean lengths for each species and relate that to the database to classify as adult/juvenile) or to generally assume juvenile salmonids and adult everything else?
+
+### Birds
+Current justifications for trait selections:
+
+**Data Transformations**: Log transformation applied to continuous traits
+
+| Full Name   | AVONET Field Code | Type    | Values/Units | Definition | Association with L |
+| :---------  | :------------------ | :------ | :----------: | :---------- | :----------------- | 
+| Body mass | Mass | Numeric | g | relates to resource use | availability of prey? |
+| Body length | Secondary1 | Numeric | mm | relates to resource use | ? | 
+| Feeding guild | Trophic.Level | Factor | herbivore, omnivore, carnivore, scavenger | position in the food web | availability of a variety of prey types? |
+| Foraging habit | Trophic.Niche | Factor | granivore, terrestrial, herbivore, aquatic herbivore, invertivore, aquatic predator, scavenger | space occupied within habitats | availability of a variety of habitats? |
+| Wing Length | Wing.Length | Numeric | g | transfer of energy between geographies | dependence on local conditions? | 
+
