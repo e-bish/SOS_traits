@@ -2,13 +2,12 @@ library(tidyverse)
 library(here)
 library(ggrepel)
 library(FD)
+library(ggordiplots)
 library(PNWColors)
 library(patchwork)
 library(vegan)
 
-load(here("data", "fish.list.month.Rdata")) #object created in 02_tidy_data_month
-# or 
-# load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data if you don't care about seasonality
+load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
 here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
 here("analysis", "general_functions", "scree.r") %>% source()
 
@@ -37,10 +36,10 @@ fish_pcoa <- pcoa %>%
 ggsave(plot = fish_pcoa, "docs/figures/fish_pcoa.png")
 
 #### test the quality of the functional space ####
-space_qual <- qual_funct_space(fish.traits, nbdim = 6, metric = "Gower")
-#needs to be df with no NAs
-space_qual$meanSD #  (we're shooting for 0 here)
-#"The mSD is 0 when the functional space perfectly represents the initial distance and increases as pairs of species become less represented in the functional space (Maire et al., 2015)."
+# space_qual <- qual_funct_space(fish.traits, nbdim = 6, metric = "Gower")
+# #needs to be df with no NAs
+# space_qual$meanSD #  (we're shooting for 0 here)
+# #"The mSD is 0 when the functional space perfectly represents the initial distance and increases as pairs of species become less represented in the functional space (Maire et al., 2015)."
 
 #### test each of these by plotting to see how many groups to use ####
 test1 <- hclust(fish.gowdist, method = "average") #meh
@@ -51,7 +50,7 @@ plot(fish.hclust, hang = -1,
      main = "Method = Ward’s minimum variance",
      xlab = "Species",
      sub = "BC dissimilarity; ward.D2 linkage")
-scree(hclust.obj = fish.hclust) # not a solid answer here but 5-7 is generally at the bottom of the elbow, so we'll try 7 groups
+scree(hclust.obj = fish.hclust) # not a solid answer here but 5-7 is generally at the bottom of the elbow, so we'll try 6 groups
 
 #### FD indices calculation ####################################################
 fishFD <- dbFD(fish.traits, #must be a df where character columns are factors
@@ -65,10 +64,6 @@ fishFD <- dbFD(fish.traits, #must be a df where character columns are factors
 
 ################################################################################
 ## More advanced PCoA
-library(ggordiplots)
-
-plot(pcoa)
-
 spp_PCoA <- fishFD$x.axes #extract coordinates from PCoA
 spp_groups <- fishFD$spfgr %>% as.factor() #extract groups
 
@@ -109,8 +104,9 @@ fish_pcoa2 <- ord_gg +
   #               label= rownames(pcoa)),
   #           #label.padding=unit(0.3,"lines"),
   #           fontface="bold")  +
-  labs(x="PCoA Axis 1 (29.88%)",
-       y="PCoA Axis 2 (15.46%)") +
+  labs(x="PCoA Axis 1 (27.53%)",
+       y="PCoA Axis 2 (17.37%)",
+       color = "Spp Groups") +
   geom_point(data=spp_PCoA,
              aes(x=A1, y=A2,
                  colour=spp_groups))  +
@@ -132,67 +128,69 @@ important.indices <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv,
 colnames(important.indices) <- c("NumbSpecies", "FRic", "FDiv", "FEve", "FDis", "Rao")
 
 FD_results <- important.indices %>% 
-  as_tibble(rownames = "site_month") %>% 
-  separate_wider_delim(site_month, delim = "_", names = c("site", "month"), cols_remove = FALSE) %>% 
-  relocate(site_month) %>% 
+  as_tibble(rownames = "sample") %>% 
+  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) %>% 
+  relocate(sample) %>% 
   mutate(month = factor(month, labels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
-  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))) %>% 
-  replace(is.na(.), 0) #we only ever caught one penpoint gunnel at SHR in Apr (plus jellyfish)
+  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
+  replace(is.na(.), 0) #can't calculate indices with <3 species
 
-FD_results.core <- FD_results %>% filter(!site %in% c("MA", "WA", "HO", "TL", "LL", "PR"))
-
-#### plot indices for core sites ####
+#### plot indices ####
 
 plot_index <- function (index){
-  ggplot(data = FD_results.core, aes(x = site, y = .data[[index]], fill = site)) +
+  ggplot(data = FD_results, aes(x = site, y = .data[[index]], fill = site)) +
     geom_boxplot(outlier.shape = NA) + 
     theme_classic() +
     ylab(index) +
     theme(axis.title.x = element_blank())
 }
 
-index_plots <- lapply(names(FD_results[4:9]), plot_index)
+index_plots <- lapply(names(FD_results[5:10]), plot_index)
 
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + index_plots[[6]] +
   plot_layout(ncol = 3, guides = 'collect')
 
-ggsave("docs/figures/fish_FDcorepatch.png")
-
-#### plot indices for all sites ####
-
-plot_index_all <- function (index){
-  FD_results %>% 
-    filter(month == "Jun") %>% 
-    ggplot(aes(x = site, y = .data[[index]], color = site)) +
-      geom_point() + 
-      geom_segment(aes(x = site, xend = site, y = 0, yend = .data[[index]])) +
-      theme_classic() +
-      ylab(index) +
-      theme(axis.title.x = element_blank())
-}
-
-index_plots_all <- lapply(names(FD_results[4:9]), plot_index_all)
-
-index_plots_all[[1]] + index_plots_all[[2]] + index_plots_all[[3]] + index_plots_all[[4]] + index_plots_all[[5]] + index_plots_all[[6]] +
-  plot_layout(ncol = 3, guides = 'collect')
-
-ggsave("docs/figures/fish_FDallpatch.png")
+ggsave("docs/figures/fish_FDpatch.png")
 
 #### plot seasonality ####
 
-plot_seasonal_index <- function (index){
-ggplot(data = FD_results.core, aes(x = month, y = .data[[index]], group = site, color = site)) +
-    geom_line() + 
-    geom_point() +
-    theme_classic() +
-    ylab(index) +
-    theme(axis.title.x = element_blank())
+plot_seasonal_index <- function (index, YEAR){
+  
+  if (index == "NumbSpecies") {
+    ggplot(data = FD_results %>% filter(year == YEAR), aes(x = month, y = .data[[index]], group = site, color = site)) +
+      geom_line() + 
+      geom_point() +
+      geom_hline(yintercept = 3, linetype = 'dashed', color = 'darkgrey') +
+      theme_classic() +
+      ylab(index) +
+      theme(axis.title.x = element_blank())
+  } else {
+    ggplot(data = FD_results %>% filter(!NumbSpecies <3 & year == YEAR), aes(x = month, y = .data[[index]], group = site, color = site)) +
+      geom_line() + 
+      geom_point() +
+      theme_classic() +
+      ylab(index) +
+      theme(axis.title.x = element_blank())
+  }
 }
 
-seasonal_index_plots <- lapply(names(FD_results[4:9]), plot_seasonal_index)
+index_plots_2018 <- lapply(names(FD_results[5:10]), plot_seasonal_index, YEAR = 2018)
+index_plots_2019 <- lapply(names(FD_results[5:10]), plot_seasonal_index, YEAR = 2019)
+index_plots_2021 <- lapply(names(FD_results[5:10]), plot_seasonal_index, YEAR = 2021)
+index_plots_2022 <- lapply(names(FD_results[5:10]), plot_seasonal_index, YEAR = 2022)
 
-seasonal_index_plots[[1]] + seasonal_index_plots[[2]] + seasonal_index_plots[[3]] + seasonal_index_plots[[4]] + seasonal_index_plots[[5]] + seasonal_index_plots[[6]] +
-  plot_layout(ncol = 2, guides = 'collect')
+index_plots_2018[[1]] + index_plots_2018[[2]] + index_plots_2018[[3]] + index_plots_2018[[4]] + index_plots_2018[[5]] + index_plots_2018[[6]] +
+  plot_layout(ncol = 2, guides = 'collect') + plot_annotation('2018')
+ggsave("docs/figures/fish_2018seasonalFDpatch.png")
+index_plots_2019[[1]] + index_plots_2019[[2]] + index_plots_2019[[3]] + index_plots_2019[[4]] + index_plots_2019[[5]] + index_plots_2019[[6]] +
+  plot_layout(ncol = 2, guides = 'collect') + plot_annotation('2019')
+ggsave("docs/figures/fish_2019seasonalFDpatch.png")
+index_plots_2021[[1]] + index_plots_2021[[2]] + index_plots_2021[[3]] + index_plots_2021[[4]] + index_plots_2021[[5]] + index_plots_2021[[6]] +
+  plot_layout(ncol = 2, guides = 'collect') + plot_annotation('2021')
+ggsave("docs/figures/fish_2021seasonalFDpatch.png")
+index_plots_2022[[1]] + index_plots_2022[[2]] + index_plots_2022[[3]] + index_plots_2022[[4]] + index_plots_2022[[5]] + index_plots_2022[[6]] +
+  plot_layout(ncol = 2, guides = 'collect') + plot_annotation('2022')
+ggsave("docs/figures/fish_2021seasonalFDpatch.png")
 
-ggsave("docs/figures/fish_seasonalFDcorepatch.png")
+
             
