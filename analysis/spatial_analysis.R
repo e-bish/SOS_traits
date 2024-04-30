@@ -164,7 +164,7 @@ format_lc <- function(ccap_extract) {
 }
 
 prelim_env_table <- format_lc(ccap_extract = ccap_lc_HUCs)
-prelim_env_crop_table <- format_lc(ccap_extract = ccap_lc_cropHUCs)
+# prelim_env_crop_table <- format_lc(ccap_extract = ccap_lc_cropHUCs) #this is no longer working, need to troubleshoot
 
 #final table formatting
 
@@ -179,7 +179,10 @@ format_env_table <- function(prelim_table) {
 }
 
 env_table <- format_env_table(prelim_env_table)
-env_crop_table <- format_env_table(prelim_env_crop_table)
+env_table <- env_table %>% filter(site %in% c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")) #core sites if we're not using jubilee
+save(env_table, file = here("data", "env_table.Rdata"))
+
+#env_crop_table <- format_env_table(prelim_env_crop_table) #need to fix above
 
 #### map it ####
 
