@@ -15,9 +15,8 @@ S <- round(nmds$stress, 2) #stress decreases with increasing K, >0.2 is generall
 #though stress is just one piece of the puzzle and shouldn't be the only thing considered
 
 points <- data.frame(nmds$points) %>% 
-  mutate(site_month = rownames(fish.list$abund)) %>% 
-  separate_wider_delim(site_month, delim = "_", names = c("site", "month"), cols_remove = FALSE) %>% 
-  mutate(site_type = ifelse(site %in% c("MA", "WA", "HO", "TL", "LL", "PR"), "jubilee", "core"))
+  mutate(sample = rownames(fish.list$abund)) %>% 
+  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) 
 
 hulls <- points %>%
   group_by(site) %>% 
@@ -25,9 +24,8 @@ hulls <- points %>%
 
 #all
 ggplot() +
-  geom_point(data = points, aes(x = MDS1, y = MDS2, color = site, shape = site_type), size = 3) + 
-  geom_text_repel(data = points %>% filter(!site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, color = site, label = month)) +
-  geom_text_repel(data = points %>% filter(site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, color = site, label = site)) +
+  geom_point(data = points, aes(x = MDS1, y = MDS2, color = site, shape = year), size = 3) + 
+  geom_text_repel(data = points, aes(x = MDS1, y = MDS2, color = site, label = month)) +
   geom_polygon(data = hulls, aes(x = MDS1, y = MDS2, fill = site), alpha = 0.2) +
   annotate("text", x = Inf, y = Inf, label = paste("stress = ", S), vjust = 2, hjust = 2) +
   annotate("text", x = Inf, y = Inf, label = paste("k = ", K), vjust = 2, hjust = 2) +
@@ -41,7 +39,7 @@ hulls2 <- points %>%
   slice(chull(MDS1,MDS2))
 
 ggplot() +
-  geom_point(data = points, aes(x = MDS1, y = MDS2, color = month, shape = site_type), size = 3) + 
+  geom_point(data = points, aes(x = MDS1, y = MDS2, color = month, shape = year), size = 3) + 
   geom_text_repel(data = points, aes(x = MDS1, y = MDS2, color = month, label = site)) +
   geom_polygon(data = hulls2, aes(x = MDS1, y = MDS2, fill = month), alpha = 0.2) +
   annotate("text", x = Inf, y = Inf, label = paste("stress = ", S), vjust = 2, hjust = 2) +
@@ -50,20 +48,11 @@ ggplot() +
 
 ggsave("docs/figures/fish_nmds_months.png")
 
-#core
-ggplot() +
-  geom_point(data = points %>% filter(!site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, color = site)) + 
-  geom_text_repel(data = points %>% filter(!site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, color = site, label = month)) +
-  geom_polygon(data = hulls %>% filter(!site %in% c("MA", "WA", "HO", "TL", "LL", "PR")), aes(x = MDS1, y = MDS2, fill = site), alpha = 0.2) +
-  theme_minimal() 
-
-# ggsave("docs/figures/nmds_core_sites.png")
-
 ############ follow up tests #################
 
 #PERMANOVA
-site_result <- adonis2(fish.adj.abund ~ points$site, method = "bray")
-month_result <- adonis2(fish.adj.abund ~ points$month, method = "bray")
+site_result <- adonis2(fish.adj.abund ~ points$site + points$month + points$year, method = "bray")
+site_result
 
 
 #SIMPER
@@ -76,11 +65,11 @@ month_result <- adonis2(fish.adj.abund ~ points$month, method = "bray")
 #not sure why I'm getting an error
 
 #ISA
-library(indicspecies)
-set.seed(42)
-
-fish.ISA <- multipatt(x = fish.adj.abund,
-                      cluster = points$site,
-                      duleg = TRUE)
-
-summary(fish.ISA) #hm not all that informative??
+# library(indicspecies)
+# set.seed(42)
+# 
+# fish.ISA <- multipatt(x = fish.adj.abund,
+#                       cluster = points$site,
+#                       duleg = TRUE)
+# 
+# summary(fish.ISA) #hm not all that informative??

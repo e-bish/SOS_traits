@@ -5,7 +5,7 @@ library(mvabund)
 
 #all
 load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
-load(here("data", "env.data.Rdata")) #object created in 02_tidy_data
+load(here("data", "env_table.Rdata")) #object created in spatial analysis
 
 #just June 
 # load(here("data", "fish.list.june.Rdata")) #object created in 02_tidy_data
