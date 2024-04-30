@@ -207,12 +207,11 @@ rownames(fish_trait_mat) <- colnames(fish_L_mat)
 
 fish_trait_mat.t <- fish_trait_mat %>% mutate_if(is.numeric, log)
   
-return(list("trait" = fish_trait_mat.t, "abund" = fish_L_mat.t))
+return(list("trait" = fish_trait_mat.t, "abund" = fish_L_mat)) #no transformation on the abundance matrix
 
 }
 
 fish.list <- create_fish_matrices(net_tidy)
 
 save(fish.list, file = here("data", "fish.list.Rdata"))
-
 

@@ -91,8 +91,6 @@ birds <- predator_data %>%
   select(-c(weather, beaufort_sea_state, observer, start_time, 
             time_into_survey, species_group, behaviour, notes)) 
 
-table(bird_L_df)
-
 #create abundance matrix
 bird_L_df <- birds %>% 
   filter(site %in% c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")) %>%  #core sites if we're not using jubilee
@@ -115,7 +113,7 @@ bird_L_mat.t <- round(sqrt(bird_L_mat), 2)
 
 CV <- function(x) { 100 * sd(x) / mean(x) } #function from Jon Bakker
 
-CV(x = rowSums(bird_L_df)) #moderate CV McCune & Grace (2002, p.70)
+CV(x = rowSums(bird_L_mat)) #moderate CV McCune & Grace (2002, p.70)
 
 #load species ids for birds observed in the field
 spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
@@ -193,5 +191,5 @@ bird_traits.t <- bird_traits %>%
 # skewness(bird_traits.t$Wing.Length)
 # range(bird_traits.t$Wing.Length)
 
-bird.list <- list("trait" = bird_traits.t, "abund" = bird_L_mat.t)
+bird.list <- list("trait" = bird_traits.t, "abund" = bird_L_mat) #untransformed abundance matrix
 save(bird.list, file = here("data", "bird.list.Rdata"))

@@ -32,9 +32,9 @@ One potential approach would be to crop 2016 NOAA C-CAP 30-m resolution data by 
 head(env_table)
 ```
 
-Could create this same table but instead of using the entire watershed, could crop to a buffer of the shoreline or use inverse distance weighting within the watershed (e.g., within 500m of shoreline as in Deluca et al. 2008 who compared three methods and found that the buffer and IDW methods were had better support in the data than watershed alone) or without watershed boundaries (e.g., a radius of 250m or 720m as in Lowe and Peterson 2014).
+Could create this same table but instead of using the entire watershed, could crop to a buffer of the shoreline or use inverse distance weighting within the watershed (e.g., within 500m of shoreline as in Deluca et al. 2008 who compared three methods and found that the buffer and IDW methods were had better support in the data than watershed alone) or without watershed boundaries (e.g., a radius of 250m or 720m as in Lowe and Peterson 2014). 
 
-Alternatively, there is now 1m resolution 2021 CCAP data for impervious surface.
+Alternatively, there is now 1m resolution 2021 CCAP data for impervious surface. Previous FD studies have used XX, XX, and XX as urbanization metrics. 
 
 Other than CCAP data, could consider other indices such as the NCEAS Cumulative Human Impacts (Halpern et al. 2019). Likely useful metrics include organic chemical pollution, nutrient pollution, and direct human disturbance. 
 
@@ -44,12 +44,11 @@ For fish, abundances will be pooled across depths within sites. There were a cou
 
 Current approach: treat ipas (shorelines) as replicates - calculate average number of each species caught per sampling event (single day)
 
-**Data transformations**: Applied a square root transformation so that relatively rare or abundant species don't have an outsized impact. Did NOT remove rare species.
+**Data transformations**: No data transformations applied on the abundance matrix. Data transformations for counts are  usually give less weight to rare or more abundant species, but those species impact the diversity so it doesn't seem to make sense to alter them. I haven't seen any reference to any FD lit doing transformations on the abundance matrix, and it doesn't appear to change the results either way. For this reason I also didn't remove rare species. 
 
 ```{r load_fish_abund}
 head(fish.list[[2]])
 ```
-With this setup, would it be necessary to restrict permutations between years and/or months while testing for differences between sites in a permANOVA?
 
 ### Birds
 Same approach as for fish, but we only have two years of data and didn't always sample at every site. 
@@ -59,6 +58,8 @@ Same approach as for fish, but we only have two years of data and didn't always 
 ```{r load_bird_abund}
 head(bird.list[[2]])
 ```
+
+**With this setup, would it be necessary to restrict permutations between years and/or months while testing for differences between sites in a PERMANOVA?**
 
 ## The Q (trait) matrices
 ### Fish
@@ -101,3 +102,8 @@ Current justifications for trait selections:
 | Foraging habit | Trophic.Niche | Factor | granivore, terrestrial, herbivore, aquatic herbivore, invertivore, aquatic predator, scavenger | space occupied within habitats | availability of a variety of habitats? |
 | Wing Length | Wing.Length | Numeric | g | transfer of energy between geographies | dependence on local conditions? | 
 
+Given that we did not identify all bird taxa to the species level, I selected a representative species for each taxonomic group we identified in the field. I did so by compiling a list of possible species that could have been observed in each group (e.g. we recorded “swallow” but there were three species we may have observed: *Progne subis*, *Tachycineta thalassina*, and *Hirundo rustica*) and selected a representative species within each group. Within groups, the species that are common to the area and likely to have been observed in our surveys are typically in the same functional trait category for categorical traits. I therefore looked at continuous variables to select the species with the median values to be the representative species for each group. 
+
+```{r load_bird_traits}
+head(bird.list[[1]])
+```
