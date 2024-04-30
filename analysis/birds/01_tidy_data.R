@@ -91,20 +91,31 @@ birds <- predator_data %>%
   select(-c(weather, beaufort_sea_state, observer, start_time, 
             time_into_survey, species_group, behaviour, notes)) 
 
+table(bird_L_df)
+
 #create abundance matrix
-bird_MaxN <- birds %>% 
-  mutate(site_month = paste(site, month, sep = "_")) %>% 
-  select(site_month, spp_code, abundance) %>% 
-  group_by(site_month, spp_code) %>% 
-  summarize(MaxN = max(abundance)) %>% 
+bird_L_df <- birds %>% 
+  filter(site %in% c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")) %>%  #core sites if we're not using jubilee
+  mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
+  mutate(year = factor(year), month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
+  select(year, month, site, ipa, spp_code, abundance) %>% 
+  complete(nesting(year, month, site), ipa, spp_code, fill = list(abundance = 0)) %>% #fill in zeros for shorelines we surveyed
+  group_by(year, month, site, spp_code) %>%
+  summarize(spp_mean = round(mean(abundance), 2)) %>% 
   ungroup() %>% 
   arrange(spp_code) %>% 
-  pivot_wider(names_from = spp_code, values_from = MaxN, values_fill = 0) %>% 
-  column_to_rownames(var="site_month")
+  pivot_wider(names_from = spp_code, values_from = spp_mean, values_fill = 0) 
+
+bird_L_mat <- bird_L_df %>% 
+  mutate(sample = paste(year, month, site, sep = "_")) %>% 
+  column_to_rownames(var="sample") %>% 
+  select(!c(year, month, site))
+
+bird_L_mat.t <- round(sqrt(bird_L_mat), 2)
 
 CV <- function(x) { 100 * sd(x) / mean(x) } #function from Jon Bakker
 
-CV(x = rowSums(bird_MaxN)) #84 is a moderate CV McCune & Grace (2002, p.70)
+CV(x = rowSums(bird_L_df)) #moderate CV McCune & Grace (2002, p.70)
 
 #load species ids for birds observed in the field
 spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
@@ -182,5 +193,5 @@ bird_traits.t <- bird_traits %>%
 # skewness(bird_traits.t$Wing.Length)
 # range(bird_traits.t$Wing.Length)
 
-bird.list <- list("trait" = bird_traits.t, "abund" = bird_MaxN)
-save(bird.list, file = here("data", "bird.list.month.Rdata"))
+bird.list <- list("trait" = bird_traits.t, "abund" = bird_L_mat.t)
+save(bird.list, file = here("data", "bird.list.Rdata"))
