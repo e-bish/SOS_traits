@@ -53,7 +53,7 @@ head(fish.list[[2]])
 ### Birds
 Same approach as for fish, but we only have two years of data and didn't always sample at every site. 
 
-**Data transformations**: Applied a square root transformation so that relatively rare or abundant species don't have an outsized impact. Did NOT remove rare species.
+**Data transformations**: No data transformations at this stage, because FD indices rely on information about the presence of relatively rare and abundant species. 
 
 ```{r load_bird_abund}
 head(bird.list[[2]])

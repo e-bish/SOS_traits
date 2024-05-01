@@ -7,6 +7,8 @@ output: html_document
 
 ```{r setup, echo=FALSE, message = FALSE}
 library(here)
+library(tidyverse)
+library(vegan)
 ```
 
 This page will contain preliminary analyses for fish data. To generate these data, I created an **abundance** matrix and a **trait** matrix.  
@@ -15,23 +17,37 @@ For **abundance** matrix I used MaxN for each species at each site by month. So 
 
 For the **trait** matrix, I used the following traits: mean length (from field data), body shape, water column position, schooling behavior, migratory behavior, and feeding guild. Length is a continuous variable while the others are categorical.  
 
-I used ordinations to view the differences between data points, specifically NMDS and PCoA. Both of these types of ordinations allow specification of a distance measure, which is good because euclidian distances aren't appropriate for every data type (e.g. species abundances). These two methods differ in how they determine the axes. PCoAs use eigenanalysis, thereby imposing a linear relationship between samples, while NMDS uses an iterative, non-metric (rank-order), approach that doesn't make any assumptions of linearity. The rank-order approach is good for when you don't necessarily expect samples to be correlated, for example abundance counts of different species.  
+I used ordinations to view the differences between data points, specifically NMDS and PCoA. Both of these types of ordinations allow specification of a distance measure, which is good because euclidian distances aren't appropriate for every data type (e.g., species abundances). These two methods differ in how they determine the axes. PCoAs use eigenanalysis, thereby imposing a linear relationship between samples, while NMDS uses an iterative, non-metric (rank-order), approach that doesn't make any assumptions of linearity. The rank-order approach is good for when you don't necessarily expect samples to be correlated, for example abundance counts of different species.  
 
 ## NMDS representing abundances by site
-NMDS is a distance based ordination technique. In this ordination, the space between the points represents the distance (dissimilarity) between them. Here I used Bray-curtis distances, a common method for abundance data. 
+NMDS is a distance based ordination technique. In this ordination, the space between the points represents the distance (dissimilarity) between them. To create this plot, I used bray-curtis distances. I did not perform a square root transformation because I wanted the relatively rare and abundant species to effect the differences in communities.
 
 ```{r nmds, echo=FALSE, fig.cap="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code.", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_nmds_sites.png"))
 ```
-This plot generally aligns with my impression of which sites should be similar, though there are some interesting patterns. The results of a PERMANOVA suggest that sites account for 41.4% of the variation in species composition (p = 0.001).
+I was expecting to see more of a separation between Cornet Bay and Family Tides and the others, but it does look like their centroids are fairly different. 
+
 
 ## NMDS representing abundances by month
 
 ```{r nmds_season, echo=FALSE, fig.cap="Fig 2. A graphical visualization of the variation in abundances of different species between months.", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_nmds_months.png"))
 ```
-There is clearly more variation between sites than months in these data. Months account for only 16.5% of the variation in species composition (p = 0.022). 
+There is clearly a difference between April and other months sampled. 
 
+## PERMANOVA
+Testing out a permanova on the nmds results. It looks like this method automatically conducts a square root transformation and Wisconsin double standardization??
+```{r permanova, echo = TRUE, message = FALSE, results = 'hide'}
+load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
+
+nmds <- metaMDS(fish.list$abund , distance="bray", k= 3, trymax=1000, plot = FALSE)
+points <- data.frame(nmds$points) %>% 
+  mutate(sample = rownames(fish.list$abund)) %>% 
+  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) 
+
+adonis2(fish.list$abund ~ points$site + points$month + points$year, method = "bray")
+```
+Sites account for 12.5% of the variation of the variation in species composition (p = 0.001) and months account for just 8.1% (p = 0.001).    
 
 ## Fish trait PCoAs
 I used Gower's distances to represent differences between traits. This method allows for both continuous and categorical explanatory variables. 
@@ -40,30 +56,30 @@ I used Gower's distances to represent differences between traits. This method al
 knitr::include_graphics(here("docs", "figures", "fish_pcoa.png"))
 ```
 
-Generally this looks like what I would expect. The salmon are generally similar, as are the flatfish and the eelgrass-associated fish. Could investigate further by tube-snout are more similar to other forage fish than anchovy. 
+Generally this looks like what I would expect. The salmon are generally similar, as are the flatfish and the eelgrass-associated fish. 
 
 
 ```{r PCoA2, echo=FALSE, fig.cap="Fig 3. A slightly better looking graphical visualization of the variation in traits among fish species", out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_pcoa2.png"))
 ```
 
-This plot shows the same points as the previous plot, broken into 7 groupings. I determined the most parsimonious number of groupings by performing a hierarchical cluster analysis. In the future I could add some species labels or trait loadings to this plot to make it more informative.
+I determined the most parsimonious number of groupings by performing a hierarchical cluster analysis. In the future I could add some species labels or trait loadings to this plot to make it more informative.
 
 
 ## Fish functional diversity indices at <ins>**core**</ins> sites
 
 ```{r FD_core, echo=FALSE, fig.cap="Fig 4. Results of the FD analysis for core sites", out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_FDcorepatch.png"))
+knitr::include_graphics(here("docs", "figures", "fish_FDpatch.png"))
 ```
-I then used the species abundance matrix with the trait matrix in the FD function to calculate the various indices. I think this looks pretty interesting!  
+Some interesting between-site differences, mostly with Cornet Bay.
 
-```{r FD_seasonal, echo=FALSE, fig.cap="Fig 5. Seasonal variation in results of the FD analysis for core sites", out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_seasonalFDcorepatch.png"))
-```
-These plots were created with the same methods above but displayed by month to see how diversity varies by month. Will need to look at these more to decide if there are interesting things to explore, but an initial glance shows that sites appear to be most similar in June. 
+Next I plotted a monthly time series over each sample year. Note that if there are less than three species present in a given sampling event (grey horizontal line in the NumbSpecies plot) then some of the FD indices can't be calculated. 
 
-## Fish functional diversity indices at <ins>**all**</ins> sites
-```{r FD_all, echo=FALSE, fig.cap="Fig 6. Results of the FD analysis for all sites in June only", out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_FDallpatch.png"))
+```{r FD_seasonal, echo=FALSE, out.width = '100%'}
+knitr::include_graphics(here("docs", "figures", "fish_2018seasonalFDpatch.png"))
+knitr::include_graphics(here("docs", "figures", "fish_2019seasonalFDpatch.png"))
+knitr::include_graphics(here("docs", "figures", "fish_2021seasonalFDpatch.png"))
+knitr::include_graphics(here("docs", "figures", "fish_2022seasonalFDpatch.png"))
+
 ```
-There is probably a better way to display these data. This shows the snapshot of June data for all sites. 
+ need to look at these more to decide if there are interesting things to explore, but nothing huge is initally jumping out. Probably should break up by index and facet by year. 

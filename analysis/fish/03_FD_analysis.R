@@ -20,7 +20,7 @@ fish.traits <- fish.list$trait %>%
 fish.gowdist <- gowdis(fish.traits)
 
 #view pcoa
-pcoa <- cmdscale(fish.gowdist)
+pcoa <- cmdscale(sqrt(fish.gowdist)) 
 colnames(pcoa) <- c("pcoa1", "pcoa2")
 
 fish_pcoa <- pcoa %>%
@@ -53,13 +53,14 @@ plot(fish.hclust, hang = -1,
 scree(hclust.obj = fish.hclust) # not a solid answer here but 5-7 is generally at the bottom of the elbow, so we'll try 6 groups
 
 #### FD indices calculation ####################################################
-fishFD <- dbFD(fish.traits, #must be a df where character columns are factors
-                fish.list[[2]], 
-                 m = 4, #seems to keep 4 axis no matter how many you specify?
-                 calc.FGR = TRUE, 
-                 clust.type = "ward.D2",
-                 calc.FDiv = TRUE, #won't return a value if there are only categorical traits
-                 print.pco = TRUE)
+fishFD <- dbFD(x = fish.traits, #must be a df where character columns are factors
+               a = fish.list$abund,
+               corr = "sqrt", #this is the default option to deal with negative eigenvalues
+               m = 4, #seems to keep 4 axis no matter how many you specify?
+               calc.FGR = TRUE, 
+               clust.type = "ward.D2",
+               calc.FDiv = TRUE, #won't return a value if there are only categorical traits
+               print.pco = TRUE)
 #it will prompt to see if you want to separate by groups (g) and ask how many (7)
 
 ################################################################################
@@ -116,7 +117,11 @@ fish_pcoa2 <- ord_gg +
                    color = Group),
                fill = NA,
                linetype = "dashed",
-               show.legend=FALSE);fish_pcoa2
+               show.legend=FALSE) + 
+  annotate("text", x= PCoA_ordiplot[[2]]$x, y = PCoA_ordiplot[[2]]$y, 
+           label = c("perch and flatfish", "greenling", 
+                     "salmonids", "cod",
+                     "sculpin/lingcod/misc", "forage fish"));fish_pcoa2
 
 ggsave(plot = fish_pcoa2, "docs/figures/fish_pcoa2.png")
 
@@ -190,7 +195,7 @@ index_plots_2021[[1]] + index_plots_2021[[2]] + index_plots_2021[[3]] + index_pl
 ggsave("docs/figures/fish_2021seasonalFDpatch.png")
 index_plots_2022[[1]] + index_plots_2022[[2]] + index_plots_2022[[3]] + index_plots_2022[[4]] + index_plots_2022[[5]] + index_plots_2022[[6]] +
   plot_layout(ncol = 2, guides = 'collect') + plot_annotation('2022')
-ggsave("docs/figures/fish_2021seasonalFDpatch.png")
+ggsave("docs/figures/fish_2022seasonalFDpatch.png")
 
 
             

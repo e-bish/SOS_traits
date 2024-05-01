@@ -4,13 +4,15 @@ library(ggrepel)
 library(vegan)
 
 load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
-fish.adj.abund <- fish.list[[2]] 
-#need to add a dummy species because you can't calculate BC distances on a zero (SHR_04)
-fish.adj.abund <- cbind(fish.adj.abund, dummy = rep(1, times = nrow(fish.adj.abund)))
-fish.adj.abund <- sqrt(fish.adj.abund) #data transformation (sqrt) to avoid weighting by very abundant taxa
+
+## potential data transformations??
+# fish.adj.abund <- fish.list[[2]] 
+# # need to add a dummy species because you can't calculate BC distances on a zero (SHR_04, 2021/2022)?
+# # fish.adj.abund <- cbind(fish.adj.abund, dummy = rep(1, times = nrow(fish.adj.abund)))
+# fish.adj.abund <- sqrt(fish.adj.abund) #data transformation (sqrt) to avoid weighting by very abundant taxa
 
 K <- 3 #number of dimensions, more than 3 generally gets unweildy
-nmds <- metaMDS(fish.adj.abund, distance="bray", k= K, trymax=1000, plot = FALSE)
+nmds <- metaMDS(fish.list$abund , distance="bray", k= K, trymax=1000, plot = FALSE)
 S <- round(nmds$stress, 2) #stress decreases with increasing K, >0.2 is generally a poor fit
 #though stress is just one piece of the puzzle and shouldn't be the only thing considered
 
@@ -51,8 +53,8 @@ ggsave("docs/figures/fish_nmds_months.png")
 ############ follow up tests #################
 
 #PERMANOVA
-site_result <- adonis2(fish.adj.abund ~ points$site + points$month + points$year, method = "bray")
-site_result
+site_result <- adonis2(fish.list$abund ~ + points$site + points$month + points$year, method = "bray")
+site_result #the R2 value gives you the amount of variation accounted for by each parameter
 
 
 #SIMPER

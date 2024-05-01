@@ -33,3 +33,5 @@ Sum across shoreline type for birds. Or average to match the fish approach??
 **Each row in the species abundance matrix will represent a sample day.**
 Instead of averaging abundances across months to get a row for each site
 
+Does anything need to be done to account for spatial collinearity?
+

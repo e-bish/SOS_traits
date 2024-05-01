@@ -11,7 +11,7 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-03-13" />
+<meta name="date" content="2024-05-01" />
 
 <title>Fish Results</title>
 
@@ -248,6 +248,9 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
+  <a href="data_matrices.html">Data Matrices</a>
+</li>
+<li>
   <a href="FD_overview.html">FD Overview</a>
 </li>
 <li>
@@ -270,7 +273,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Fish Results</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-03-13</h4>
+<h4 class="date">2024-05-01</h4>
 
 </div>
 
@@ -290,7 +293,7 @@ continuous variable while the others are categorical.</p>
 <p>I used ordinations to view the differences between data points,
 specifically NMDS and PCoA. Both of these types of ordinations allow
 specification of a distance measure, which is good because euclidian
-distances aren’t appropriate for every data type (e.g. species
+distances aren’t appropriate for every data type (e.g., species
 abundances). These two methods differ in how they determine the axes.
 PCoAs use eigenanalysis, thereby imposing a linear relationship between
 samples, while NMDS uses an iterative, non-metric (rank-order), approach
@@ -301,8 +304,9 @@ for example abundance counts of different species.</p>
 <h2>NMDS representing abundances by site</h2>
 <p>NMDS is a distance based ordination technique. In this ordination,
 the space between the points represents the distance (dissimilarity)
-between them. Here I used Bray-curtis distances, a common method for
-abundance data.</p>
+between them. To create this plot, I used bray-curtis distances. I did
+not perform a square root transformation because I wanted the relatively
+rare and abundant species to effect the differences in communities.</p>
 <div class="figure">
 <img src="figures/fish_nmds_sites.png" alt="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code." width="100%" />
 <p class="caption">
@@ -312,10 +316,9 @@ corresponding month for each data point while jubilee sites are
 displayed with their site code.
 </p>
 </div>
-<p>This plot generally aligns with my impression of which sites should
-be similar, though there are some interesting patterns. The results of a
-PERMANOVA suggest that sites account for 41.4% of the variation in
-species composition (p = 0.001).</p>
+<p>I was expecting to see more of a separation between Cornet Bay and
+Family Tides and the others, but it does look like their centroids are
+fairly different.</p>
 </div>
 <div id="nmds-representing-abundances-by-month" class="section level2">
 <h2>NMDS representing abundances by month</h2>
@@ -326,9 +329,25 @@ Fig 2. A graphical visualization of the variation in abundances of
 different species between months.
 </p>
 </div>
-<p>There is clearly more variation between sites than months in these
-data. Months account for only 16.5% of the variation in species
-composition (p = 0.022).</p>
+<p>There is clearly a difference between April and other months
+sampled.</p>
+</div>
+<div id="permanova" class="section level2">
+<h2>PERMANOVA</h2>
+<p>Testing out a permanova on the nmds results. It looks like this
+method automatically conducts a square root transformation and Wisconsin
+double standardization??</p>
+<pre class="r"><code>load(here(&quot;data&quot;, &quot;fish.list.Rdata&quot;)) #object created in 02_tidy_data
+
+nmds &lt;- metaMDS(fish.list$abund , distance=&quot;bray&quot;, k= 3, trymax=1000, plot = FALSE)
+points &lt;- data.frame(nmds$points) %&gt;% 
+  mutate(sample = rownames(fish.list$abund)) %&gt;% 
+  separate_wider_delim(sample, delim = &quot;_&quot;, names = c(&quot;year&quot;, &quot;month&quot;, &quot;site&quot;), cols_remove = FALSE) 
+
+adonis2(fish.list$abund ~ points$site + points$month + points$year, method = &quot;bray&quot;)</code></pre>
+<p>Sites account for 12.5% of the variation of the variation in species
+composition (p = 0.001) and months account for just 8.1% (p =
+0.001).</p>
 </div>
 <div id="fish-trait-pcoas" class="section level2">
 <h2>Fish trait PCoAs</h2>
@@ -343,9 +362,8 @@ species
 </p>
 </div>
 <p>Generally this looks like what I would expect. The salmon are
-generally similar, as are the flatfish and the eelgrass-associated fish.
-Could investigate further by tube-snout are more similar to other forage
-fish than anchovy.</p>
+generally similar, as are the flatfish and the eelgrass-associated
+fish.</p>
 <div class="figure">
 <img src="figures/fish_pcoa2.png" alt="Fig 3. A slightly better looking graphical visualization of the variation in traits among fish species" width="100%" />
 <p class="caption">
@@ -353,48 +371,30 @@ Fig 3. A slightly better looking graphical visualization of the
 variation in traits among fish species
 </p>
 </div>
-<p>This plot shows the same points as the previous plot, broken into 7
-groupings. I determined the most parsimonious number of groupings by
-performing a hierarchical cluster analysis. In the future I could add
-some species labels or trait loadings to this plot to make it more
-informative.</p>
+<p>I determined the most parsimonious number of groupings by performing
+a hierarchical cluster analysis. In the future I could add some species
+labels or trait loadings to this plot to make it more informative.</p>
 </div>
 <div id="fish-functional-diversity-indices-at-core-sites"
 class="section level2">
 <h2>Fish functional diversity indices at
 <ins><strong>core</strong></ins> sites</h2>
 <div class="figure">
-<img src="figures/fish_FDcorepatch.png" alt="Fig 4. Results of the FD analysis for core sites" width="100%" />
+<img src="figures/fish_FDpatch.png" alt="Fig 4. Results of the FD analysis for core sites" width="100%" />
 <p class="caption">
 Fig 4. Results of the FD analysis for core sites
 </p>
 </div>
-<p>I then used the species abundance matrix with the trait matrix in the
-FD function to calculate the various indices. I think this looks pretty
-interesting!</p>
-<div class="figure">
-<img src="figures/fish_seasonalFDcorepatch.png" alt="Fig 5. Seasonal variation in results of the FD analysis for core sites" width="100%" />
-<p class="caption">
-Fig 5. Seasonal variation in results of the FD analysis for core sites
-</p>
-</div>
-<p>These plots were created with the same methods above but displayed by
-month to see how diversity varies by month. Will need to look at these
-more to decide if there are interesting things to explore, but an
-initial glance shows that sites appear to be most similar in June.</p>
-</div>
-<div id="fish-functional-diversity-indices-at-all-sites"
-class="section level2">
-<h2>Fish functional diversity indices at <ins><strong>all</strong></ins>
-sites</h2>
-<div class="figure">
-<img src="figures/fish_FDallpatch.png" alt="Fig 6. Results of the FD analysis for all sites in June only" width="100%" />
-<p class="caption">
-Fig 6. Results of the FD analysis for all sites in June only
-</p>
-</div>
-<p>There is probably a better way to display these data. This shows the
-snapshot of June data for all sites.</p>
+<p>Some interesting between-site differences, mostly with Cornet
+Bay.</p>
+<p>Next I plotted a monthly time series over each sample year. Note that
+if there are less than three species present in a given sampling event
+(grey horizontal line in the NumbSpecies plot) then some of the FD
+indices can’t be calculated.</p>
+<p><img src="figures/fish_2018seasonalFDpatch.png" width="100%" /><img src="figures/fish_2019seasonalFDpatch.png" width="100%" /><img src="figures/fish_2021seasonalFDpatch.png" width="100%" /><img src="figures/fish_2022seasonalFDpatch.png" width="100%" />
+need to look at these more to decide if there are interesting things to
+explore, but nothing huge is initally jumping out. Probably should break
+up by index and facet by year.</p>
 </div>
 
 

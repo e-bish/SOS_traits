@@ -11,7 +11,7 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-04-30" />
+<meta name="date" content="2024-05-01" />
 
 <title>Salish Sea Functional Diversity Analysis</title>
 
@@ -274,7 +274,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">Salish Sea Functional Diversity
 Analysis</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-04-30</h4>
+<h4 class="date">2024-05-01</h4>
 
 </div>
 
@@ -284,6 +284,62 @@ Analysis</h1>
 <p>This website will contain the most up-to-date information on methods
 and preliminary results for Chapter 2 of my dissertation, an exploration
 of the functional diversity of fish and birds in the Salish Sea.</p>
+</div>
+<div id="proposed-approach-from-dissertation-proposal"
+class="section level2">
+<h2>Proposed Approach (from dissertation proposal)</h2>
+<p>To relate site characteristics to species abundances and traits, I
+propose conducting a combined RLQ and fourth-corner analysis (Dray et
+al., 2014). In this method, R represents environmental descriptors for
+each site (shoreline armor extent and urbanization metrics), L
+represents a matrix that characterizes species abundances by site, and Q
+represents the matrix of functional traits by species (Dolédec et al.,
+1996; Legendre et al., 1997). To use this approach, I will fit a
+predictive model in which species abundances (L) are a function of
+environmental (R) and species trait (Q) data, including an interaction
+of environment and traits. The interaction is the fourth-corner aspect
+of this analysis, which accounts for differences in the response of
+species with different traits to environmental variation.</p>
+<p>To calculate functional diversity indices for each survey site, I
+will first calculate distances between the L and Q input matrices using
+Gower’s method to create a species x species matrix (Mouillot et al.,
+2014). Gower’s distance measure enables the use of both continuous and
+categorical traits (Gower, 1971). Categorical variables are first
+re-coded as dummy integers, then means and variances of all variables
+are calculated and standardized by the dummy variables to account for
+the fact that the variance between the coded integers is higher than the
+variance of the continuous variables, and finally Euclidean distances
+are calculated between the resulting values (Gower, 1971; Greenacre and
+Primicerio, 2013). I will then conduct multidimensional scaling of the
+species x species matrix with a principle coordinates analysis (PCoA) to
+construct a functional trait space. From the species x species matrix,
+and the axes of the PCoA, I will calculate a number of diversity indices
+including functional evenness, richness, and divergence (McKinley et
+al., 2022; Villéger et al., 2008). Functional richness represents the
+area within the trait space occupied by the assemblage, evenness
+describes how equally species are distributed within the trait space,
+and divergence accounts for the distances of species away from the
+center of the trait space (Laliberté et al. 2022). Collectively, these
+indices represent the breadth of ecological niches occupied by the
+species represented, which indicates how resilient communities are to
+disturbance (Douglas et al., 2017; Granda et al., 2018). I will compare
+the suite of functional diversity indices between sites with a
+Permutational Multivariate Analysis of Variance (PERMANOVA).</p>
+<p>To associate community diversity with the features that comprise
+local site conditions, I will conduct a correspondence analysis (CA) on
+the L matrix to generate scores for relatedness of species abundances. I
+will then conduct a Principal Components Analysis (PCA) with the R and Q
+matrices, using scores from the CA to weight the rows and columns, which
+links the abundance matrix to the others. I will then combine
+ordinations with the RLQ method to maximize covariance, thereby
+characterizing the global effect of environmental variables on
+functional traits. Next, I will assess the significance of bivariate
+trait and environmental variable associations with the fourth-corner
+method, which involves sequential testing of significance between models
+that separately fix traits and environmental conditions, then adjusting
+final p-values to account for type I error (Dray et al., 2014). This
+accounts for the fact that species with different traits will respond
+differently to variation in environmental variables.</p>
 </div>
 <div id="major-analysis-decisions" class="section level2">
 <h2>Major analysis decisions</h2>
@@ -307,6 +363,8 @@ approach??</p>
 <p><strong>Each row in the species abundance matrix will represent a
 sample day.</strong> Instead of averaging abundances across months to
 get a row for each site</p>
+<p>Does anything need to be done to account for spatial
+collinearity?</p>
 </div>
 
 
