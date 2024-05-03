@@ -1,0 +1,4 @@
+(Port Townsend South quad)
+
+Although the predominant drift direction has been mapped, text documenting evidence
+of drift has not yet been created for this this cell.

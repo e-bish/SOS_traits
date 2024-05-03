@@ -1,0 +1,16 @@
+(Quilcene quadrangle)
+
+This cell represents a short (1.5 km), local reversal in the overall
+northward net shore-drift that is characteristic of Dabob and Quilcene
+bays.  Net shore-drift is to the southeast in this cell.  This is due
+to the northeast-facing orientation of the shore immediately west of
+Whitney Point and the 7 km northerly and northeasterly fetch that this
+area is exposed to, in contrast to the surrounding shore that is
+generally not exposed to northerly fetch.  The cell origin is located
+1.0 km south of Frenchmans Point at an erosional area (see cell
+JE-19).  Southeastward net shore-drift is indicated by southeastward
+bluff vegetation and beach width increase, sediment size decrease, and
+stream mouth offset at 1.3 and 1.9 km south of Frenchmans Point.  The
+cell terminus is located in a zone of drift convergence in common with
+cell JE-21 at Bees Mill, centered approximately 300 m west of the State
+Shellfish Laboratory where a wide beach is present.
