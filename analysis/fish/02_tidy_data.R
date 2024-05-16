@@ -100,7 +100,7 @@ spp_names <- spp_names %>%
 #   inner_join(spp_names) %>% 
 #   mutate(Species2 = str_to_sentence(ComName))
 
-fish_L_df <- net_tidy %>% 
+fish_L_df <- net_tidy %>% #L is referring to the RLQ analysis
   group_by(year, month, site, ipa, ComName) %>%
   summarize(spp_sum = sum(species_count)) %>% 
   ungroup() %>% 
@@ -116,7 +116,7 @@ fish_L_mat <- fish_L_df %>%
   select(!1:3) %>% 
   column_to_rownames(var = "sample")
 
-fish_L_mat.t <- round(sqrt(fish_L_mat),2)
+#### still need to decide whether to remove rows with <3 species 
 
 # trait data
 
