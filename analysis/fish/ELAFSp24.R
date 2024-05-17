@@ -3,12 +3,14 @@ library(here)
 library(ggrepel)
 library(FD)
 library(ggordiplots)
-library(PNWColors)
 library(patchwork)
 library(vegan)
-library(mFD)
+library(ggpubr)
+library(ade4)
+library(mvabund)
 
 load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
+load(here("data", "env_table.Rdata")) #object created in spatial analysis
 here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
 here("analysis", "general_functions", "scree.r") %>% source()
 
@@ -112,4 +114,110 @@ pcoa %>%
        y="PCoA Axis 2 (17.37%)") +
   theme_bw(base_size = 16)
 
+plot_index <- function (index){
+  
+  ggplot(data = FD_results, aes(x = site, y = .data[[index]], fill = site)) +
+    geom_boxplot(outlier.shape = NA) + 
+    stat_compare_means(label = "p.signif", ref.group = ".all.", hide.ns = TRUE) + #using default kruskal-wallace test
+    theme_classic() +
+    ylab(index) +
+    theme(axis.title.x = element_blank())
+}
+
+index_plots <- lapply(names(FD_results[5:8]), plot_index)
+
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
+  plot_layout(ncol = 4, guides = 'collect')
+
+
+adonis2(FD_results[5:8] ~ FD_results$site, strata = FD_results$year, method = "euc", permutations = 999)
+
+kruskal.test(NumbSpecies ~ site, data = FD_results)
+
+#### RLQ/Fourth corner ####
+
+#try with just presence absence
+abu <- fish.list$abund %>% 
+  as_tibble(rownames = "sample") %>% 
+  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) %>% 
+  select(!c(year, month, sample)) %>% 
+  group_by(site) %>% 
+  summarize_all(sum) %>% 
+  column_to_rownames("site") %>% 
+  decostand(method = "pa")
+
+trait <- fish.list$trait
+
+env <- env_table %>% 
+  column_to_rownames("site")
+
+#COA on abundance matrix L (site x species)
+#aka what species correspond with what sites
+coa.abu <- dudi.coa(abu, scannf = FALSE, nf=2)
+
+#PCA on traits matrix Q (species x traits)
+#aka what are the principle components of trait variation
+pca.trait <- dudi.hillsmith(trait, scannf = FALSE, 
+                            row.w = coa.abu$cw)
+
+#PCA on environment matrix R (sites x environment)
+#aka what are the principle components of environmental variation
+#use dudi.hillsmith for cat and continuous variables or dudi.pca for just continuous
+pca.env <- dudi.pca(env, scannf = FALSE, 
+                    row.w = coa.abu$lw)
+
+#Compute the RLQ Analysis
+rlqF <- rlq(pca.env, coa.abu, pca.trait, 
+            scannf = FALSE)
+
+summary(rlqF)
+
+#Plot traits score
+t1 <- order(rlqF$c1[,1])
+dotchart(rlqF$c1[t1,1], pch=16, 
+         labels = names(trait)[t1])
+abline(v=0, lty=2)
+
+#species scores
+# top 10 species with positive score
+rlqF$mQ[order(rlqF$mQ[,1], decreasing = TRUE)[1:10],]
+
+# top 10 species with negative score
+rlqF$mQ[order(rlqF$mQ[,1])[1:10],]
+
+#Plot environment score
+e1 <- order(rlqF$l1[,1])
+dotchart(rlqF$l1[e1,1], pch=16,
+         labels = names(env)[e1])
+abline(v=0, lty=2)
+
+RLQ1 <- rlqF$lR[,1]
+
+
+#method adds a LASSO penalty which essentially reduces the number of predictors by 
+#getting rid of interactions close to zero
+fit <- traitglm(abu,env,trait,family = "binomial", method="manyglm")
+## why does lasso give an error?!
+fit$fourth
+
+plot(fit)
+
+anova(fit, nBoot = 10)
+# p = 0.91
+
+a        = max( abs(fit$fourth.corner) )
+colort   = colorRampPalette(c("blue","white","red")) 
+plot.4th = levelplot(t(as.matrix(fit$fourth.corner)), xlab="Environmental Variables",
+                     ylab="Species traits", col.regions=colort(100), at=seq(-a, a, length=100),
+                     scales = list( x= list(rot = 45)))
+print(plot.4th)
+
+#other technique not working
+nrepet <- 49999
+four.comb <- fourthcorner(env, abu, trait, modeltype = 6, 
+                          p.adjust.method.G = "fdr",
+                          p.adjust.method.D = "fdr",
+                          nrepet = nrepet)
+
+plot(four.comb, alpha = 0.05, stat = "D2")
 

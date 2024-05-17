@@ -53,7 +53,7 @@ ggsave("docs/figures/fish_nmds_months.png")
 ############ follow up tests #################
 
 #PERMANOVA
-site_result <- adonis2(fish.list$abund ~ + points$site + points$month + points$year, method = "bray")
+site_result <- adonis2(fish.list$abund ~ points$site + points$month + points$year, method = "bray")
 site_result #the R2 value gives you the amount of variation accounted for by each parameter
 
 
