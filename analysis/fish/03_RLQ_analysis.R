@@ -11,7 +11,6 @@ load(here("data", "env_table.Rdata")) #object created in spatial analysis
 # load(here("data", "fish.list.june.Rdata")) #object created in 02_tidy_data
 # load(here("data", "env.data.june.Rdata")) #object created in 02_tidy_data
 
-
 trait <- fish.list$trait %>% 
   as.data.frame() %>% 
   mutate(mean_length_mm = as.numeric(mean_length_mm)) %>% 
