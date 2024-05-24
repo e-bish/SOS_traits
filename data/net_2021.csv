@@ -95,25 +95,25 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,05,05,TUR,Restored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,7,0
 2021,05,07,COR,Armored,0,Benthic Invertebrate,Decapod,Crangonid Shrimp,2,0
 2021,05,07,COR,Armored,0,Fish,Forage Fish,Herring,1,80
-2021,05,07,COR,Armored,0,Fish,Salmon,Chum,313,3.3738019169328823
+2021,05,07,COR,Armored,0,Fish,Salmon,Chum,313,3.373801916932907
 2021,05,07,COR,Armored,0,Fish,Stichaeid,Stickleback,2,65
 2021,05,07,COR,Armored,0,Stichaeid,Stichaeid,Snake Prickleback,3,115
 2021,05,07,COR,Armored,1,NA,NA,none,1,0
 2021,05,07,COR,Armored,2,NA,NA,none,1,0
 2021,05,07,COR,Natural,0,Fish,Pholidae,Crescent Gunnel,1,95
 2021,05,07,COR,Natural,0,Fish,Stichaeid,Snake Prickleback,2,136
-2021,05,07,COR,Natural,1,Fish,Salmon,Chum,24,43.04166666666667
+2021,05,07,COR,Natural,1,Fish,Salmon,Chum,24,43.041666666666664
 2021,05,07,COR,Natural,2,Fish,Salmon,Chinook,4,77
 2021,05,07,COR,Restored,0,Fish,Cottidae,UnID Sculpin,1,80
 2021,05,07,COR,Restored,0,Fish,Perch,Pile Perch,1,160
-2021,05,07,COR,Restored,0,Fish,Perch,Shiner Perch,68,23.29411764705884
+2021,05,07,COR,Restored,0,Fish,Perch,Shiner Perch,68,23.294117647058822
 2021,05,07,COR,Restored,0,Fish,Pholidae,Crescent Gunnel,1,125
 2021,05,07,COR,Restored,0,Fish,Salmon,Chinook,1,85
 2021,05,07,COR,Restored,0,Fish,Salmon,Coho,1,103
 2021,05,07,COR,Restored,0,Fish,Sygnathid,Pipefish,1,130
 2021,05,07,COR,Restored,1,NA,NA,none,1,0
 2021,05,07,COR,Restored,2,Fish,Salmon,Chinook,3,77.66666666666667
-2021,05,07,COR,Restored,2,Fish,Salmon,Chum,77,14.8181818181818
+2021,05,07,COR,Restored,2,Fish,Salmon,Chum,77,14.818181818181818
 2021,05,11,EDG,Armored,0,NA,NA,none,1,0
 2021,05,11,EDG,Armored,1,NA,NA,none,1,0
 2021,05,11,EDG,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,4,0
@@ -124,7 +124,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,05,11,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,15,0
 2021,05,11,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Fried Egg Jelly,1,0
 2021,05,11,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
-2021,05,11,EDG,Restored,1,Fish,Salmon,Chinook,52,25.346153846153854
+2021,05,11,EDG,Restored,1,Fish,Salmon,Chinook,52,25.346153846153847
 2021,05,11,EDG,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
 2021,05,13,DOK,Armored,0,Fish,Perch,Shiner Perch,3,97
 2021,05,13,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
@@ -176,7 +176,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,07,PR,Armored,1,Fish,Forage Fish,Herring,1,115
 2021,06,07,PR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
 2021,06,07,PR,Armored,2,Pelagic invertebrate,Jellyfish,Water Jelly,1,0
-2021,06,07,PR,Natural,0,Fish,Perch,Shiner Perch,21,36.9047619047619
+2021,06,07,PR,Natural,0,Fish,Perch,Shiner Perch,21,36.904761904761905
 2021,06,07,PR,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,23,0
 2021,06,07,PR,Natural,0,Pelagic invertebrate,Jellyfish,Water Jelly,4,0
 2021,06,07,PR,Natural,1,Fish,Perch,Shiner Perch,1,105
@@ -207,7 +207,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,17,WA,Armored,0,Fish,Stichaeid,Stickleback,1,72
 2021,06,17,WA,Armored,1,Fish,Salmon,Chinook,1,115
 2021,06,17,WA,Armored,2,Fish,Stichaeid,Stickleback,1,39
-2021,06,17,WA,Natural,0,Fish,Perch,Shiner Perch,23,69.30434782608697
+2021,06,17,WA,Natural,0,Fish,Perch,Shiner Perch,23,69.30434782608695
 2021,06,17,WA,Natural,0,Fish,Stichaeid,Snake Prickleback,1,165
 2021,06,17,WA,Natural,1,Fish,Salmon,Chinook,1,110
 2021,06,17,WA,Natural,2,Fish,Salmon,Chum,1,0
@@ -221,7 +221,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,18,FAM,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,155
 2021,06,18,FAM,Armored,1,NA,NA,none,1,0
 2021,06,18,FAM,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
-2021,06,18,FAM,Natural,0,Fish,Forage Fish,Herring,27,70.37037037037035
+2021,06,18,FAM,Natural,0,Fish,Forage Fish,Herring,27,70.37037037037037
 2021,06,18,FAM,Natural,0,Fish,Forage Fish,Surf Smelt,3,104.33333333333333
 2021,06,18,FAM,Natural,0,Fish,Stichaeid,Snake Prickleback,1,165
 2021,06,18,FAM,Natural,1,Fish,Forage Fish,Herring,1,89
@@ -229,12 +229,12 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,18,FAM,Restored,0,NA,NA,none,1,0
 2021,06,18,FAM,Restored,1,NA,NA,none,1,0
 2021,06,18,FAM,Restored,2,Fish,Forage Fish,Herring,1,80
-2021,06,18,TUR,Armored,0,Fish,Gadidae,UnID Gadid,118,8.262711864406773
+2021,06,18,TUR,Armored,0,Fish,Gadidae,UnID Gadid,118,8.26271186440678
 2021,06,18,TUR,Armored,0,Fish,Hexagrammidae,Kelp Greenling,1,81
 2021,06,18,TUR,Armored,1,Fish,Gadidae,UnID Gadid,11,50.54545454545455
 2021,06,18,TUR,Armored,2,NA,NA,none,1,0
 2021,06,18,TUR,Natural,0,Fish,Forage Fish,Sand Lance,6,77
-2021,06,18,TUR,Natural,0,Fish,Gadidae,UnID Gadid,162,6.2962962962962905
+2021,06,18,TUR,Natural,0,Fish,Gadidae,UnID Gadid,162,6.296296296296297
 2021,06,18,TUR,Natural,1,Fish,Cottidae,Silver Spotted Sculpin,1,50
 2021,06,18,TUR,Natural,1,Fish,Cottidae,UnID Sculpin,1,129
 2021,06,18,TUR,Natural,1,Fish,Gadidae,UnID Gadid,3,53
@@ -282,7 +282,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,23,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Ctenophore,2,0
 2021,06,23,DOK,Natural,1,NA,NA,none,1,0
 2021,06,23,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,21,0
-2021,06,23,DOK,Restored,0,Fish,Perch,Shiner Perch,105,17.504761904761917
+2021,06,23,DOK,Restored,0,Fish,Perch,Shiner Perch,105,17.504761904761907
 2021,06,23,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
 2021,06,23,DOK,Restored,1,Fish,Perch,Shiner Perch,1,82
 2021,06,23,DOK,Restored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,8,0
@@ -378,7 +378,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,07,20,FAM,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
 2021,07,20,FAM,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
 2021,07,20,FAM,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
-2021,07,20,TUR,Armored,0,Fish,Gadidae,Tom Cod,28,50.46428571428571
+2021,07,20,TUR,Armored,0,Fish,Gadidae,Tom Cod,28,50.464285714285715
 2021,07,20,TUR,Armored,0,Fish,Perch,Shiner Perch,2,78
 2021,07,20,TUR,Armored,0,Fish,Pholidae,Crescent Gunnel,3,94.66666666666667
 2021,07,20,TUR,Armored,0,Fish,Pholidae,Penpoint Gunnel,2,165.5
@@ -387,7 +387,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,07,20,TUR,Armored,1,Fish,Gadidae,Tom Cod,2,105
 2021,07,20,TUR,Armored,1,Fish,Perch,Striped Perch,2,73
 2021,07,20,TUR,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,6,0
-2021,07,20,TUR,Natural,0,Fish,Gadidae,UnID Gadid,131,9.557251908396971
+2021,07,20,TUR,Natural,0,Fish,Gadidae,UnID Gadid,131,9.557251908396946
 2021,07,20,TUR,Natural,1,NA,NA,none,1,0
 2021,07,20,TUR,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
 2021,07,20,TUR,Restored,0,NA,NA,none,1,0
@@ -415,7 +415,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,08,12,FAM,Natural,0,Benthic Invertebrate,Decapod,Helmet Crab,2,0
 2021,08,12,FAM,Natural,0,Benthic Invertebrate,Decapod,Red Rock Crab,1,70
 2021,08,12,FAM,Natural,0,Benthic Invertebrate,Decapod,UnID Shrimp,1,0
-2021,08,12,FAM,Natural,0,Fish,Perch,Shiner Perch,101,11.514851485148526
+2021,08,12,FAM,Natural,0,Fish,Perch,Shiner Perch,101,11.514851485148515
 2021,08,12,FAM,Natural,0,Fish,Pholidae,Crescent Gunnel,2,126.5
 2021,08,12,FAM,Natural,1,Pelagic invertebrate,Jellyfish,Water Jelly,3,0
 2021,08,12,FAM,Natural,2,Pelagic invertebrate,Jellyfish,Water Jelly,1,0
@@ -450,7 +450,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,08,19,COR,Armored,2,NA,NA,none,1,0
 2021,08,19,COR,Natural,0,Fish,Perch,Shiner Perch,7,96.14285714285714
 2021,08,19,COR,Natural,0,Fish,Pholidae,Saddleback Gunnel,1,0
-2021,08,19,COR,Natural,1,Fish,Perch,Shiner Perch,33,49.06060606060607
+2021,08,19,COR,Natural,1,Fish,Perch,Shiner Perch,33,49.06060606060606
 2021,08,19,COR,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
 2021,08,19,COR,Natural,2,NA,NA,none,1,0
 2021,08,19,COR,Restored,0,Fish,Perch,Shiner Perch,18,85.55555555555556
@@ -465,16 +465,16 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,08,24,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
 2021,08,24,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Moon Jelly,39,0
 2021,08,24,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,63,0
-2021,08,24,DOK,Natural,0,Fish,Stichaeid,Stickleback,500,1.6239999999999855
+2021,08,24,DOK,Natural,0,Fish,Stichaeid,Stickleback,500,1.624
 2021,08,24,DOK,Natural,0,Pelagic invertebrate,Jellyfish,Moon Jelly,2,0
-2021,08,24,DOK,Natural,1,Fish,Stichaeid,Stickleback,389,2.0128534704370327
+2021,08,24,DOK,Natural,1,Fish,Stichaeid,Stickleback,389,2.012853470437018
 2021,08,24,DOK,Natural,1,Pelagic invertebrate,Jellyfish,Moon Jelly,95,0
 2021,08,24,DOK,Natural,2,Pelagic invertebrate,Jellyfish,Moon Jelly,21,0
 2021,08,24,DOK,Restored,0,Fish,Perch,Shiner Perch,1,56
-2021,08,24,DOK,Restored,0,Fish,Stichaeid,Stickleback,245,2.832653061224483
+2021,08,24,DOK,Restored,0,Fish,Stichaeid,Stickleback,245,2.83265306122449
 2021,08,24,DOK,Restored,0,Pelagic invertebrate,Jellyfish,Moon Jelly,1,0
 2021,08,24,DOK,Restored,1,Benthic Invertebrate,Crustacean,Dungeness Crab,1,10
-2021,08,24,DOK,Restored,1,Fish,Perch,Shiner Perch,38,32.44736842105265
+2021,08,24,DOK,Restored,1,Fish,Perch,Shiner Perch,38,32.44736842105263
 2021,08,24,DOK,Restored,1,Fish,Stichaeid,Stickleback,3,19.333333333333332
 2021,08,24,DOK,Restored,1,Pelagic invertebrate,Decapod,Pelagic Shrimp,1,0
 2021,08,24,DOK,Restored,2,Fish,Stichaeid,Stickleback,1,38
