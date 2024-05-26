@@ -1,7 +1,6 @@
 library(tidyverse)
 library(here)
 library(janitor)
-library(rfishbase)
 library(vegan)
 
 ###### This creates a list of matrices for trait and abundance data only by site ######
@@ -236,4 +235,6 @@ abund_region %>%
 
 #### final tidy dataframe for analysis ####
 net_tidy <- net_tidy %>% 
-  filter(sites %in% SOS_core_sites) #use only core sites because we didn't sample jubilee sites enough to capture the community
+  filter(site %in% SOS_core_sites) #use only core sites because we didn't sample jubilee sites enough to capture the community
+
+save(net_tidy, file = here("data", "net_tidy.Rdata"))
