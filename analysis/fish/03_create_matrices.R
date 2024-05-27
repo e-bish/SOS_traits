@@ -9,16 +9,13 @@ load(here("data", "net_tidy.Rdata"))
 
 fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   group_by(year, month, site, ipa, ComName) %>%
-  summarize(spp_sum = sum(species_count)) %>% 
-  ungroup() %>% 
-  complete(nesting(year, month, site), ipa, ComName, fill = list(spp_sum = 0)) %>% #fill in zeros for shorelines we sampled
-  group_by(year, month, site, ComName) %>% 
-  summarize(spp_mean = round(mean(spp_sum), 2)) %>% 
-  pivot_wider(names_from = ComName, values_from = spp_mean, values_fill = 0) %>% 
+  summarize(spp_sum = sum(species_count)) %>% #sum across depths within a site
+  ungroup() %>%
+  pivot_wider(names_from = ComName, values_from = spp_sum, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
-  mutate(sample = paste(year, month, site, sep = "_"), .after = site) %>% 
-  select(!1:3) %>% 
+  mutate(sample = paste(year, month, site, ipa, sep = "_"), .after = ipa) %>% 
+  select(!1:4) %>% 
   column_to_rownames(var = "sample")
 
 #### Create the Q (trait) matrix ####

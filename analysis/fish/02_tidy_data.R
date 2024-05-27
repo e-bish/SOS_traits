@@ -3,7 +3,7 @@ library(here)
 library(janitor)
 library(vegan)
 
-###### This creates a list of matrices for trait and abundance data only by site ######
+###### This creates a list of matrices for trait and abundance data only by sampling event ######
 
 # If common_to_sci gives issues, install the duckdb package
 # options(timeout=100)
@@ -202,7 +202,8 @@ net_tidy %>%
   filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
   ggplot(aes(x = month, y = species_count, fill = year)) +
   geom_bar(stat = "identity") +
-  labs(x = "Month", y = "Abundance", fill = "Year")
+  labs(x = "Month", y = "Abundance", fill = "Year") + 
+  theme_classic()
 #doesn't seem to be a clear break between "early" and "late" 
 
 #in species richness?

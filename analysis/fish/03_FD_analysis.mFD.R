@@ -120,7 +120,7 @@ colnames(FD_values)[1:5] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv"
 
 FD_results <- FD_values %>% 
   as_tibble(rownames = "sample") %>% 
-  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) %>% 
+  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site", "ipa"), cols_remove = FALSE) %>% 
   relocate(sample) %>% 
   mutate(month = factor(month, labels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
@@ -136,23 +136,29 @@ plot_index <- function (index, by){
       guides(fill="none")
 }
 
-index_plots <- lapply(names(FD_results[6:10]), plot_index, by = "site")
+index_plots <- lapply(names(FD_results[7:11]), plot_index, by = "site")
 
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
   plot_layout(ncol = 3)
 
 ggsave("docs/figures/fish_FDpatch.png")
 
-index_plots <- lapply(names(FD_results[6:10]), plot_index, by = "region")
+index_plots <- lapply(names(FD_results[7:11]), plot_index, by = "region")
 
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
   plot_layout(ncol = 3)
 
 ggsave("docs/figures/fish_FDregionalpatch.png")
 
+index_plots <- lapply(names(FD_results[7:11]), plot_index, by = "ipa")
+
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
+  plot_layout(ncol = 3)
+
+ggsave("docs/figures/fish_FDipapatch.png")
 
 #### PERMANOVA ####
-adonis2(FD_results[7:10] ~ FD_results$region, strata = FD_results$year, method = "euc")
+adonis2(FD_results[8:11] ~ FD_results$region, strata = FD_results$year, method = "euc")
 
 CTRL <- permute::how(within = Within(type = "free"),
             blocks = year, #permutations are restricted within years
@@ -161,30 +167,33 @@ CTRL <- permute::how(within = Within(type = "free"),
             observed = TRUE)
 #not working because there's an unbalanced design?
 
-adonis2(FD_results[7:10] ~ year + FD_results$region,
+adonis2(FD_results[8:11] ~ year + FD_results$region,
         data = FD_results,
         method = "euclidean",
         permutations = CTRL)
 
-kruskal.test(Species_Richness ~ site, data = FD_results)
-kruskal.test(Species_Richness ~ region, data = FD_results)
-#different
+kruskal.test(Species_Richness ~ site, data = FD_results) #different
+kruskal.test(Species_Richness ~ region, data = FD_results) #different
+kruskal.test(Species_Richness ~ ipa, data = FD_results) #same
 
-kruskal.test(FRic ~ site, data = FD_results)
-kruskal.test(FRic ~ region, data = FD_results)
-#different
 
-kruskal.test(FEve ~ site, data = FD_results)
-kruskal.test(FEve ~ region, data = FD_results)
-#same
+kruskal.test(FRic ~ site, data = FD_results) #different
+kruskal.test(FRic ~ region, data = FD_results) #same
+kruskal.test(FRic ~ ipa, data = FD_results) #different
 
-kruskal.test(FDiv ~ site, data = FD_results)
-kruskal.test(FDiv ~ region, data = FD_results)
-#same
 
-kruskal.test(FDis ~ site, data = FD_results)
-kruskal.test(FDis ~ region, data = FD_results)
-#same
+kruskal.test(FEve ~ site, data = FD_results) #same
+kruskal.test(FEve ~ region, data = FD_results) #same
+kruskal.test(FEve ~ ipa, data = FD_results) #same
+
+
+kruskal.test(FDiv ~ site, data = FD_results) #same
+kruskal.test(FDiv ~ region, data = FD_results) #same
+kruskal.test(FDiv ~ ipa, data = FD_results) #same
+
+kruskal.test(FDis ~ site, data = FD_results) #same
+kruskal.test(FDis ~ region, data = FD_results) #same
+kruskal.test(FDis ~ ipa, data = FD_results) #same
 
 #### PCoA ####
 North_indices <- which(FD_results$region == "North")
