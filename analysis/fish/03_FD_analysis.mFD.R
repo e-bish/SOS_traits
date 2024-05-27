@@ -34,6 +34,7 @@ space_quality <- quality.fspaces(sp_dist = dist_mat,
                                  fdendro = "ward.D2")
 
 round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good), meaning species pairs are accurately represented
+#aka the distances in euclidean space are accurately reflecting the gowers distances
 
 #plot the trait space with the first 3 axes
 plot_object <- space_quality$"details_fspaces"$"sp_pc_coord"
@@ -41,6 +42,34 @@ plot_object <- space_quality$"details_fspaces"$"sp_pc_coord"
 funct.space.plot(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3")],
                  faxes = c("PC1", "PC2", "PC3"))
 
+ggsave("docs/figures/fish_funct.space.plot.png")
+
+plot_object %>%
+  as_tibble(rownames = "species") %>%
+  ggplot(aes(x = PC1, y = PC2)) +
+  geom_text_repel(  
+    label=rownames(plot_object),
+    max.time = 1,
+    max.overlaps = Inf) +
+  geom_point(color = "darkblue") +
+  theme_bw()
+
+ggsave("docs/figures/fish_pcoa.png")
+
+# recreate the PCoA manually
+fish.gowdist <- gowdis(fish.list$trait)
+pcoa <- cmdscale(fish.gowdist, add = TRUE) #cailliez correction
+colnames(pcoa$points) <- c("pcoa1", "pcoa2")
+
+pcoa$points %>%
+  as_tibble(rownames = "species") %>%
+  ggplot(aes(x = pcoa1, y = pcoa2)) +
+  geom_text_repel(
+    label=rownames(pcoa$points),
+    max.time = 1,
+    max.overlaps = Inf) +
+  geom_point(color = "darkblue") +
+  theme_bw()
 
 #test for correlation between functional axes and traits
 trait_axes <- traits.faxes.cor(
@@ -52,6 +81,7 @@ trait_axes <- traits.faxes.cor(
 trait_axes$"tr_faxes_stat"[which(trait_axes$"tr_faxes_stat"$"p.value" < 0.05), ]
 
 trait_axes$"tr_faxes_plot"
+ggsave("docs/figures/fish_trait_axes_plot.png")
 
 #plot the functional space
 functional_space_plot <- mFD::funct.space.plot(

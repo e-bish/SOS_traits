@@ -11,75 +11,43 @@ library(tidyverse)
 library(vegan)
 ```
 
-This page will contain preliminary analyses for fish data. To generate these data, I created an **abundance** matrix and a **trait** matrix.  
-
-For **abundance** matrix I used MaxN for each species at each site by month. So rows were named SITE_month and the values in all of the columns represented the maximum count for each species that we captured in a single day, summed across depth stations, at that site in that month.  
-
-For the **trait** matrix, I used the following traits: mean length (from field data), body shape, water column position, schooling behavior, migratory behavior, and feeding guild. Length is a continuous variable while the others are categorical.  
-
-I used ordinations to view the differences between data points, specifically NMDS and PCoA. Both of these types of ordinations allow specification of a distance measure, which is good because euclidian distances aren't appropriate for every data type (e.g., species abundances). These two methods differ in how they determine the axes. PCoAs use eigenanalysis, thereby imposing a linear relationship between samples, while NMDS uses an iterative, non-metric (rank-order), approach that doesn't make any assumptions of linearity. The rank-order approach is good for when you don't necessarily expect samples to be correlated, for example abundance counts of different species.  
-
-## NMDS representing abundances by site
-NMDS is a distance based ordination technique. In this ordination, the space between the points represents the distance (dissimilarity) between them. To create this plot, I used bray-curtis distances. I did not perform a square root transformation because I wanted the relatively rare and abundant species to effect the differences in communities.
-
-```{r nmds, echo=FALSE, fig.cap="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code.", out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_nmds_sites.png"))
-```
-I was expecting to see more of a separation between Cornet Bay and Family Tides and the others, but it does look like their centroids are fairly different. 
-
-
-## NMDS representing abundances by month
-
-```{r nmds_season, echo=FALSE, fig.cap="Fig 2. A graphical visualization of the variation in abundances of different species between months.", out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_nmds_months.png"))
-```
-There is clearly a difference between April and other months sampled. 
-
-## PERMANOVA
-Testing out a permanova on the nmds results. It looks like this method automatically conducts a square root transformation and Wisconsin double standardization??
-```{r permanova, echo = TRUE, message = FALSE, results = 'hide'}
-load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
-
-nmds <- metaMDS(fish.list$abund , distance="bray", k= 3, trymax=1000, plot = FALSE)
-points <- data.frame(nmds$points) %>% 
-  mutate(sample = rownames(fish.list$abund)) %>% 
-  separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) 
-
-adonis2(fish.list$abund ~ points$site + points$month + points$year, method = "bray")
-```
-Sites account for 12.5% of the variation of the variation in species composition (p = 0.001) and months account for just 8.1% (p = 0.001).    
+This page will contain preliminary analyses for fish data.
 
 ## Fish trait PCoAs
-I used Gower's distances to represent differences between traits. This method allows for both continuous and categorical explanatory variables. 
 
-```{r PCoA1, echo=FALSE, fig.cap="Fig 2. A graphical visualization of the variation in traits among fish species", out.width = '100%'}
+The functional trait space using various axes:
+
+```{r PCoA1, echo=FALSE, out.width = '100%'}
+knitr::include_graphics(here("docs", "figures", "fish_funct.space.plot.png"))
+```
+
+PCoA by species:
+
+```{r PCoA2, echo=FALSE, out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_pcoa.png"))
 ```
 
-Generally this looks like what I would expect. The salmon are generally similar, as are the flatfish and the eelgrass-associated fish. 
+This version has been constructed with the mFD package with a quality of functional space metric of 0.072 for 3 axes. 
 
-
-```{r PCoA2, echo=FALSE, fig.cap="Fig 3. A slightly better looking graphical visualization of the variation in traits among fish species", out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_pcoa2.png"))
+This plot shows what traits are influencing which axes (where blue are more significant)
+```{r trait_axes, echo=FALSE, out.width = '100%'}
+knitr::include_graphics(here("docs", "figures", "fish_trait_axes_plot.png"))
 ```
 
-I determined the most parsimonious number of groupings by performing a hierarchical cluster analysis. In the future I could add some species labels or trait loadings to this plot to make it more informative.
+## Fish functional diversity indices across sites
 
-
-## Fish functional diversity indices at <ins>**core**</ins> sites
-
-```{r FD_core, echo=FALSE, fig.cap="Fig 4. Results of the FD analysis for core sites", out.width = '100%'}
+```{r FD_sites, echo=FALSE, out.width = '100%'}
 knitr::include_graphics(here("docs", "figures", "fish_FDpatch.png"))
 ```
 Some interesting between-site differences, mostly with Cornet Bay.
 
-Next I plotted a monthly time series over each sample year. Note that if there are less than three species present in a given sampling event (grey horizontal line in the NumbSpecies plot) then some of the FD indices can't be calculated. 
-
-```{r FD_seasonal, echo=FALSE, out.width = '100%'}
-knitr::include_graphics(here("docs", "figures", "fish_2018seasonalFDpatch.png"))
-knitr::include_graphics(here("docs", "figures", "fish_2019seasonalFDpatch.png"))
-knitr::include_graphics(here("docs", "figures", "fish_2021seasonalFDpatch.png"))
-knitr::include_graphics(here("docs", "figures", "fish_2022seasonalFDpatch.png"))
-
+## Fish functional diversity indices across regions
+```{r FD_region, echo=FALSE, out.width = '100%'}
+knitr::include_graphics(here("docs", "figures", "fish_FDregionalpatch.png"))
 ```
- need to look at these more to decide if there are interesting things to explore, but nothing huge is initally jumping out. Probably should break up by index and facet by year. 
+
+## Fish functional diversity indices across shoreline types
+```{r FD_ipa, echo=FALSE, out.width = '100%'}
+knitr::include_graphics(here("docs", "figures", "fish_FDipapatch.png"))
+```
+

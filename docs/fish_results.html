@@ -11,11 +11,11 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-05-01" />
+<meta name="date" content="2024-05-27" />
 
 <title>Fish Results</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -273,128 +273,40 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Fish Results</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-05-01</h4>
+<h4 class="date">2024-05-27</h4>
 
 </div>
 
 
-<p>This page will contain preliminary analyses for fish data. To
-generate these data, I created an <strong>abundance</strong> matrix and
-a <strong>trait</strong> matrix.</p>
-<p>For <strong>abundance</strong> matrix I used MaxN for each species at
-each site by month. So rows were named SITE_month and the values in all
-of the columns represented the maximum count for each species that we
-captured in a single day, summed across depth stations, at that site in
-that month.</p>
-<p>For the <strong>trait</strong> matrix, I used the following traits:
-mean length (from field data), body shape, water column position,
-schooling behavior, migratory behavior, and feeding guild. Length is a
-continuous variable while the others are categorical.</p>
-<p>I used ordinations to view the differences between data points,
-specifically NMDS and PCoA. Both of these types of ordinations allow
-specification of a distance measure, which is good because euclidian
-distances aren’t appropriate for every data type (e.g., species
-abundances). These two methods differ in how they determine the axes.
-PCoAs use eigenanalysis, thereby imposing a linear relationship between
-samples, while NMDS uses an iterative, non-metric (rank-order), approach
-that doesn’t make any assumptions of linearity. The rank-order approach
-is good for when you don’t necessarily expect samples to be correlated,
-for example abundance counts of different species.</p>
-<div id="nmds-representing-abundances-by-site" class="section level2">
-<h2>NMDS representing abundances by site</h2>
-<p>NMDS is a distance based ordination technique. In this ordination,
-the space between the points represents the distance (dissimilarity)
-between them. To create this plot, I used bray-curtis distances. I did
-not perform a square root transformation because I wanted the relatively
-rare and abundant species to effect the differences in communities.</p>
-<div class="figure">
-<img src="figures/fish_nmds_sites.png" alt="Fig 1. A graphical visualization of the variation in abundances of different species between sites. Core sites are displayed with the corresponding month for each data point while jubilee sites are displayed with their site code." width="100%" />
-<p class="caption">
-Fig 1. A graphical visualization of the variation in abundances of
-different species between sites. Core sites are displayed with the
-corresponding month for each data point while jubilee sites are
-displayed with their site code.
-</p>
-</div>
-<p>I was expecting to see more of a separation between Cornet Bay and
-Family Tides and the others, but it does look like their centroids are
-fairly different.</p>
-</div>
-<div id="nmds-representing-abundances-by-month" class="section level2">
-<h2>NMDS representing abundances by month</h2>
-<div class="figure">
-<img src="figures/fish_nmds_months.png" alt="Fig 2. A graphical visualization of the variation in abundances of different species between months." width="100%" />
-<p class="caption">
-Fig 2. A graphical visualization of the variation in abundances of
-different species between months.
-</p>
-</div>
-<p>There is clearly a difference between April and other months
-sampled.</p>
-</div>
-<div id="permanova" class="section level2">
-<h2>PERMANOVA</h2>
-<p>Testing out a permanova on the nmds results. It looks like this
-method automatically conducts a square root transformation and Wisconsin
-double standardization??</p>
-<pre class="r"><code>load(here(&quot;data&quot;, &quot;fish.list.Rdata&quot;)) #object created in 02_tidy_data
-
-nmds &lt;- metaMDS(fish.list$abund , distance=&quot;bray&quot;, k= 3, trymax=1000, plot = FALSE)
-points &lt;- data.frame(nmds$points) %&gt;% 
-  mutate(sample = rownames(fish.list$abund)) %&gt;% 
-  separate_wider_delim(sample, delim = &quot;_&quot;, names = c(&quot;year&quot;, &quot;month&quot;, &quot;site&quot;), cols_remove = FALSE) 
-
-adonis2(fish.list$abund ~ points$site + points$month + points$year, method = &quot;bray&quot;)</code></pre>
-<p>Sites account for 12.5% of the variation of the variation in species
-composition (p = 0.001) and months account for just 8.1% (p =
-0.001).</p>
-</div>
+<p>This page will contain preliminary analyses for fish data.</p>
 <div id="fish-trait-pcoas" class="section level2">
 <h2>Fish trait PCoAs</h2>
-<p>I used Gower’s distances to represent differences between traits.
-This method allows for both continuous and categorical explanatory
-variables.</p>
-<div class="figure">
-<img src="figures/fish_pcoa.png" alt="Fig 2. A graphical visualization of the variation in traits among fish species" width="100%" />
-<p class="caption">
-Fig 2. A graphical visualization of the variation in traits among fish
-species
-</p>
+<p>The functional trait space using various axes:</p>
+<p><img src="figures/fish_funct.space.plot.png" width="100%" /></p>
+<p>PCoA by species:</p>
+<p><img src="figures/fish_pcoa.png" width="100%" /></p>
+<p>This version has been constructed with the mFD package with a quality
+of functional space metric of 0.072 for 3 axes. A PCoA constructed
+manually looks better, but not sure yet how important this is…</p>
+<p>This plot shows what traits are influencing which axes (where blue
+are more significant)
+<img src="figures/fish_trait_axes_plot.png" width="100%" /></p>
 </div>
-<p>Generally this looks like what I would expect. The salmon are
-generally similar, as are the flatfish and the eelgrass-associated
-fish.</p>
-<div class="figure">
-<img src="figures/fish_pcoa2.png" alt="Fig 3. A slightly better looking graphical visualization of the variation in traits among fish species" width="100%" />
-<p class="caption">
-Fig 3. A slightly better looking graphical visualization of the
-variation in traits among fish species
-</p>
-</div>
-<p>I determined the most parsimonious number of groupings by performing
-a hierarchical cluster analysis. In the future I could add some species
-labels or trait loadings to this plot to make it more informative.</p>
-</div>
-<div id="fish-functional-diversity-indices-at-core-sites"
+<div id="fish-functional-diversity-indices-across-sites"
 class="section level2">
-<h2>Fish functional diversity indices at
-<ins><strong>core</strong></ins> sites</h2>
-<div class="figure">
-<img src="figures/fish_FDpatch.png" alt="Fig 4. Results of the FD analysis for core sites" width="100%" />
-<p class="caption">
-Fig 4. Results of the FD analysis for core sites
-</p>
+<h2>Fish functional diversity indices across sites</h2>
+<p><img src="figures/fish_FDpatch.png" width="100%" /> Some interesting
+between-site differences, mostly with Cornet Bay.</p>
 </div>
-<p>Some interesting between-site differences, mostly with Cornet
-Bay.</p>
-<p>Next I plotted a monthly time series over each sample year. Note that
-if there are less than three species present in a given sampling event
-(grey horizontal line in the NumbSpecies plot) then some of the FD
-indices can’t be calculated.</p>
-<p><img src="figures/fish_2018seasonalFDpatch.png" width="100%" /><img src="figures/fish_2019seasonalFDpatch.png" width="100%" /><img src="figures/fish_2021seasonalFDpatch.png" width="100%" /><img src="figures/fish_2022seasonalFDpatch.png" width="100%" />
-need to look at these more to decide if there are interesting things to
-explore, but nothing huge is initally jumping out. Probably should break
-up by index and facet by year.</p>
+<div id="fish-functional-diversity-indices-across-regions"
+class="section level2">
+<h2>Fish functional diversity indices across regions</h2>
+<p><img src="figures/fish_FDregionalpatch.png" width="100%" /></p>
+</div>
+<div id="fish-functional-diversity-indices-across-shoreline-types"
+class="section level2">
+<h2>Fish functional diversity indices across shoreline types</h2>
+<p><img src="figures/fish_FDipapatch.png" width="100%" /></p>
 </div>
 
 
