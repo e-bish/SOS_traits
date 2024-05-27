@@ -11,11 +11,11 @@
 
 <meta name="author" content="Emily Bishop" />
 
-<meta name="date" content="2024-05-01" />
+<meta name="date" content="2024-05-27" />
 
 <title>Data Matrices</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -275,7 +275,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Data Matrices</h1>
 <h4 class="author">Emily Bishop</h4>
-<h4 class="date">2024-05-01</h4>
+<h4 class="date">2024-05-27</h4>
 
 </div>
 
@@ -327,24 +327,13 @@ or 720m as in Lowe and Peterson 2014).</p>
 <p>Alternatively, there is now 1m resolution 2021 CCAP data for
 impervious surface. Previous FD studies have used XX, XX, and XX as
 urbanization metrics.</p>
-<p>Other than CCAP data, could consider other indices such as the NCEAS
-Cumulative Human Impacts (Halpern et al. 2019). Likely useful metrics
-include organic chemical pollution, nutrient pollution, and direct human
-disturbance.</p>
 </div>
 <div id="the-l-communityspecies-distribution-matrices"
 class="section level2">
 <h2>The L (community/species distribution) matrices</h2>
 <div id="fish" class="section level3">
 <h3>Fish</h3>
-<p>For fish, abundances will be pooled across depths within sites. There
-were a couple of instances where we didn’t sample at every shoreline
-within a site so the abundance matrix needs to account for differences
-in survey effort. We also didn’t sample at every site in every month
-each year.</p>
-<p>Current approach: treat ipas (shorelines) as replicates - calculate
-average number of each species caught per sampling event (single
-day)</p>
+<p>For fish, abundances will be pooled across depths within sites.</p>
 <p><strong>Data transformations</strong>: No data transformations
 applied on the abundance matrix. Data transformations for counts are
 usually give less weight to rare or more abundant species, but those
@@ -354,7 +343,7 @@ on the abundance matrix, and it doesn’t appear to change the results
 either way. For this reason I also didn’t remove rare species.</p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["bay_pipefish"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["buffalo_sculpin"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["c_o_sole"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["chinook_salmon"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chum_salmon"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["coho_salmon"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["crescent_gunnel"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["cutthroat_trout"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["english_sole"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["great_sculpin"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["kelp_greenling"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["lingcod"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["northern_anchovy"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["pacific_cod"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["pacific_sandfish"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["pacific_herring"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["pacific_sand_lance"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["pacific_sand_sole"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["pacific_snake_prickleback"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["pacific_staghorn_sculpin"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["pacific_tomcod"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["padded_sculpin"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["penpoint_gunnel"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["pile_perch"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["pink_salmon"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["plainfin_midshipman"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["rock_sole"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["saddleback_gunnel"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["sand_dab"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["shiner_perch"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["silverspotted_sculpin"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["speckled_sanddab"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["starry_flounder"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["steelhead_trout"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["striped_seaperch"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["surf_smelt"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["tadpole_sculpin"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["three_spined_stickleback"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["tidepool_sculpin"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["tidepool_snailfish"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["tube_snout"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["whitespotted_greenling"],"name":[42],"type":["dbl"],"align":["right"]}],"data":[{"1":"0","2":"0.00","3":"0.00","4":"3.33","5":"0.00","6":"0.67","7":"2","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.33","17":"0","18":"0","19":"4.00","20":"6","21":"0","22":"0","23":"0","24":"0","25":"0.33","26":"0","27":"0","28":"1.00","29":"0","30":"10.00","31":"0","32":"0.00","33":"0","34":"0","35":"0.67","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_COR"},{"1":"0","2":"0.00","3":"0.00","4":"0.67","5":"0.00","6":"0.00","7":"0","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"0","19":"0.00","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.00","29":"0","30":"4.00","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.33","42":"0","_rn_":"2018_Jun_DOK"},{"1":"0","2":"0.00","3":"0.33","4":"1.33","5":"0.00","6":"0.00","7":"0","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"3","19":"0.00","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.00","29":"0","30":"18.33","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"9.67","39":"0","40":"0","41":"1.00","42":"0","_rn_":"2018_Jun_EDG"},{"1":"0","2":"0.33","3":"0.00","4":"0.00","5":"0.67","6":"0.00","7":"0","8":"0","9":"0","10":"0","11":"0.33","12":"0.33","13":"0","14":"0","15":"0","16":"6.33","17":"0","18":"0","19":"0.33","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.33","29":"0","30":"0.00","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_FAM"},{"1":"0","2":"0.00","3":"0.00","4":"1.33","5":"15.67","6":"0.67","7":"0","8":"0","9":"0","10":"0","11":"0.00","12":"0.67","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"1","19":"0.00","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0.00","26":"0","27":"0","28":"0.33","29":"0","30":"1.33","31":"0","32":"0.33","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_SHR"},{"1":"0","2":"0.33","3":"0.00","4":"0.00","5":"0.33","6":"0.00","7":"0","8":"0","9":"0","10":"0","11":"0.00","12":"0.00","13":"0","14":"0","15":"0","16":"0.00","17":"0","18":"0","19":"0.00","20":"0","21":"72","22":"0","23":"0","24":"0","25":"112.33","26":"0","27":"0","28":"0.00","29":"0","30":"0.33","31":"0","32":"0.00","33":"0","34":"0","35":"0.00","36":"0","37":"0","38":"0.00","39":"0","40":"0","41":"0.00","42":"0","_rn_":"2018_Jun_TUR"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["chum_salmon"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["pacific_herring"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["kelp_greenling"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lingcod"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["pacific_snake_prickleback"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["buffalo_sculpin"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["saddleback_gunnel"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["pacific_tomcod"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["pink_salmon"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["shiner_perch"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["chinook_salmon"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["coho_salmon"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["crescent_gunnel"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["striped_seaperch"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["pacific_staghorn_sculpin"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["pacific_sand_sole"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["speckled_sanddab"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["tube_snout"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["three_spined_stickleback"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["c_o_sole"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["pacific_cod"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["silverspotted_sculpin"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["pacific_sand_lance"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["surf_smelt"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["whitespotted_greenling"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["bay_pipefish"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["pile_perch"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["penpoint_gunnel"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["english_sole"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["northern_anchovy"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["cutthroat_trout"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["great_sculpin"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["starry_flounder"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["tadpole_sculpin"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["tidepool_snailfish"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["pacific_sandfish"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["rock_sole"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["steelhead_trout"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["tidepool_sculpin"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["sand_dab"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["plainfin_midshipman"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["padded_sculpin"],"name":[42],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"17","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"0","38":"0","39":"0","40":"0","41":"0","42":"0","_rn_":"2018_Jun_FAM_Armored"},{"1":"1","2":"1","3":"1","4":"1","5":"1","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"0","38":"0","39":"0","40":"0","41":"0","42":"0","_rn_":"2018_Jun_FAM_Natural"},{"1":"0","2":"1","3":"0","4":"0","5":"0","6":"1","7":"1","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"0","38":"0","39":"0","40":"0","41":"0","42":"0","_rn_":"2018_Jun_FAM_Restored"},{"1":"0","2":"0","3":"0","4":"0","5":"0","6":"1","7":"0","8":"173","9":"3","10":"1","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"0","38":"0","39":"0","40":"0","41":"0","42":"0","_rn_":"2018_Jun_TUR_Armored"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"43","9":"334","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"0","38":"0","39":"0","40":"0","41":"0","42":"0","_rn_":"2018_Jun_TUR_Natural"},{"1":"0","2":"1","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"0","38":"0","39":"0","40":"0","41":"0","42":"0","_rn_":"2018_Jun_COR_Armored"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -367,7 +356,7 @@ this stage, because FD indices rely on information about the presence of
 relatively rare and abundant species.</p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["AMRO"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["BAEA"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BARS"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["BEKI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["BUFF"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CATE"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["CCGO"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["COBR"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["COMU"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["CORA"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["DCCO"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["EUST"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["GBHE"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["GWGU"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["HERG"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["HOGR"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["HOSP"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["MALL"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["OSPR"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["PECO"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["PIGU"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["PUMA"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["RODO"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["RUHU"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["STJA"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["SUSC"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["TUVU"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["WEGR"],"name":[28],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.0","2":"0.00","3":"0.00","4":"0.33","5":"0","6":"1.60","7":"0","8":"1.14","9":"0.00","10":"0","11":"0","12":"0","13":"0.67","14":"0.0","15":"0.83","16":"0","17":"0.00","18":"0","19":"0.33","20":"0","21":"0.0","22":"0.67","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_DOK"},{"1":"0.0","2":"0.00","3":"0.00","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.33","9":"0.33","10":"0","11":"0","12":"0","13":"0.00","14":"0.5","15":"0.00","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"1.6","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_EDG"},{"1":"0.0","2":"0.33","3":"2.00","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.67","9":"0.00","10":"0","11":"0","12":"0","13":"0.00","14":"0.0","15":"0.00","16":"0","17":"0.33","18":"0","19":"0.00","20":"0","21":"0.0","22":"0.00","23":"1","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_FAM"},{"1":"0.0","2":"0.00","3":"0.00","4":"0.33","5":"0","6":"0.33","7":"0","8":"2.83","9":"0.00","10":"0","11":"0","12":"0","13":"0.67","14":"0.0","15":"0.75","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"0.0","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_SHR"},{"1":"0.5","2":"0.33","3":"1.33","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.00","9":"0.00","10":"0","11":"0","12":"0","13":"0.00","14":"0.0","15":"0.00","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"0.0","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_TUR"},{"1":"0.0","2":"0.00","3":"1.00","4":"0.00","5":"0","6":"0.00","7":"0","8":"0.00","9":"0.00","10":"0","11":"0","12":"0","13":"0.33","14":"0.0","15":"0.00","16":"0","17":"0.00","18":"0","19":"0.00","20":"0","21":"0.0","22":"0.00","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jul_DOK"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["AMRO"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["BAEA"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BARS"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["BEKI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["BUFF"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CATE"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["CCGO"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["COBR"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["COMU"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["CORA"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["DCCO"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["EUST"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["GBHE"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["GWGU"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["HERG"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["HOGR"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["HOSP"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["MALL"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["OSPR"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["PECO"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["PIGU"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["PUMA"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["RODO"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["RUHU"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["STJA"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["SUSC"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["TUVU"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["WEGR"],"name":[28],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2021_Jun_TUR_Natural"},{"1":"3","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"1","25":"0","26":"0","27":"0","28":"0","_rn_":"2022_Apr_TUR_Natural"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"1","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2022_May_COR_Natural"},{"1":"1","2":"0","3":"3","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"1","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2022_Jul_COR_Restored"},{"1":"1","2":"0","3":"2","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2022_Jul_FAM_Armored"},{"1":"1","2":"0","3":"0","4":"1","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","_rn_":"2022_Jul_FAM_Natural"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p><strong>With this setup, would it be necessary to restrict
@@ -453,23 +442,20 @@ amphidromous, oceano-estuarine, catadromous</td>
 continuous traits</p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["mean_length_mm"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["body_shape_i"],"name":[2],"type":["fct"],"align":["left"]},{"label":["demers_pelag"],"name":[3],"type":["fct"],"align":["left"]},{"label":["migrations"],"name":[4],"type":["fct"],"align":["left"]},{"label":["feeding_guild"],"name":[5],"type":["fct"],"align":["left"]}],"data":[{"1":"4.909298","2":"eel-like","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"bay_pipefish"},{"1":"4.397462","2":"fusiform / normal","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"buffalo_sculpin"},{"1":"4.248495","2":"short and / or deep","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"c_o_sole"},{"1":"4.677293","2":"fusiform / normal","3":"benthopelagic","4":"anadromous","5":"omnivorous","_rn_":"chinook_salmon"},{"1":"4.260283","2":"fusiform / normal","3":"benthopelagic","4":"anadromous","5":"omnivorous","_rn_":"chum_salmon"},{"1":"4.820196","2":"fusiform / normal","3":"pelagic","4":"anadromous","5":"omnivorous","_rn_":"coho_salmon"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["mean_length_mm"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["body_shape_i"],"name":[2],"type":["fct"],"align":["left"]},{"label":["demers_pelag"],"name":[3],"type":["fct"],"align":["left"]},{"label":["migrations"],"name":[4],"type":["fct"],"align":["left"]},{"label":["feeding_guild"],"name":[5],"type":["fct"],"align":["left"]}],"data":[{"1":"4.909298","2":"eel-like","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"chum_salmon"},{"1":"4.397462","2":"fusiform / normal","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"pacific_herring"},{"1":"4.248495","2":"short and / or deep","3":"demersal","4":"non-migratory","5":"zoobenthivorous","_rn_":"kelp_greenling"},{"1":"4.677293","2":"fusiform / normal","3":"benthopelagic","4":"anadromous","5":"omnivorous","_rn_":"lingcod"},{"1":"4.260283","2":"fusiform / normal","3":"benthopelagic","4":"anadromous","5":"omnivorous","_rn_":"pacific_snake_prickleback"},{"1":"4.820196","2":"fusiform / normal","3":"pelagic","4":"anadromous","5":"omnivorous","_rn_":"buffalo_sculpin"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p><strong>Mean length</strong>: We didn’t get a length for Tidepool
-sculpin, so I used the max length listed in fishbase. <strong>Feeding
-guild</strong>: classified main food source if more than 60% of diet is
-in one category. Blepsias cirrhosus was not in the database but I found
-a description on fishbase. Don’t have a great source for Liparis florae
-so I just used other snailfish.<br />
+sculpin, so I used the max length listed in fishbase.<br />
+<strong>Body transverse shape</strong>: Easily available in
+rfishbase.<br />
+<strong>Feeding guild</strong>: classified main food source if more than
+60% of diet is in one category. Blepsias cirrhosus was not in the
+database but I found a description on fishbase. Don’t have a great
+source for Liparis florae so I just used other snailfish.<br />
 <strong>DemersPelag</strong>: simplified this category because there was
 only one pelagic and two pelagic-neritic species, so I combined both
 into pelagic.<br />
-<strong>Schooling</strong>: I counted the number of times we caught each
-species as a school (&gt;10 in a single tow). If it was schooling &gt;3
-times, I counted it as a schooling species, except for tube snout which
-we only caught in a school three times but I did count as schooling
-based on fishbase description.<br />
 <strong>Residence time</strong>: Assumed to be non-migratory if no
 information was available.</p>
 <p>Is it better to have a standardized way of making sure I’m extracting
@@ -511,12 +497,13 @@ continuous traits</p>
 <td align="left">availability of prey?</td>
 </tr>
 <tr class="even">
-<td align="left">Body length</td>
-<td align="left">Secondary1</td>
-<td align="left">Numeric</td>
-<td align="center">mm</td>
-<td align="left">relates to resource use</td>
-<td align="left">?</td>
+<td align="left">Primary Lifestyle</td>
+<td align="left">Primary.Lifestyle</td>
+<td align="left">Factor</td>
+<td align="center">generalist, insessorial, aquatic, terrestrial,
+aerial</td>
+<td align="left">relates to physical space within the habitat</td>
+<td align="left">dependence on landscape characteristics</td>
 </tr>
 <tr class="odd">
 <td align="left">Feeding guild</td>
@@ -527,6 +514,14 @@ continuous traits</p>
 <td align="left">availability of a variety of prey types?</td>
 </tr>
 <tr class="even">
+<td align="left">Migration</td>
+<td align="left">Migration</td>
+<td align="left">Factor</td>
+<td align="center">transfer of energy between geographies</td>
+<td align="left">dependence on local conditions</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">Foraging habit</td>
 <td align="left">Trophic.Niche</td>
 <td align="left">Factor</td>
@@ -534,14 +529,6 @@ continuous traits</p>
 invertivore, aquatic predator, scavenger</td>
 <td align="left">space occupied within habitats</td>
 <td align="left">availability of a variety of habitats?</td>
-</tr>
-<tr class="odd">
-<td align="left">Wing Length</td>
-<td align="left">Wing.Length</td>
-<td align="left">Numeric</td>
-<td align="center">g</td>
-<td align="left">transfer of energy between geographies</td>
-<td align="left">dependence on local conditions?</td>
 </tr>
 </tbody>
 </table>
@@ -559,7 +546,7 @@ the species with the median values to be the representative species for
 each group.</p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Trophic.Level"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Trophic.Niche"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Migration"],"name":[3],"type":["fct"],"align":["left"]},{"label":["Primary.Lifestyle"],"name":[4],"type":["fct"],"align":["left"]},{"label":["Mass"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Secondary1"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Wing.Length"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"Omnivore","2":"Invertivore","3":"3","4":"Generalist","5":"4.363099","6":"4.503137","7":"4.844187","_rn_":"AMRO"},{"1":"Carnivore","2":"Omnivore","3":"3","4":"Generalist","5":"8.455445","6":"5.866468","7":"6.399925","_rn_":"BAEA"},{"1":"Carnivore","2":"Invertivore","3":"3","4":"Aerial","5":"2.884801","6":"4.025352","7":"4.751865","_rn_":"BARS"},{"1":"Carnivore","2":"Aquatic_predator","3":"2","4":"Insessorial","5":"4.997212","6":"4.653960","7":"5.067646","_rn_":"BEKI"},{"1":"Carnivore","2":"Aquatic_predator","3":"3","4":"Aquatic","5":"5.985195","6":"4.424847","7":"5.080161","_rn_":"BUFF"},{"1":"Carnivore","2":"Aquatic_predator","3":"3","4":"Aerial","5":"6.484635","6":"4.963544","7":"6.017863","_rn_":"CATE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Trophic.Level"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Trophic.Niche"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Migration"],"name":[3],"type":["fct"],"align":["left"]},{"label":["Primary.Lifestyle"],"name":[4],"type":["fct"],"align":["left"]},{"label":["Mass"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Omnivore","2":"Invertivore","3":"3","4":"Generalist","5":"4.363099","_rn_":"AMRO"},{"1":"Carnivore","2":"Omnivore","3":"3","4":"Generalist","5":"8.455445","_rn_":"BAEA"},{"1":"Carnivore","2":"Invertivore","3":"3","4":"Aerial","5":"2.884801","_rn_":"BARS"},{"1":"Carnivore","2":"Aquatic_predator","3":"2","4":"Insessorial","5":"4.997212","_rn_":"BEKI"},{"1":"Carnivore","2":"Aquatic_predator","3":"3","4":"Aquatic","5":"5.985195","_rn_":"BUFF"},{"1":"Carnivore","2":"Aquatic_predator","3":"3","4":"Aerial","5":"6.484635","_rn_":"CATE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>

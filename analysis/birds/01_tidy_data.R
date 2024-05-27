@@ -4,6 +4,9 @@ library(googlesheets4)
 library(googledrive)
 library(readxl)
 library(auk) #for bird species names
+library(moments)
+
+
 
 #load field data
 #first get data from google
@@ -97,23 +100,16 @@ bird_L_df <- birds %>%
   mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
   mutate(year = factor(year), month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
   select(year, month, site, ipa, spp_code, abundance) %>% 
-  complete(nesting(year, month, site), ipa, spp_code, fill = list(abundance = 0)) %>% #fill in zeros for shorelines we surveyed
-  group_by(year, month, site, spp_code) %>%
-  summarize(spp_mean = round(mean(abundance), 2)) %>% 
+  group_by(year, month, site, ipa, spp_code) %>%
+  summarize_all(sum) %>% # there were multiple entries per species before because they were coded with behaviors
   ungroup() %>% 
   arrange(spp_code) %>% 
-  pivot_wider(names_from = spp_code, values_from = spp_mean, values_fill = 0) 
+  pivot_wider(names_from = spp_code, values_from = abundance, values_fill = 0) 
 
 bird_L_mat <- bird_L_df %>% 
-  mutate(sample = paste(year, month, site, sep = "_")) %>% 
+  mutate(sample = paste(year, month, site, ipa, sep = "_")) %>% 
   column_to_rownames(var="sample") %>% 
-  select(!c(year, month, site))
-
-bird_L_mat.t <- round(sqrt(bird_L_mat), 2)
-
-CV <- function(x) { 100 * sd(x) / mean(x) } #function from Jon Bakker
-
-CV(x = rowSums(bird_L_mat)) #moderate CV McCune & Grace (2002, p.70)
+  select(!c(year, month, site, ipa))
 
 #load species ids for birds observed in the field
 spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
@@ -146,13 +142,11 @@ spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>%
 ### create the trait matrix
 bird_traits <- AVONET %>% 
   select(Species2, 
-         Trophic.Level, 
-         Trophic.Niche, 
-         Migration, 
+         Mass,
          Primary.Lifestyle, 
-         Mass, 
-         Secondary1, 
-         Wing.Length) %>% 
+         Trophic.Level, 
+         Migration,
+         Trophic.Niche) %>% 
   mutate(Trophic.Niche = str_replace(Trophic.Niche, " ", "_")) %>% 
   mutate_if(is.character, as.factor) %>% 
   right_join(spp_id) %>% 
@@ -161,35 +155,20 @@ bird_traits <- AVONET %>%
   arrange(spp_code) %>% 
   column_to_rownames(var="spp_code")
 
-# write.csv(traits, "data/bird_traits.csv", row.names = TRUE)
+# write.csv(bird_traits, "data/bird_traits.csv", row.names = TRUE)
 
-library(moments)
-# library(janitor)
-# library(StatMatch)
-
-#apply data transformation to continuous traits
-
+#inspect continuous traits 
 skewness(bird_traits$Mass)
 range(bird_traits$Mass)
 
-skewness(bird_traits$Secondary1)
-range(bird_traits$Secondary1)
-
-skewness(bird_traits$Wing.Length)
-range(bird_traits$Wing.Length)
+#apply data transformation to continuous traits
 
 bird_traits.t <- bird_traits %>% 
   mutate_if(is.numeric, log) %>% 
   as.data.frame()
 
-# skewness(bird_traits.t$Mass)
-# range(bird_traits.t$Mass)
-# 
-# skewness(bird_traits.t$Secondary1)
-# range(bird_traits.t$Secondary1)
-# 
-# skewness(bird_traits.t$Wing.Length)
-# range(bird_traits.t$Wing.Length)
+skewness(bird_traits.t$Mass)
+range(bird_traits.t$Mass)
 
-bird.list <- list("trait" = bird_traits.t, "abund" = bird_L_mat) #untransformed abundance matrix
+bird.list <- list("trait" = bird_traits.t, "abund" = bird_L_mat) 
 save(bird.list, file = here("data", "bird.list.Rdata"))

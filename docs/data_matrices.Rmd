@@ -36,13 +36,9 @@ Could create this same table but instead of using the entire watershed, could cr
 
 Alternatively, there is now 1m resolution 2021 CCAP data for impervious surface. Previous FD studies have used XX, XX, and XX as urbanization metrics. 
 
-Other than CCAP data, could consider other indices such as the NCEAS Cumulative Human Impacts (Halpern et al. 2019). Likely useful metrics include organic chemical pollution, nutrient pollution, and direct human disturbance. 
-
 ## The L (community/species distribution) matrices
 ### Fish
-For fish, abundances will be pooled across depths within sites. There were a couple of instances where we didn't sample at every shoreline within a site so the abundance matrix needs to account for differences in survey effort. We also didn't sample at every site in every month each year. 
-
-Current approach: treat ipas (shorelines) as replicates - calculate average number of each species caught per sampling event (single day)
+For fish, abundances will be pooled across depths within sites. 
 
 **Data transformations**: No data transformations applied on the abundance matrix. Data transformations for counts are  usually give less weight to rare or more abundant species, but those species impact the diversity so it doesn't seem to make sense to alter them. I haven't seen any reference to any FD lit doing transformations on the abundance matrix, and it doesn't appear to change the results either way. For this reason I also didn't remove rare species. 
 
@@ -81,10 +77,10 @@ Others considered: social associations (schooling/nonschooling)
 head(fish.list[[1]])
 ```
 
-**Mean length**: We didn’t get a length for Tidepool sculpin, so I used the max length listed in fishbase. 
+**Mean length**: We didn’t get a length for Tidepool sculpin, so I used the max length listed in fishbase.  
+**Body transverse shape**: Easily available in rfishbase.     
 **Feeding guild**: classified main food source if more than 60% of diet is in one category. Blepsias cirrhosus was not in the database but I found a description on fishbase. Don’t have a great source for Liparis florae so I just used other snailfish.    
 **DemersPelag**: simplified this category because there was only one pelagic and two pelagic-neritic species, so I combined both into pelagic.   
-**Schooling**: I counted the number of times we caught each species as a school (>10 in a single tow). If it was schooling >3 times, I counted it as a schooling species, except for tube snout which we only caught in a school three times but I did count as schooling based on fishbase description.    
 **Residence time**: Assumed to be non-migratory if no information was available. 
 
 Is it better to have a standardized way of making sure I'm extracting the correct life phase (i.e. take mean lengths for each species and relate that to the database to classify as adult/juvenile) or to generally assume juvenile salmonids and adult everything else?
@@ -97,10 +93,10 @@ Current justifications for trait selections:
 | Full Name   | AVONET Field Code | Type    | Values/Units | Definition | Association with L |
 | :---------  | :------------------ | :------ | :----------: | :---------- | :----------------- | 
 | Body mass | Mass | Numeric | g | relates to resource use | availability of prey? |
-| Body length | Secondary1 | Numeric | mm | relates to resource use | ? | 
+| Primary Lifestyle | Primary.Lifestyle | Factor | generalist, insessorial, aquatic, terrestrial, aerial | relates to physical space within the habitat | dependence on landscape characteristics |
 | Feeding guild | Trophic.Level | Factor | herbivore, omnivore, carnivore, scavenger | position in the food web | availability of a variety of prey types? |
+| Migration | Migration | Factor | transfer of energy between geographies | dependence on local conditions | 
 | Foraging habit | Trophic.Niche | Factor | granivore, terrestrial, herbivore, aquatic herbivore, invertivore, aquatic predator, scavenger | space occupied within habitats | availability of a variety of habitats? |
-| Wing Length | Wing.Length | Numeric | g | transfer of energy between geographies | dependence on local conditions? | 
 
 Given that we did not identify all bird taxa to the species level, I selected a representative species for each taxonomic group we identified in the field. I did so by compiling a list of possible species that could have been observed in each group (e.g. we recorded “swallow” but there were three species we may have observed: *Progne subis*, *Tachycineta thalassina*, and *Hirundo rustica*) and selected a representative species within each group. Within groups, the species that are common to the area and likely to have been observed in our surveys are typically in the same functional trait category for categorical traits. I therefore looked at continuous variables to select the species with the median values to be the representative species for each group. 
 
