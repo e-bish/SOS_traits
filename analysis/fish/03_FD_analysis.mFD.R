@@ -1,7 +1,7 @@
 library(tidyverse)
 library(here)
 library(ggrepel)
-#library(FD)
+library(FD)
 library(mFD)
 library(ggordiplots)
 library(PNWColors)
@@ -9,23 +9,20 @@ library(patchwork)
 library(vegan)
 
 load(here("data", "fish.list.Rdata")) #object created in 02_tidy_data
-# here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
-# here("analysis", "general_functions", "scree.r") %>% source()
 
 traits.cat <- data.frame(trait_name = colnames(fish.list$trait),
                          trait_type = c("Q", "N", "N", "N", "N"))
 
 #Species trait summary
 traits_summary <- sp.tr.summary(tr_cat = traits.cat, 
-                                sp_tr = fish.list$trait, stop_if_NA = T)
+                                sp_tr = fish.list$trait, 
+                                stop_if_NA = T)
 traits_summary
 
 #create the trait space
 dist_mat <- funct.dist(sp_tr = fish.list$trait, 
                        tr_cat = traits.cat,
                        metric = "gower",
-                       scale_euclid = "scale_center",
-                       ordinal_var = "classic",
                        weight_type = "equal",
                        stop_if_NA = TRUE)
 
@@ -84,6 +81,22 @@ functional_space_plot <- mFD::funct.space.plot(
   check_input     = TRUE)
 
 #### calculate diversity indices ####
+
+# here("analysis", "general_functions", "geb12299-sup-0002-si.r") %>% source()
+# space_qual <- qual_funct_space(fish_L_filtered, nbdim = 3, metric = "Gower")
+
+# with the FD package 
+fishFD <- dbFD(x = fish.list$trait, #must be a df where character columns are factors
+               a = fish.list$abund,
+               stand.x = TRUE, # we already log transformed the mean length variable so it doesn't need additional standardization
+               corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred 
+               m = 3,
+               # calc.FGR = TRUE, 
+               # clust.type = "ward.D2",
+               calc.FDiv = TRUE, 
+               print.pco = TRUE)
+
+# with the mFD package
 low_n_samples <- fish.list$abund %>% 
   decostand(method = "pa") %>% 
   mutate(n_spp = rowSums(.)) %>% 
@@ -99,6 +112,7 @@ alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2
                                    scaling = TRUE,
                                    check_input = TRUE,
                                    details_returned = TRUE)
+#the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
 
 FD_values <- alpha_indices$"functional_diversity_indices"
 
