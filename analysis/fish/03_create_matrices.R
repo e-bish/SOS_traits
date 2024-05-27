@@ -6,7 +6,6 @@ library(rfishbase)
 load(here("data", "net_tidy.Rdata")) 
 
 #### Create the L (abundance) matrix ####
-
 fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   group_by(year, month, site, ipa, ComName) %>%
   summarize(spp_sum = sum(species_count)) %>% #sum across depths within a site
