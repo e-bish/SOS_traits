@@ -11,12 +11,9 @@ load(here("data", "env_table.Rdata")) #object created in spatial analysis
 # load(here("data", "fish.list.june.Rdata")) #object created in 02_tidy_data
 # load(here("data", "env.data.june.Rdata")) #object created in 02_tidy_data
 
-trait <- fish.list$trait %>% 
-  as.data.frame() %>% 
-  mutate(mean_length_mm = as.numeric(mean_length_mm)) %>% 
-  mutate_if(is.character, as.factor)
+trait <- fish.list$trait 
 
-abu <- sqrt(fish.list$abund) %>% #use the corrected abundance matrix??
+abu <- fish.list$abund %>% 
   as_data_frame() #needs to be a df for the fourthcorner function
 #correcting doesnt seem to hugely change the result
 
@@ -24,7 +21,6 @@ env <- env.data
 
 #COA on abundance matrix L (site x species)
 #aka what species correspond with what sites
-### Should this be on the corrected abundance matrix? 
 coa.abu <- dudi.coa(abu, scannf = FALSE, nf=2)
 
 #PCA on traits matrix Q (species x traits)
