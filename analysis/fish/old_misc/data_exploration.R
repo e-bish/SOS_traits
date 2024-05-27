@@ -112,7 +112,7 @@ ggplot() +
 # plot(S, Srare, xlab = "Observed No. of Species", ylab = "Rarefied No. of Species")
 # rarecurve(spp_mat, step = 20, sample = raremax, col = "blue", cex = 0.6)
 
-#for each species, how many sites were they encountered?
+##for each species, how many sites were they encountered?
 times_encountered <- net_tidy %>% 
   group_by(ComName, tax_group, site) %>% 
   summarize(freq_obs = n())

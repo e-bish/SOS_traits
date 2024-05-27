@@ -1,20 +1,24 @@
 library(tidyverse)
 library(here)
 library(janitor)
-library(rfishbase)
+library(vegan)
 
-###### This creates a list of matrices for trait and abundance data only by site ######
-
+###### This creates a list of matrices for trait and abundance data only by sampling event ######
 
 # If common_to_sci gives issues, install the duckdb package
 # options(timeout=100)
 # install.packages("duckdb", repos = c("https://duckdb.r-universe.dev", "https://cloud.r-project.org"))
 
-SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))
+SOS_sites <- factor(c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"), 
+                    levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))
+SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), 
+                         levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))
+SOS_jubilee_sites <- factor(c("MA", "WA", "HO", "LL", "TL", "PR"),
+                            levels = c("MA", "WA", "HO", "LL", "TL", "PR"))
 
 load_data <- function() {
 #Load data
-#load field data (raw data downloaded/formatted in "import_data.R")
+#load field data (raw data downloaded/formatted in "01_import_data.R")
 net_2018.19 <- here::here("data","net_18.19.csv") %>% 
   read_csv()
 
@@ -25,11 +29,14 @@ net_2022 <- here::here("data","net_2022.csv") %>%
   read_csv()
 
 net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-  filter(site %in% SOS_core_sites) %>% #if using Jubilee sites, remove second armored site from Titlow in 2021 and recode MA from June to July
+  filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
+  mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
   mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island
-  # mutate(date = make_date(year, month, day)) %>% 
+  mutate(date = make_date(year, month, day)) %>% 
   mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
-  mutate(year = factor(year), month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
+  mutate(year = factor(year), 
+         month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept")),
+         site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))) %>% 
   mutate(species_count = as.numeric(species_count)) %>%
   mutate(species_count = ifelse(is.na(org_type), 0, species_count)) %>% 
   filter(org_type == "Fish") %>% #### this is where you lose zero counts, if those are needed later
@@ -62,156 +69,173 @@ return(net_tidy)
 
 net_tidy <- load_data()
 
-# sum_counts <- net_tidy %>% 
-#   group_by(ComName) %>% 
-#   summarize(total = sum(species_count)) %>% 
-#   arrange(-total)
+#### explore the data ####
 
-################################################################################
-#prepare field abundance data for analysis
-create_fish_matrices <- function(net_tidy) {
+##what were the most common species we caught?
+net_tidy %>%
+  group_by(ComName) %>%
+  summarize(total = sum(species_count)) %>% 
+  arrange(-total)
 
-spp_names <- net_tidy %>% 
-  distinct(ComName) %>% 
-  mutate(Species = NA) 
+##how often did we encounter each species?
+times_encountered <- net_tidy %>% 
+  group_by(ComName, tax_group, site) %>% 
+  summarize(freq_obs = n())
 
-sci_names <- vector(mode = 'list', length = length(spp_names))
+#by tax group
+ggplot(times_encountered, aes(x = tax_group, y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
+  geom_bar(position = "stack", stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "Site") 
 
-for (i in 1:nrow(spp_names)) {
-  sci_names[[i]] <- rfishbase::common_to_sci(spp_names[i,])
-  spp_names[i,2] <- ifelse(nrow(sci_names[[i]]) == 1, sci_names[[i]][[1]], NA)
-}
+ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs, fill = tax_group)) + 
+  geom_bar(position = "stack", stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "tax group") 
 
-spp_names <- spp_names %>% 
-  mutate(Species = case_when(ComName == "Pacific herring" ~ "Clupea pallasii", 
-                           ComName == "Pacific Cod" ~ "Gadus macrocephalus",
-                           ComName == "Northern Anchovy" ~ "Engraulis mordax",
-                           ComName == "Striped Seaperch" ~ "Embiotoca lateralis",
-                           ComName == "Rock Sole" ~ "Lepidopsetta bilineata",
-                           ComName == "Steelhead trout" ~ "Oncorhynchus mykiss",
-                           ComName == "Cutthroat trout" ~ "Oncorhynchus clarkii",
-                           ComName == "Tube-snout" ~ "Aulorhynchus flavidus",
-                           TRUE ~ Species)) %>% 
-  arrange(ComName) %>% 
-  filter(!str_detect(ComName, 'UnID'))
-
-# spp_names <- milieu %>% 
-#   select(Species, SpecCode) %>% 
-#   inner_join(spp_names) %>% 
-#   mutate(Species2 = str_to_sentence(ComName))
-
-fish_L_df <- net_tidy %>% #L is referring to the RLQ analysis
-  group_by(year, month, site, ipa, ComName) %>%
-  summarize(spp_sum = sum(species_count)) %>% 
-  ungroup() %>% 
-  complete(nesting(year, month, site), ipa, ComName, fill = list(spp_sum = 0)) %>% #fill in zeros for shorelines we sampled
-  group_by(year, month, site, ComName) %>% 
-  summarize(spp_mean = round(mean(spp_sum), 2)) %>% 
-  pivot_wider(names_from = ComName, values_from = spp_mean, values_fill = 0) %>% 
-  clean_names() %>% 
-  ungroup()
-
-fish_L_mat <- fish_L_df %>% 
-  mutate(sample = paste(year, month, site, sep = "_"), .after = site) %>% 
-  select(!1:3) %>% 
-  column_to_rownames(var = "sample")
-
-#### still need to decide whether to remove rows with <3 species 
-
-# trait data
-
-fork_length <- net_tidy %>% 
+##in how many sites does each species occur?
+sites_encountered <- times_encountered %>% 
+  mutate(pa = ifelse(freq_obs > 0, 1, 0)) %>% 
   group_by(ComName) %>% 
-  summarize(mean_length_mm = mean(mean_length_mm)) %>% 
-  # mutate(fork_length = case_when(mean_fork_length < 70 ~ "small", ## does this need to be categorical??
-  #                                mean_fork_length > 150  ~ "large",
-  #                                TRUE ~ "medium")) %>% 
-  # filter(ComName %in% spp_names$ComName) %>% 
-  inner_join(spp_names) %>% 
-  mutate(mean_length_mm = ifelse(ComName == "Tidepool Sculpin", 89.0, mean_length_mm)) #no length in our df so taking the max length from fishbase
+  summarize(encounters_site = sum(pa)) %>% 
+  arrange(desc(encounters_site))
 
-# schooling <- net_tidy %>% 
-#   mutate(schooling = ifelse(species_count > 10, "school", "nonschool")) %>% #arbitrary schooling cutoff
-#   filter(ComName %in% spp_names$ComName) %>% 
-#   group_by(ComName, schooling) %>% 
-#   summarize(count = n()) %>%  #see how often a species is observed schooling
-#   ungroup() %>% 
-#   pivot_wider(names_from = schooling, values_from = count) %>% 
-#   replace(is.na(.), 0) %>% 
-#   mutate(schooling = ifelse(school > 3, "schooling", "nonschooling")) %>% #arbitrary cuttoff
-#   mutate(schooling = ifelse(ComName == "Tube-snout", "schooling", schooling)) %>% 
-#   select(-c(nonschool, school))
+ggplot(sites_encountered, aes(x = reorder(ComName, -encounters_site), y = encounters_site)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  labs(x = "", y = "No. of sites encountered")
 
-milieu <- species(spp_names$Species) %>% #could also do length
-  select(Species, BodyShapeI, DemersPelag, AnaCat) %>% 
-  mutate(DemersPelag = ifelse(DemersPelag == "pelagic-neritic", "pelagic", DemersPelag)) %>% #simplify this category because there is only one pelagic and two pelagic-neritic species
-  mutate(migrations = ifelse(is.na(AnaCat), "non-migratory", AnaCat)) %>% #presumed non migratory if no information is available
-  select(!AnaCat)
+spp_by_site <- net_tidy %>% 
+  count(ComName, site)
 
-feeding_guild1 <- fooditems(spp_names$Species) %>% 
-  select(Species, FoodI, FoodII, PredatorStage) %>% 
-  group_by(Species, FoodI) %>% 
-  summarize(count = n()) %>% 
-  group_by(Species) %>% 
-  mutate(per =  100 *count/sum(count)) %>% 
-  filter(per >= 60) %>% #classify main food source if more than 60% of diet is in one category
-  inner_join(spp_names) %>% 
-  arrange(ComName) %>% 
-  mutate(feeding_guild = case_when(FoodI == "zoobenthos" ~ "Zoobenthivorous",
-                                   FoodI == "zooplankton" ~ "Planktivorous", 
-                                   FoodI == "nekton" ~ "Piscivorous",
-                                   TRUE ~ FoodI)) %>% 
-  ungroup() %>% 
-  select(Species, feeding_guild)
+ggplot(spp_by_site, aes(x = reorder(ComName, -n), y = n, fill = site)) +
+  geom_col() + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-feeding_guild2 <- fooditems(spp_names$Species) %>% 
-  select(Species, FoodI, FoodII, PredatorStage) %>% 
-  group_by(Species, FoodI) %>% 
-  summarize(count = n()) %>% 
-  group_by(Species) %>% 
-  mutate(per = 100 *count/sum(count)) %>% 
-  mutate(category = ifelse(per >= 60, FoodI, NA)) %>% 
-  mutate(onlyNA = all(is.na(category))) %>% 
-  filter(onlyNA == TRUE) %>% 
-  inner_join(spp_names) %>% 
-  select(!c(category, onlyNA)) %>% 
-  mutate(feeding_guild = "Omnivorous") %>% 
-  ungroup() %>% 
-  select(Species, feeding_guild) %>% 
-  distinct()
+#core sites only
+ggplot(filter(spp_by_site, site %in% SOS_core_sites), aes(x = reorder(ComName, -n), y = n, fill = site)) +
+  geom_col() + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-feeding_guild <- rbind(feeding_guild1, feeding_guild2) %>% 
-  add_row(Species = "Blepsias cirrhosus", feeding_guild = "Zoobenthivorous") %>% #fishbase "Diet"
-  add_row(Species = "Liparis florae", feeding_guild = "Zoobenthivorous")  %>% #don't have a great source for this one
-  mutate(feeding_guild = str_to_lower(feeding_guild))
+spp_site_count <- spp_by_site %>% 
+  # filter(site %in% SOS_core_sites) %>% 
+  group_by(ComName) %>% 
+  summarize(n_sites = n()) %>% 
+  arrange(desc(n_sites))
 
-# morphs <- morphology(spp_names$Species) sparse information on mouth position
-# swim <- swimming(spp_names$Species) less than half of species represented
+##what is the abundance of each species when it occurs?
+spp_by_site %>% 
+  # filter(site %in% SOS_core_sites) %>% 
+  ggplot(aes(x = reorder(ComName, -n), y = n)) +
+  geom_boxplot() + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-fish_traits <- full_join(fork_length, milieu) %>% 
-  select(3,1,2,4,5,6) %>% 
-  # left_join(schooling) %>% 
-  left_join(feeding_guild) %>% 
-  mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>%
-  arrange(ComName)
+##is the mean abundance correlated with the number of sites where it occurs?
+mean_count <- spp_by_site %>% 
+  group_by(ComName) %>% 
+  summarize(mean_n = mean(n))
 
-# write_csv(fish_traits, "data/fish_traits.csv")
+cor(mean_count$mean_n, spp_site_count$n_sites) #no
 
-fish_trait_mat <- fish_traits %>% 
-  select(-c(Species, ComName)) %>% 
-  mutate_if(is.character, as.factor) %>% 
-  clean_names() %>% 
-  as.data.frame()
+##is the total abundance of fish correlated with the number of species in each site?
+n_spp_site <- spp_by_site %>% 
+  group_by(site) %>% 
+  summarize(n_spp = n())
 
-rownames(fish_trait_mat) <- colnames(fish_L_mat)
+abund_by_site <- net_tidy %>%
+  group_by(site) %>%
+  summarize(total = sum(species_count)) 
 
-fish_trait_mat.t <- fish_trait_mat %>% mutate_if(is.numeric, log)
+cor(n_spp_site$n_spp, abund_by_site$total) #yes
+
+##did we sample enough to adequately describe the community?
+make_filtered_spp_mat <- function(site_ID) {
   
-return(list("trait" = fish_trait_mat.t, "abund" = fish_L_mat)) #no transformation on the abundance matrix
-
+  spp_mat <- net_tidy %>% 
+    mutate(year_month = ym(paste(year, month, sep = "-"))) %>% 
+    filter(site == site_ID) %>% 
+    group_by(ComName, year_month) %>% 
+    summarize(spp_sum = sum(species_count)) %>% 
+    pivot_wider(names_from = ComName, values_from = spp_sum) %>% 
+    arrange(year_month) %>% 
+    clean_names() %>% 
+    replace(is.na(.), 0) %>% 
+    select(-1)
+  
+  return(spp_mat)
 }
 
-fish.list <- create_fish_matrices(net_tidy)
+make_spp_curve <- function(site_ID) {
+  
+  site_mat <- make_filtered_spp_mat(site_ID)
+  site_curve <- specaccum(site_mat, method = "collector", permutations = 100) #collector method preserves the order
+  return(site_curve)
+  
+}
 
-save(fish.list, file = here("data", "fish.list.Rdata"))
+curve_list <- lapply(SOS_sites, make_spp_curve)
+curve_df <- data.frame() 
 
+for (i in 1:length(SOS_sites)) {
+  sites <- curve_list[[i]]$sites
+  richness <- curve_list[[i]]$richness
+  tmp <- data.frame(site = SOS_sites[i], samples = sites, richness = richness)
+  
+  curve_df <- rbind(curve_df, tmp)
+}
+
+ggplot() +
+  geom_point(data = curve_df, aes(x = samples, y = richness, color = factor(site, level = SOS_sites))) +
+  geom_line(data = curve_df, aes(x = samples, y = richness, color = factor(site, level = SOS_sites))) +
+  theme_classic() +
+  labs(x = "Times sampled", y = "Number of species", color = "Site")
+
+##is there obvious seasonality in our catch?
+#in total catch abundance?
+net_tidy %>% 
+  filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
+  ggplot(aes(x = month, y = species_count, fill = year)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Month", y = "Abundance", fill = "Year") + 
+  theme_classic()
+#doesn't seem to be a clear break between "early" and "late" 
+
+#in species richness?
+n_spp_by_month <- net_tidy %>% 
+  filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
+  group_by(year, month) %>% 
+  summarize(n_spp = n_distinct(ComName)) 
+
+n_spp_by_month %>% 
+  ggplot(aes(x = month, y = n_spp, group = year, color = year)) +
+  geom_line() +
+  geom_point() + 
+  theme_classic() + 
+  labs(x = "Month", y = "Species Richness", color = "Year")
+#again, doesn't seem to be a clear break between "early" and "late" 
+
+##is there a difference between northern and southern sites?
+abund_region <- net_tidy %>% 
+  mutate(year_month = ym(paste(year, month, sep = "-"))) %>% 
+  mutate(region = case_when(site %in% c("FAM", "TUR", "COR", "MA", "HO", "WA") ~ "North",
+                            TRUE ~ "South")) %>% 
+  group_by(region, site, year_month) %>% 
+  summarize(n_spp = n_distinct(ComName))
+
+abund_region %>% 
+  ggplot(aes(x = site, y = n_spp, fill = region)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(x = "Site", y = "Species Richness", fill = "Region")
+
+#### final tidy dataframe for analysis ####
+net_tidy <- net_tidy %>% 
+  filter(site %in% SOS_core_sites) #use only core sites because we didn't sample jubilee sites enough to capture the community
+
+save(net_tidy, file = here("data", "net_tidy.Rdata"))
