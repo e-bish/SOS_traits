@@ -196,6 +196,8 @@ ggplot() +
   theme_classic() +
   labs(x = "Times sampled", y = "Number of species", color = "Site")
 
+ggsave("docs/figures/specaccum_plot.png")
+
 ##is there obvious seasonality in our catch?
 #in total catch abundance?
 net_tidy %>% 
