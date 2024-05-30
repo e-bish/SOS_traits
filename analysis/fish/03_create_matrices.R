@@ -1,6 +1,8 @@
 library(tidyverse)
 library(here)
 library(rfishbase)
+library(janitor)
+library(GGally)
 
 #load tidy fish data frame created in 02_tidy_data
 load(here("data", "net_tidy.Rdata")) 
@@ -131,19 +133,26 @@ hist(fish_Q$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
 boxplot(fish_Q$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
 #trait is generally well distributed with few outliers
 
-#check the coefficient of variation
-CV <- function(x) { 100 * sd(x) / mean(x) }
+# #check the coefficient of variation
+# CV <- function(x) { 100 * sd(x) / mean(x) }
+# CV(fish_Q$mean_length_mm)
+# # <50 is small, so we don't necessarily need to transform the length data
+# #log transform the length data
+# fish_Q.t <- fish_Q %>% mutate_if(is.numeric, log)
+# CV(fish_Q.t$mean_length_mm)
 
-CV(fish_Q$mean_length_mm)
-# <50 is small, so we don't necessarily need to transform the length data
+#scale the continuous trait between 0 and 1
+# range01 <- function(x){(x-min(x))/(max(x)-min(x))}
+# fish_Q.t <- fish_Q %>% mutate(mean_length_mm = range01(mean_length_mm))
+# hist(fish_Q.t$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
+# boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
+#better
 
-#log transform the length data
-fish_Q.t <- fish_Q %>% mutate_if(is.numeric, log)
-
+#scale continuous trait to a mean of zero
+fish_Q.t <- fish_Q %>% mutate(mean_length_mm = scale(mean_length_mm))
 hist(fish_Q.t$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
 boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
-CV(fish_Q.t$mean_length_mm)
-#better
+
 
 par(mfrow=c(1,1))
 
@@ -163,7 +172,6 @@ table(fish_Q$feeding_guild, useNA="ifany")
 #distributed well enough
 
 ## Step 4: Evaluate multicollinearity among continuous traits and associations with categorical traits 
-
 ggpairs(fish_Q.t)
 
 ## Step 5: Identify missing trait data 

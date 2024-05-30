@@ -134,7 +134,8 @@ low_n_samples <- fish.list$abund %>%
   rownames()
 
 fish_L_filtered <- fish.list$abund %>% 
-  filter(!rownames(.) %in% low_n_samples)
+  filter(!rownames(.) %in% low_n_samples) %>% 
+  select_if(~ any(. != 0)) #remove species that have all zeros after filtering out samples with low catch
 
 alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3")],
                                    asb_sp_w = data.matrix(fish_L_filtered),
