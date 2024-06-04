@@ -245,7 +245,7 @@ ggplot() +
   theme_classic() +
   labs(x = "Times sampled", y = "Number of species", color = "Site")
 
-ggsave("docs/figures/specaccum_plot.png")
+# ggsave("docs/figures/specaccum_plot.png")
 
 ##is there obvious seasonality in our catch?
 #in total catch abundance?
@@ -286,10 +286,10 @@ abund_region %>%
   labs(x = "Site", y = "Species Richness", fill = "Region")
 
 #### final tidy dataframe for analysis ####
-net_tidy <- net_tidy %>% 
+net_tidy.balanced <- net_tidy %>% 
   filter(site %in% SOS_core_sites) #use only core sites because we didn't sample jubilee sites enough to capture the community
 
-save(net_tidy, file = here("data", "net_tidy.Rdata"))
+save(net_tidy.balanced, file = here("data", "net_tidy.balanced.Rdata"))
 
 
 
