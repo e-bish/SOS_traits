@@ -149,7 +149,9 @@ boxplot(fish_Q$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
 #better
 
 #scale continuous trait to a mean of zero
-fish_Q.t <- fish_Q %>% mutate(mean_length_mm = scale(mean_length_mm))
+fish_Q.t <- fish_Q %>% 
+  mutate(mean_length_mm = as.vector(scale(mean_length_mm))) 
+
 hist(fish_Q.t$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
 boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
 
