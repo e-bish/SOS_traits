@@ -44,7 +44,9 @@ knitr::include_graphics(here("docs", "figures", "specaccum_plot.png"))
 
 - If we keep ipas as separate rows in the L matrix, and then filter out rows that have less species than the number of axes, that leaves some columns with all zeros. We would therefore have to take out these relatively rare species (rock sole [n = 1], tidepool sculpin [n = 1], plainfin midshipman [n = 2], and padded sculpin [n = 1]). This doesn't substantially change the overall results, except that the difference in species richness between regions becomes non-significant. 
 
--> next thing to try: just remove sample dates that aren't balanced so we can sum across IPAs
+- Removing unbalanced sampling across depths removes 11 ipas (4 from core sites), and removing unbalanced sampling across ipas removes 7 sampling events (5 from core sites). This allows us to sum across stations so we can accurately compare across ipas and sampling days at each site. However, later we run into issues where we need to remove a significant portion of the samples because there aren't enough species represented per event. 
+
+- Summing across all deployments (in the balanced design) helps in that it reduces the number of zeros in the dataframe and we don't have to drop any rows or columns due to a lack of proper species representation. However, then we only have one row per site which doesn't lend itself to statistical comparisons later. 
 
 **Won't remove relatively rare species**. 
 

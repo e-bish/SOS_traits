@@ -10,15 +10,15 @@ net_tidy <- net_tidy.balanced
 
 #### Create the L (abundance) matrix ####
 fish_L <- net_tidy %>% #L is referring to the RLQ analysis
-  group_by(year, month, site, ipa, ComName) %>%
-  summarize(spp_sum = sum(species_count)) %>% #sum across depths within a site
+  group_by(site, ComName) %>% # add in year/month/ipa/station here to separate them out
+  summarize(spp_sum = sum(species_count)) %>% #sum across all deployments within a site
   ungroup() %>%
   pivot_wider(names_from = ComName, values_from = spp_sum, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
-  mutate(sample = paste(year, month, site, ipa, sep = "_"), .after = ipa) %>% 
-  select(!1:4) %>% 
-  column_to_rownames(var = "sample")
+  # mutate(sample = paste(year, month, site, sep = "_"), .after = site) %>% 
+  # select(!1:3) %>% 
+  column_to_rownames(var = "site")
 
 #### Create the Q (trait) matrix ####
 
@@ -124,7 +124,7 @@ fish_L %>%
   pivot_longer(cols = 2:43, names_to = "species") %>% 
   ggplot() +
   geom_tile(aes(x = species, y = sample, fill = value))
-#lots of zeros!
+#lots of zeros! but less than the unbalanced one?
 
 ## Step 2: Check species sampling coverage (e.g. rarefaction)
 
@@ -135,26 +135,26 @@ boxplot(fish_Q$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
 #trait is generally well distributed with few outliers
 
 # #check the coefficient of variation
-# CV <- function(x) { 100 * sd(x) / mean(x) }
-# CV(fish_Q$mean_length_mm)
-# # <50 is small, so we don't necessarily need to transform the length data
+CV <- function(x) { 100 * sd(x) / mean(x) }
+CV(fish_Q$mean_length_mm)
+# # <50 is small, so we don't necessarily need to transform the length data, but it is still borderline
 # #log transform the length data
-# fish_Q.t <- fish_Q %>% mutate_if(is.numeric, log)
-# CV(fish_Q.t$mean_length_mm)
+fish_Q.t <- fish_Q %>% mutate_if(is.numeric, log) #Weidmann et al. 2014
+CV(fish_Q.t$mean_length_mm) #better
 
-#scale the continuous trait between 0 and 1
+# #scale the continuous trait between 0 and 1
 # range01 <- function(x){(x-min(x))/(max(x)-min(x))}
 # fish_Q.t <- fish_Q %>% mutate(mean_length_mm = range01(mean_length_mm))
 # hist(fish_Q.t$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
-# boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
-#better
+# boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)") # better
+
 
 #scale continuous trait to a mean of zero
-fish_Q.t <- fish_Q %>% 
-  mutate(mean_length_mm = as.vector(scale(mean_length_mm))) 
-
-hist(fish_Q.t$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
-boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
+# fish_Q.t <- fish_Q %>% 
+#   mutate(mean_length_mm = as.vector(scale(mean_length_mm))) 
+# 
+# hist(fish_Q.t$mean_length_mm, main="Histogram", xlab="Mean Length (mm)")
+# boxplot(fish_Q.t$mean_length_mm, main="Boxplot", ylab="Mean Length (mm)")
 
 
 par(mfrow=c(1,1))
@@ -181,6 +181,6 @@ ggpairs(fish_Q.t)
 # missing data were added above
 
 #### save final L and Q matrices #### 
-fish.list.balanced <- list("trait" = fish_Q.t, "abund" = fish_L) 
+fish.list.balanced <- list("trait" = fish_Q, "abund" = fish_L) #not transforming continuous traits because they're going to be standardized anyway
 
 save(fish.list.balanced, file = here("data", "fish.list.balanced.Rdata"))
