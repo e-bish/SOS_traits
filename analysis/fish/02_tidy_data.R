@@ -29,7 +29,6 @@ load_data <- function() {
     read_csv()
   
   net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-    filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
     mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
     mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island
     mutate(date = make_date(year, month, day)) %>% 
