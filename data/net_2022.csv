@@ -121,6 +121,7 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2022,05,06,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
 2022,05,06,EDG,Armored,1,Pelagic invertebrate,Jellyfish,Water Jelly,4,0
 2022,05,06,EDG,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,8,0
+2022,05,06,EDG,Natural,0,Fish,Salmon,Chum,44,29.886363636363637
 2022,05,06,EDG,Natural,1,Fish,Salmon,Chinook,7,82.71428571428571
 2022,05,06,EDG,Natural,1,Fish,Salmon,Chum,238,5.953781512605042
 2022,05,06,EDG,Natural,1,Pelagic invertebrate,Jellyfish,Ctenophore,12,0
@@ -638,6 +639,9 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2022,09,08,EDG,Natural,1,Fish,Stichaeid,Stickleback,1,69
 2022,09,08,EDG,Natural,1,NA,NA,none,1,0
 2022,09,08,EDG,Natural,2,NA,NA,none,2,0
+2022,09,08,EDG,Restored,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
+2022,09,08,EDG,Restored,1,NA,NA,none,1,0
+2022,09,08,EDG,Restored,2,NA,NA,none,1,0
 2022,09,12,COR,Armored,0,Fish,Perch,Shiner Perch,4,55.5
 2022,09,12,COR,Armored,0,Fish,Pholidae,Saddleback Gunnel,1,130
 2022,09,12,COR,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,20,0

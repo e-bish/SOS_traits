@@ -258,19 +258,19 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,21,LL,Restored,1,Fish,Stichaeid,Stickleback,1,69
 2021,06,21,LL,Restored,1,Pelagic invertebrate,Jellyfish,Ctenophore,1,0
 2021,06,21,LL,Restored,2,NA,NA,none,1,0
-2021,06,21,TL,Armored,0,NA,NA,none,1,0
-2021,06,21,TL,Armored,1,Fish,Salmon,Chinook,2,97.5
-2021,06,21,TL,Armored,2,Pelagic invertebrate,Jellyfish,Water Jelly,6,0
-2021,06,21,TL,Armored_2,0,Fish,Salmon,Chinook,3,85.33333333333333
-2021,06,21,TL,Armored_2,1,Fish,Salmon,Chinook,8,107
-2021,06,21,TL,Armored_2,1,Fish,Stichaeid,Stickleback,1,71
-2021,06,21,TL,Armored_2,2,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
-2021,06,21,TL,Armored_2,2,Pelagic invertebrate,Jellyfish,Water Jelly,3,0
-2021,06,21,TL,Restored,1,Fish,Forage Fish,Herring,13,116.3076923076923
-2021,06,21,TL,Restored,1,Fish,Salmon,Chinook,28,70.53571428571429
-2021,06,21,TL,Restored,1,Fish,Salmon,Coho,1,97
-2021,06,21,TL,Restored,2,Pelagic invertebrate,Jellyfish,Ctenophore,4,0
-2021,06,21,TL,Restored,2,Pelagic invertebrate,Jellyfish,Water Jelly,4,0
+2021,06,21,TL,Restored,0,NA,NA,none,1,0
+2021,06,21,TL,Restored,1,Fish,Salmon,Chinook,2,97.5
+2021,06,21,TL,Restored,2,Pelagic invertebrate,Jellyfish,Water Jelly,6,0
+2021,06,21,TL,Armored,0,Fish,Salmon,Chinook,3,85.33333333333333
+2021,06,21,TL,Armored,1,Fish,Salmon,Chinook,8,107
+2021,06,21,TL,Armored,1,Fish,Stichaeid,Stickleback,1,71
+2021,06,21,TL,Armored,2,Pelagic invertebrate,Jellyfish,Ctenophore,5,0
+2021,06,21,TL,Armored,2,Pelagic invertebrate,Jellyfish,Water Jelly,3,0
+2021,06,21,TL,Natural,1,Fish,Forage Fish,Herring,13,116.3076923076923
+2021,06,21,TL,Natural,1,Fish,Salmon,Chinook,28,70.53571428571429
+2021,06,21,TL,Natural,1,Fish,Salmon,Coho,1,97
+2021,06,21,TL,Natural,2,Pelagic invertebrate,Jellyfish,Ctenophore,4,0
+2021,06,21,TL,Natural,2,Pelagic invertebrate,Jellyfish,Water Jelly,4,0
 2021,06,23,DOK,Armored,0,Fish,Perch,Shiner Perch,10,82.6
 2021,06,23,DOK,Armored,0,Pelagic invertebrate,Jellyfish,Ctenophore,10,0
 2021,06,23,DOK,Armored,1,Fish,Salmon,Chinook,1,123
@@ -300,13 +300,13 @@ year,month,day,site,ipa,station,org_type,tax_group,species,species_count,mean_le
 2021,06,23,SHR,Restored,1,Fish,Perch,Shiner Perch,1,76
 2021,06,23,SHR,Restored,1,Pelagic invertebrate,Jellyfish,Water Jelly,1,0
 2021,06,23,SHR,Restored,2,NA,NA,none,1,0
-2021,07,01,MA,Natural,0,Fish,Forage Fish,Herring,1,100
-2021,07,01,MA,Natural,0,Fish,Salmon,Chinook,1,92
-2021,07,01,MA,Natural,1,NA,NA,none,1,0
-2021,07,01,MA,Natural,2,NA,NA,none,1,0
-2021,07,01,MA,Restored,0,NA,NA,none,1,0
-2021,07,01,MA,Restored,1,NA,NA,none,1,0
-2021,07,01,MA,Restored,2,Fish,Perch,Shiner Perch,4,76.75
+2021,06,01,MA,Natural,0,Fish,Forage Fish,Herring,1,100
+2021,06,01,MA,Natural,0,Fish,Salmon,Chinook,1,92
+2021,06,01,MA,Natural,1,NA,NA,none,1,0
+2021,06,01,MA,Natural,2,NA,NA,none,1,0
+2021,06,01,MA,Restored,0,NA,NA,none,1,0
+2021,06,01,MA,Restored,1,NA,NA,none,1,0
+2021,06,01,MA,Restored,2,Fish,Perch,Shiner Perch,4,76.75
 2021,07,13,DOK,Armored,1,Pelagic invertebrate,Jellyfish,Ctenophore,14,0
 2021,07,13,DOK,Armored,2,Pelagic invertebrate,Jellyfish,Moon Jelly,7,0
 2021,07,13,DOK,Natural,0,NA,NA,none,1,0

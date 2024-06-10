@@ -67,7 +67,11 @@ net_2021 <- net_import2 %>%
   mutate(species = ifelse(is.na(species), "none", species)) %>% 
   group_by(year, month, day, site, ipa, station, org_type, tax_group, species) %>%
   summarize(species_count = n(), mean_length_mm = mean(length_mm)) %>% 
-  ungroup() 
+  ungroup() %>% 
+  mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
+  mutate(ipa = ifelse(site == "TL" & ipa == "Restored", "Natural", ipa)) %>% #fix Titlow misdesignations
+  mutate(ipa = ifelse(site == "TL" & ipa == "Armored", "Restored", ipa)) %>% 
+  mutate(ipa = ifelse(site == "TL" & ipa == "Armored_2", "Armored", ipa))
 
 #write to csv
 write_csv(net_2021, here("data","net_2021.csv"))
