@@ -10,15 +10,15 @@ net_tidy <- net_tidy.balanced
 
 #### Create the L (abundance) matrix ####
 fish_L <- net_tidy %>% #L is referring to the RLQ analysis
-  group_by(site, ComName) %>% # add in year/month/ipa/station here to separate them out
+  group_by(site, ipa, ComName) %>% # add in year/month/ipa/station here to separate them out
   summarize(spp_sum = sum(species_count)) %>% #sum across all deployments within a site
   ungroup() %>%
   pivot_wider(names_from = ComName, values_from = spp_sum, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
-  # mutate(sample = paste(year, month, site, sep = "_"), .after = site) %>% 
-  # select(!1:3) %>% 
-  column_to_rownames(var = "site")
+  mutate(site_ipa = paste(site, ipa, sep = "_"), .after = ipa) %>%
+  select(!1:2) %>%
+  column_to_rownames(var = "site_ipa")
 
 #### Create the Q (trait) matrix ####
 

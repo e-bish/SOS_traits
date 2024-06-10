@@ -9,6 +9,7 @@ library(patchwork)
 library(vegan)
 
 load(here("data", "fish.list.balanced.Rdata")) #object created in 02_tidy_data
+#current version is setup by site_ipa
 
 fish.list <- fish.list.balanced
 
@@ -121,7 +122,7 @@ functional_space_plot <- mFD::funct.space.plot(
 # with the FD package 
 fishFD <- dbFD(x = fish.list$trait, #must be a df where character columns are factors
                a = fish.list$abund,
-               stand.x = FALSE, # we already log transformed the mean length variable so it doesn't need additional standardization
+               stand.x = TRUE, # revisit this
                ord = "podani",
                corr = "cailliez", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred 
                m = 4,
@@ -142,7 +143,7 @@ fish_L_filtered <- fish.list$abund %>%
   filter(!rownames(.) %in% low_n_samples) %>% 
   select_if(~ any(. != 0)) #remove species that have all zeros after filtering out samples with low catch
 
-alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3")], #even though 4d was higher quality, 3d allows us to retain more samples and is still of high enough quality
+alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")], #even though 4d was higher quality, 3d allows us to retain more samples and is still of high enough quality
                                    asb_sp_w = data.matrix(fish_L_filtered),
                                    ind_vect = c("fdis", "feve", "fric", "fdiv"),
                                    scaling = TRUE,
@@ -155,9 +156,9 @@ FD_values <- alpha_indices$"functional_diversity_indices"
 colnames(FD_values)[1:5] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
 
 FD_results <- FD_values %>% 
-  as_tibble(rownames = "site") %>% 
-  # separate_wider_delim(sample, delim = "_", names = c("year", "month", "site"), cols_remove = FALSE) %>% 
-  # relocate(sample) %>% 
+  as_tibble(rownames = "site_ipa") %>% 
+  separate_wider_delim(site_ipa, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
+  relocate(site_ipa) %>% 
   # mutate(month = factor(month, labels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
@@ -175,14 +176,14 @@ plot_index <- function (index, by){
       guides(fill="none")
 }
 
-index_plots <- lapply(names(FD_results[6:10]), plot_index, by = "site")
+index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "site")
 
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
   plot_layout(ncol = 3)
 
 # ggsave("docs/figures/fish_FDpatch.png")
 
-index_plots <- lapply(names(FD_results[3:7]), plot_index, by = "region")
+index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "region")
 
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
   plot_layout(ncol = 3)
@@ -190,11 +191,11 @@ index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + inde
 # ggsave("docs/figures/fish_FDregionalpatch.png")
 
 #### PERMANOVA ####
-adonis2(FD_results[6:10] ~ FD_results$region, strata = FD_results$year, method = "euc")
+adonis2(FD_results[5:9] ~ FD_results$region, strata = FD_results$site, method = "euc")
 
 CTRL <- permute::how(within = Within(type = "free"),
             blocks = year, #permutations are restricted within years
-            plots = Plots(strata = FD_results$region, type = "free"),
+            plots = Plots(strata = FD_results$site, type = "free"),
             nperm = 9999,
             observed = TRUE)
 #why not working?
@@ -210,10 +211,10 @@ kruskal.test(Species_Richness ~ region, data = FD_results) #different
 kruskal.test(FRic ~ site, data = FD_results) #different
 kruskal.test(FRic ~ region, data = FD_results) #different
 
-kruskal.test(FEve ~ site, data = FD_results) #same with 4d, different with 3d
+kruskal.test(FEve ~ site, data = FD_results) #same 
 kruskal.test(FEve ~ region, data = FD_results) #same
 
-kruskal.test(FDiv ~ site, data = FD_results) #same with 4d, different with 3d
+kruskal.test(FDiv ~ site, data = FD_results) #same 
 kruskal.test(FDiv ~ region, data = FD_results) #same
 
 kruskal.test(FDis ~ site, data = FD_results) #different with 4d, same with 3d
@@ -257,7 +258,7 @@ ggplot(all_coords, aes(x = PC1, y = PC2, col = factor(Region), fill = factor(Reg
 #### test for differences in beta diversity ####
 beta_fd_indices <- mFD::beta.fd.multidim(
   sp_faxes_coord   = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
-  asb_sp_occ       = decostand(fish_L_filtered, method = "pa"),
+  asb_sp_occ       = decostand(fish_L, method = "pa"),
   check_input      = TRUE,
   beta_family      = c("Jaccard"),
   details_returned = TRUE)
