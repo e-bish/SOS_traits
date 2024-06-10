@@ -29,8 +29,6 @@ load_data <- function() {
     read_csv()
   
   net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-    filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
-    mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
     mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island
     mutate(date = make_date(year, month, day)) %>% 
     mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
@@ -38,7 +36,23 @@ load_data <- function() {
            month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept")),
            site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))) %>% 
     mutate(species_count = as.numeric(species_count)) %>%
-    mutate(species_count = ifelse(is.na(org_type), 0, species_count)) %>% 
+    mutate(species_count = ifelse(is.na(org_type), 0, species_count)) 
+  
+  sampling_events <- net_tidy %>% 
+    expand(nesting(year, month, day, site, ipa, station))
+  
+  #### determine which site/days were unevenly sampled
+  balanced_depth <- sampling_events %>% 
+    group_by(year, month, day, site, ipa) %>% 
+    summarize(n_depths = n()) %>% 
+    filter(n_depths < 3)
+  
+  balanced_shoreline <- sampling_events %>% 
+    group_by(year, month, day, site) %>% 
+    summarize(n_shorelines = n()) %>% 
+    filter(n_shorelines < 9) #can we use this instead of separating depths?
+  
+  net_tidy <- net_tidy %>% 
     filter(org_type == "Fish") %>% #### this is where you lose zero counts, if those are needed later
     rename(ComName = "species") %>% 
     mutate(ComName = case_when(tax_group == "Salmon" ~ paste(ComName, "salmon"), 
@@ -64,54 +78,11 @@ load_data <- function() {
                                TRUE ~ ComName)) %>% 
     filter(!grepl("UnID", ComName)) #remove unidentified species
   
-  #### determine which site/days were unevenly sampled
-  #only keep sampling events where we sampled at three depth stations within a shoreline
-  net_even_depth <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-    filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
-    mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
-    mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural2")) %>% #no restoration at Turn Island
-    mutate(date = make_date(year, month, day)) %>% 
-    mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
-    mutate(year = factor(year), 
-           month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept")),
-           site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))) %>% 
-    mutate(sample = paste(year, month, site, ipa, station, sep = "."), .after = station) %>% 
-    group_by(sample) %>% 
-    count(ipa) %>% 
-    ungroup() %>% 
-    select(!c(ipa, n)) %>% 
-    separate_wider_delim(sample, delim = ".", names = c("year", "month", "site", "ipa", "station"), cols_remove = TRUE) %>% 
-    group_by(year, month, site, ipa) %>% 
-    summarize(n_depths = n()) %>% 
-    filter(n_depths < 3) #11 sampling events, 04 from core sites
-  
-  #only keep sampling events where we sampled at all three shorelines within a site
-  net_even_shoreline <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-    filter(!ipa == "Armored_2") %>% #remove second armored site from Titlow in 2021
-    mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
-    mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural2")) %>% #no restoration at Turn Island
-    mutate(date = make_date(year, month, day)) %>% 
-    mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
-    mutate(year = factor(year), 
-           month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept")),
-           site = factor(site, levels = c("FAM", "TUR", "COR", "MA", "WA", "HO", "SHR", "DOK", "LL", "TL", "PR", "EDG"))) %>% 
-    mutate(sample = paste(year, month, site, ipa, station, sep = "."), .after = station) %>% 
-    group_by(sample) %>% 
-    count(ipa) %>% 
-    ungroup() %>% 
-    separate_wider_delim(sample, delim = ".", names = c("year", "month", "site", "shoreline", "station"), cols_remove = TRUE) %>% 
-    select(!c(ipa, n)) %>% 
-    group_by(year, month, site, shoreline) %>% 
-    summarize(n_depths = n()) %>% 
-    filter(!n_depths < 3) %>% 
-    group_by(year, month, site) %>% 
-    summarize(n_shorelines = n()) %>% 
-    filter(n_shorelines < 3) #7 sampling events, 5 from core sites 
-  
+
   #remove sampling events that didn't have a fully balanced design across shoreline types and depths
-  net_tidy <- net_tidy %>% 
-    anti_join(net_even_shoreline, join_by("year", "month", "site")) %>% 
-    anti_join(net_even_depth, join_by("year", "month", "site", "ipa"))
+
+    net_tidy <- net_tidy %>% 
+      anti_join(net_even_shoreline, join_by("year", "month", "site"))
   
   return(net_tidy)
 }
