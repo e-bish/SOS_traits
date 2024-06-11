@@ -41,6 +41,7 @@ load_data <- function() {
   sampling_events <- net_tidy %>% 
     expand(nesting(year, month, day, site, ipa, station))
   
+  ##############################################################
   #### determine which site/days were unevenly sampled
   balanced_depth <- sampling_events %>% 
     group_by(year, month, day, site, ipa) %>% 
@@ -51,6 +52,8 @@ load_data <- function() {
     group_by(year, month, day, site) %>% 
     summarize(n_shorelines = n()) %>% 
     filter(n_shorelines < 9) #can we use this instead of separating depths?
+  ############################################################## confirm we can add across months/years within ipas
+  
   
   net_tidy <- net_tidy %>% 
     filter(org_type == "Fish") %>% #### this is where you lose zero counts, if those are needed later
