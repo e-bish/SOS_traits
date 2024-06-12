@@ -262,7 +262,7 @@ abund_region %>%
   labs(x = "Site", y = "Species Richness", fill = "Region")
 
 #### final tidy dataframe for analysis ####
-net_tidy.balanced <- net_tidy %>% 
+net_tidy.balanced <- net_tidy18 %>% 
   filter(site %in% SOS_core_sites) #use only core sites because we didn't sample jubilee sites enough to capture the community
 
 save(net_tidy.balanced, file = here("data", "net_tidy.balanced.Rdata"))

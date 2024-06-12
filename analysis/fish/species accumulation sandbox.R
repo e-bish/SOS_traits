@@ -134,3 +134,4 @@ ggplot() +
   theme_classic() +
   labs(x = "Times sampled", y = "Number of species", color = "Site")
 
+net_tidy.balanced <- net_tidy18
