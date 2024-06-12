@@ -46,7 +46,9 @@ knitr::include_graphics(here("docs", "figures", "specaccum_plot.png"))
 
 - Removing unbalanced sampling across depths removes 11 ipas (4 from core sites), and removing unbalanced sampling across ipas removes 7 sampling events (5 from core sites). This allows us to sum across stations so we can accurately compare across ipas and sampling days at each site. However, later we run into issues where we need to remove a significant portion of the samples because there aren't enough species represented per event. 
 
-- Summing across all deployments (in the balanced design) helps in that it reduces the number of zeros in the dataframe and we don't have to drop any rows or columns due to a lack of proper species representation. However, then we only have one row per site which doesn't lend itself to statistical comparisons later. 
+- Summing across all deployments (in the balanced design) helps in that it reduces the number of zeros in the dataframe and we don't have to drop any rows or columns due to a lack of proper species representation. However, then we only have one row per site which doesn't lend itself to statistical comparisons later.
+
+- Removing unbalanced sampling events and only keeping the first 18 samples for each site:
 
 **Won't remove relatively rare species**. 
 

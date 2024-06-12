@@ -132,19 +132,19 @@ fishFD <- dbFD(x = fish.list$trait, #must be a df where character columns are fa
                print.pco = TRUE)
 
 # with the mFD package
-low_n_samples <- fish.list$abund %>% 
-  decostand(method = "pa") %>% 
-  mutate(n_spp = rowSums(.)) %>% 
-  filter(n_spp < 4) %>% #remove samples where number of species was less than the number of axes in the functional space
-  rownames()
-#with 4 rock sole isn't at any site
-
-fish_L_filtered <- fish.list$abund %>% 
-  filter(!rownames(.) %in% low_n_samples) %>% 
-  select_if(~ any(. != 0)) #remove species that have all zeros after filtering out samples with low catch
+# low_n_samples <- fish.list$abund %>% 
+#   decostand(method = "pa") %>% 
+#   mutate(n_spp = rowSums(.)) %>% 
+#   filter(n_spp < 4) %>% #remove samples where number of species was less than the number of axes in the functional space
+#   rownames()
+# #with 4 rock sole isn't at any site
+# 
+# fish_L_filtered <- fish.list$abund %>% 
+#   filter(!rownames(.) %in% low_n_samples) %>% 
+#   select_if(~ any(. != 0)) #remove species that have all zeros after filtering out samples with low catch
 
 alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")], #even though 4d was higher quality, 3d allows us to retain more samples and is still of high enough quality
-                                   asb_sp_w = data.matrix(fish_L_filtered),
+                                   asb_sp_w = data.matrix(fish_L),
                                    ind_vect = c("fdis", "feve", "fric", "fdiv"),
                                    scaling = TRUE,
                                    check_input = TRUE,
@@ -166,27 +166,47 @@ FD_results <- FD_values %>%
 FD_results %>% group_by(site) %>% summarize(n())
 #we end up losing samples from the southern sites by removing samples with few species
 
-plot_index <- function (index, by){
-    ggplot(data = FD_results, aes(x = .data[[by]], y = .data[[index]], fill = .data[[by]])) +
-      geom_boxplot(outlier.shape = NA) + 
+plot_site_index <- function (index){
+    ggplot(data = FD_results, aes(x = site, 
+                                  y = .data[[index]], 
+                                  color = site,
+                                  shape = ipa)) +
+      geom_point(size = 3) + 
       theme_classic() +
       ylab(index) +
       theme(axis.title.x = element_blank(), 
-            axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-      guides(fill="none")
+            axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
 }
 
-index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "site")
+index_plots <- lapply(names(FD_results[5:9]), plot_site_index)
 
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
-  plot_layout(ncol = 3)
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+  plot_layout(ncol = 3) + plot_layout(guides = "collect")
 
 # ggsave("docs/figures/fish_FDpatch.png")
 
+plot_index <- function (index, by){
+  ggplot(data = FD_results, aes(x = .data[[by]], 
+                                y = .data[[index]], 
+                                fill = .data[[by]])) +
+    geom_boxplot() + 
+    theme_classic() +
+    ylab(index) +
+    theme(axis.title.x = element_blank(), 
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+}
+
 index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "region")
 
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] +
-  plot_layout(ncol = 3)
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+  plot_layout(ncol = 3) + plot_layout(guides = "collect")
+
+# ggsave("docs/figures/fish_FDregionalpatch.png")
+
+index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "ipa")
+
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+  plot_layout(ncol = 3) + plot_layout(guides = "collect")
 
 # ggsave("docs/figures/fish_FDregionalpatch.png")
 
@@ -207,18 +227,24 @@ adonis2(FD_results[6:10] ~ year + FD_results$region,
 
 kruskal.test(Species_Richness ~ site, data = FD_results) #different
 kruskal.test(Species_Richness ~ region, data = FD_results) #different
+kruskal.test(Species_Richness ~ ipa, data = FD_results) #same
 
-kruskal.test(FRic ~ site, data = FD_results) #different
+kruskal.test(FRic ~ site, data = FD_results) #same
 kruskal.test(FRic ~ region, data = FD_results) #different
+kruskal.test(FRic ~ ipa, data = FD_results) #same
 
 kruskal.test(FEve ~ site, data = FD_results) #same 
 kruskal.test(FEve ~ region, data = FD_results) #same
+kruskal.test(FEve ~ ipa, data = FD_results) #same
 
 kruskal.test(FDiv ~ site, data = FD_results) #same 
-kruskal.test(FDiv ~ region, data = FD_results) #same
+kruskal.test(FDiv ~ region, data = FD_results) #different
+kruskal.test(FDiv ~ ipa, data = FD_results) #same
 
-kruskal.test(FDis ~ site, data = FD_results) #different with 4d, same with 3d
-kruskal.test(FDis ~ region, data = FD_results) #same
+kruskal.test(FDis ~ site, data = FD_results) #different with 4d
+kruskal.test(FDis ~ region, data = FD_results) #same, but borderline
+kruskal.test(FDis ~ ipa, data = FD_results) #same
+
 
 #### PCoA ####
 North_indices <- which(FD_results$region == "North")
@@ -263,6 +289,10 @@ beta_fd_indices <- mFD::beta.fd.multidim(
   beta_family      = c("Jaccard"),
   details_returned = TRUE)
 
+jac_diss <- beta_fd_indices[[1]][[1]]
+jac_turn <- beta_fd_indices[[1]][[2]]
+jac_nest <- beta_fd_indices[[1]][[3]]
+
 
 
 # beta_plot_fruits <- mFD::beta.multidim.plot(
@@ -286,4 +316,4 @@ beta_fd_indices <- mFD::beta.fd.multidim(
 #   nm_size                 = 3,
 #   nm_color                = "black",
 #   nm_fontface             = "plain",
-#   check_input             = TRUE) 
+#   check_input             = TRUE)

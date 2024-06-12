@@ -92,6 +92,8 @@ load_data <- function() {
 
 net_tidy <- load_data()
 
+net_tidy <- net_tidy18
+
 #### explore the data ####
 
 ##what were the most common species we caught?
@@ -202,7 +204,7 @@ make_spp_curve <- function(site_ID) {
   
 }
 
-curve_list <- lapply(SOS_core_sites, make_spp_curve)
+curve_list <- lapply(SOS_sites, make_spp_curve)
 curve_df <- data.frame() 
 
 for (i in 1:length(SOS_sites)) {

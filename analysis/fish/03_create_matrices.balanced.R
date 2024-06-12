@@ -13,6 +13,7 @@ fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   group_by(site, ipa, ComName) %>% # add in year/month/ipa/station here to separate them out
   summarize(spp_sum = sum(species_count)) %>% #sum across all deployments within a site
   ungroup() %>%
+  filter(!is.na(ComName)) %>% 
   pivot_wider(names_from = ComName, values_from = spp_sum, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
@@ -25,7 +26,8 @@ fish_L <- net_tidy %>% #L is referring to the RLQ analysis
 #extract the names of the species present in the lampara net dataset
 spp_names <- net_tidy %>% 
   distinct(ComName) %>% 
-  mutate(Species = NA) 
+  mutate(Species = NA) %>% 
+  filter(!is.na(ComName))
 
 #link these common names to their scientific names in fishbase
 sci_names <- vector(mode = 'list', length = length(spp_names))
@@ -121,7 +123,7 @@ rownames(fish_Q) <- colnames(fish_L)
 
 fish_L %>% 
   rownames_to_column(var = "sample") %>% 
-  pivot_longer(cols = 2:43, names_to = "species") %>% 
+  pivot_longer(cols = 2:42, names_to = "species") %>% #43 species before 18events method
   ggplot() +
   geom_tile(aes(x = species, y = sample, fill = value))
 #lots of zeros! but less than the unbalanced one?
