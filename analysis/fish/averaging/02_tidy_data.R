@@ -93,6 +93,7 @@ net_tidy %>%
 
 ##how often did we encounter each species?
 times_encountered <- net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
   group_by(ComName, tax_group, site) %>% 
   summarize(freq_obs = n())
 
@@ -123,6 +124,7 @@ ggplot(sites_encountered, aes(x = reorder(ComName, -encounters_site), y = encoun
   labs(x = "", y = "No. of sites encountered")
 
 spp_by_site <- net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
   count(ComName, site)
 
 ggplot(spp_by_site, aes(x = reorder(ComName, -n), y = n, fill = site)) +
@@ -163,6 +165,7 @@ n_spp_site <- spp_by_site %>%
   summarize(n_spp = n())
 
 abund_by_site <- net_tidy %>%
+  filter(!is.na(ComName)) %>% 
   group_by(site) %>%
   summarize(total = sum(species_count)) 
 
@@ -172,6 +175,7 @@ cor(n_spp_site$n_spp, abund_by_site$total) #yes
 make_filtered_spp_mat <- function(site_ID) {
   
   spp_mat <- net_tidy %>% 
+    filter(!is.na(ComName)) %>% 
     mutate(year_month = ym(paste(year, month, sep = "-"))) %>% 
     filter(site == site_ID) %>% 
     group_by(ComName, year_month) %>% 
@@ -215,6 +219,7 @@ ggsave("docs/figures/specaccum_plot.png")
 ##is there obvious seasonality in our catch?
 #in total catch abundance?
 net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
   filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
   ggplot(aes(x = month, y = species_count, fill = year)) +
   geom_bar(stat = "identity") +
@@ -224,6 +229,7 @@ net_tidy %>%
 
 #in species richness?
 n_spp_by_month <- net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
   filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
   group_by(year, month) %>% 
   summarize(n_spp = n_distinct(ComName)) 
@@ -238,6 +244,7 @@ n_spp_by_month %>%
 
 ##is there a difference between northern and southern sites?
 abund_region <- net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
   mutate(year_month = ym(paste(year, month, sep = "-"))) %>% 
   mutate(region = case_when(site %in% c("FAM", "TUR", "COR", "MA", "HO", "WA") ~ "North",
                             TRUE ~ "South")) %>% 
