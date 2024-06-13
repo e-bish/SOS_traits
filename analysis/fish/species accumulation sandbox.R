@@ -77,7 +77,7 @@ view_cropped_effort <- sampling_event18 %>%
   group_by(site, ipa) %>% 
   count
 
-net_tidy18 <- net_tidy_b %>%
+net_tidy18 <- net_tidy2 %>%
   semi_join(sampling_event18, join_by("year", "month", "site", "ipa"))
 
 check_balance <- net_tidy18 %>%
