@@ -36,7 +36,7 @@ space_quality <- quality.fspaces(sp_dist = dist_mat,
 round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good), meaning species pairs are accurately represented
 #aka the distances in euclidean space are accurately reflecting the gowers distances
 
-#plot the trait space with the first 3 axes
+#plot the trait space with the first 4 axes
 plot_object <- space_quality$"details_fspaces"$"sp_pc_coord"
 
 funct.space.plot(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
@@ -138,7 +138,7 @@ fishFD <- dbFD(x = fish.list$trait, #must be a df where character columns are fa
 #   select_if(~ any(. != 0)) #remove species that have all zeros after filtering out samples with low catch
 
 alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
-                                   asb_sp_w = data.matrix(fish_L),
+                                   asb_sp_w = data.matrix(fish.list$abund),
                                    ind_vect = c("fdis", "feve", "fric", "fdiv"),
                                    scaling = TRUE,
                                    check_input = TRUE,

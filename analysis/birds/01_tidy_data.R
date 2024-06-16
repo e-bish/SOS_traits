@@ -5,8 +5,11 @@ library(googledrive)
 library(readxl)
 library(auk) #for bird species names
 library(moments)
+library(janitor)
+library(vegan)
 
-
+OS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), 
+                         levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))
 
 #load field data
 #first get data from google
@@ -27,11 +30,12 @@ predator_data <- read_csv("data/raw/predator_import.csv", col_names = TRUE) %>%
   rename(comm_name = "species") %>% 
   mutate_if(is.numeric, ~replace_na(., 0)) 
 
-#load trait data from Tobias et al. 2021 (Ecology Letters) AVONET: morphological, ecological and geographical data for all birds.
-AVONET <- here("data", "AVONET Supplementary dataset 1.xlsx") %>% 
-  read_excel(sheet = "AVONET2_eBird")
-
 ##### look at representative species for unknowns ####
+
+#load trait data from Tobias et al. 2021 (Ecology Letters) AVONET: morphological, ecological and geographical data for all birds.
+# AVONET <- here("data", "AVONET Supplementary dataset 1.xlsx") %>% 
+#   read_excel(sheet = "AVONET2_eBird")
+#
 # Larus <- AVONET %>% 
 #   filter(Species2 == "Larus glaucescens" | Species2 == "Larus hyperboreus" | Species2 == "Larus argentatus" | Species2 == 
 #            "Larus occidentalis")
@@ -58,10 +62,18 @@ AVONET <- here("data", "AVONET Supplementary dataset 1.xlsx") %>%
 # cor <- predator_data %>% 
 #   filter(comm_name == "cormorant")
 
+#expand the data to get sampling events with zeros
+sampling_events <- predator_data %>% 
+  select(year, month, day, site, ipa) %>% 
+  distinct()
+  
 #format field data and add species ids
 birds <- predator_data %>% 
   filter(species_group == "bird") %>% 
   filter(!(comm_name == "unk_bird" | comm_name == "unk_terrestrial_bird" | comm_name == "unk_duck")) %>% 
+  full_join(sampling_events) %>% 
+  arrange(year, day, month, site, ipa) %>% 
+  mutate(abundance =replace_na(abundance, 0)) %>% 
   mutate(spp_code = recode(comm_name, 
                            "crow" = "COBR", 
                            "pigeon_guillemot" = 'PIGU',
@@ -90,85 +102,186 @@ birds <- predator_data %>%
                            'cormorant' = 'PECO', #representative cormorant species: Pelagic Cormorants 
                            'hummingbird' = 'RUHU', #representative hummingbird species: Selasphorus rufus
                            'grebe' = 'WEGR', #representative grebe species: Western Grebes
-                           'sparrow' = 'HOSP')) %>% #representative sparrow species
-  select(-c(weather, beaufort_sea_state, observer, start_time, 
-            time_into_survey, species_group, behaviour, notes)) 
+                           'sparrow' = 'HOSP')) %>%  #representative sparrow species
+  group_by(year, month, day, site, ipa, comm_name, spp_code) %>%
+  mutate(year = as.factor(year)) %>% 
+  summarize(spp_sum = sum(abundance)) %>% # there were multiple entries per species before because they were coded with behaviors
+  ungroup()
 
-#create abundance matrix
-bird_L_df <- birds %>% 
-  filter(site %in% c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")) %>%  #core sites if we're not using jubilee
-  mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
-  mutate(year = factor(year), month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept"))) %>% 
-  select(year, month, site, ipa, spp_code, abundance) %>% 
-  group_by(year, month, site, ipa, spp_code) %>%
-  summarize_all(sum) %>% # there were multiple entries per species before because they were coded with behaviors
-  ungroup() %>% 
-  arrange(spp_code) %>% 
-  pivot_wider(names_from = spp_code, values_from = abundance, values_fill = 0) 
+##what were the most common species we caught?
+birds %>%
+  group_by(comm_name) %>%
+  summarize(total = sum(spp_sum)) %>% 
+  arrange(-total)
 
-bird_L_mat <- bird_L_df %>% 
-  mutate(sample = paste(year, month, site, ipa, sep = "_")) %>% 
-  column_to_rownames(var="sample") %>% 
-  select(!c(year, month, site, ipa))
+##how often did we encounter each species?
+times_encountered <- birds %>% 
+  filter(!is.na(comm_name)) %>% 
+  group_by(comm_name, site) %>% 
+  summarize(freq_obs = n())
 
-#load species ids for birds observed in the field
-spp_id <- read_csv("data/bird_spp_info.csv", col_names = TRUE) %>% 
-  unite(Species2, c("genus", "species"), sep = " ") %>% 
-  filter(!(comm_name == "unk_bird" |
-             comm_name == "unk_terrestrial_bird" |
-             comm_name == "unk_duck" | 
-             comm_name == "Harbor Seal")) %>%
-  mutate(spp_code = case_when(comm_name == "Common/Caspian" ~ "CATE", 
-                              comm_name == "Sparrow" ~ 'HOSP',
-                              comm_name == "grebe" ~ 'WEGR', 
-                              comm_name == "Hummingbird" ~ 'RUHU',
-                              comm_name == "Cormorant" ~ 'PECO',
-                              comm_name == "swallow" ~ "BARS", 
-                              comm_name == "Glaucus winged gull" ~ 'GWGU',
-                              comm_name == "gull" ~ 'HERG',
-                              TRUE ~ spp_code)) %>% 
-  mutate(Species2 = case_when(comm_name == "Common/Caspian" ~ 'Hydroprogne caspia', 
-                              comm_name == "Double-crested cormorant" ~ 'Nannopterum auritum', #updated species name in 2014
-                              comm_name == "Sparrow" ~ 'Passer domesticus',
-                              comm_name == "grebe" ~ 'Aechmophorus occidentalis', 
-                              comm_name == "Hummingbird" ~ 'Selasphorus rufus',
-                              comm_name == "Cormorant" ~ 'Urile pelagicus',
-                              comm_name == "swallow" ~ 'Hirundo rustica', 
-                              comm_name == "Glaucus winged gull" ~ 'Larus glaucescens',
-                              comm_name == "gull" ~ 'Larus argentatus',
-                              TRUE ~ Species2)) %>% 
-  mutate(spp_no = seq(1:nrow(.)))
+#by tax group
+ggplot(times_encountered, aes(x = comm_name, y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
+  geom_bar(position = "stack", stat="identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "Site") 
 
-### create the trait matrix
-bird_traits <- AVONET %>% 
-  select(Species2, 
-         Mass,
-         Primary.Lifestyle, 
-         Trophic.Level, 
-         Migration,
-         Trophic.Niche) %>% 
-  mutate(Trophic.Niche = str_replace(Trophic.Niche, " ", "_")) %>% 
-  mutate_if(is.character, as.factor) %>% 
-  right_join(spp_id) %>% 
-  select(-c(Species2, comm_name, spp_no)) %>% 
-  select(spp_code, everything()) %>% 
-  arrange(spp_code) %>% 
-  column_to_rownames(var="spp_code")
+ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs, fill = comm_name)) + 
+  geom_bar(position = "stack", stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "tax group") 
 
-# write.csv(bird_traits, "data/bird_traits.csv", row.names = TRUE)
+##in how many sites does each species occur?
+sites_encountered <- times_encountered %>% 
+  mutate(pa = ifelse(freq_obs > 0, 1, 0)) %>% 
+  group_by(comm_name) %>% 
+  summarize(encounters_site = sum(pa)) %>% 
+  arrange(desc(encounters_site))
 
-#inspect continuous traits 
-skewness(bird_traits$Mass)
-range(bird_traits$Mass)
+ggplot(sites_encountered, aes(x = reorder(comm_name, -encounters_site), y = encounters_site)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  labs(x = "", y = "No. of sites encountered")
 
-#apply data transformation to continuous traits
+spp_by_site <- birds %>% 
+  filter(!is.na(comm_name)) %>% 
+  count(comm_name, site)
 
-bird_traits.t <- bird_traits %>% 
-  mutate_if(is.numeric, log) %>% 
-  as.data.frame()
+ggplot(spp_by_site, aes(x = reorder(comm_name, -n), y = n, fill = site)) +
+  geom_col() + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-skewness(bird_traits.t$Mass)
-range(bird_traits.t$Mass)
+#core sites only
+ggplot(filter(spp_by_site, site %in% SOS_core_sites), aes(x = reorder(comm_name, -n), y = n, fill = site)) +
+  geom_col() + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-bird.list <- list("trait" = bird_traits.t, "abund" = bird_L_mat) 
-save(bird.list, file = here("data", "bird.list.Rdata"))
+spp_site_count <- spp_by_site %>% 
+  # filter(site %in% SOS_core_sites) %>% 
+  group_by(comm_name) %>% 
+  summarize(n_sites = n()) %>% 
+  arrange(desc(n_sites))
+
+##what is the abundance of each species when it occurs?
+spp_by_site %>% 
+  # filter(site %in% SOS_core_sites) %>% 
+  ggplot(aes(x = reorder(comm_name, -n), y = n)) +
+  geom_boxplot() + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+##is the mean abundance correlated with the number of sites where it occurs?
+mean_count <- spp_by_site %>% 
+  group_by(comm_name) %>% 
+  summarize(mean_n = mean(n))
+
+cor(mean_count$mean_n, spp_site_count$n_sites) #no
+
+##is the total abundance of fish correlated with the number of species in each site?
+n_spp_site <- spp_by_site %>% 
+  group_by(site) %>% 
+  summarize(n_spp = n())
+
+abund_by_site <- birds %>%
+  filter(!is.na(comm_name)) %>% 
+  group_by(site) %>%
+  summarize(total = sum(spp_sum)) 
+
+cor(n_spp_site$n_spp, abund_by_site$total) #not really
+
+##did we sample enough to adequately describe the community?
+make_filtered_spp_mat <- function(site_ID) {
+  
+  spp_mat <- birds %>% 
+    filter(!is.na(comm_name)) %>% 
+    mutate(year_month = ym(paste(year, month, sep = "_"))) %>% 
+    filter(site == site_ID) %>% 
+    group_by(comm_name, year_month) %>% 
+    summarize(spp_sum = sum(spp_sum)) %>% 
+    pivot_wider(names_from = comm_name, values_from = spp_sum) %>% 
+    arrange(year_month) %>% 
+    clean_names() %>% 
+    replace(is.na(.), 0) %>% 
+    select(-1)
+  
+  return(spp_mat)
+}
+
+make_spp_curve <- function(site_ID) {
+  
+  site_mat <- make_filtered_spp_mat(site_ID)
+  site_curve <- specaccum(site_mat, method = "collector", permutations = 100) #collector method preserves the order
+  return(site_curve)
+  
+}
+
+curve_list <- lapply(SOS_core_sites, make_spp_curve)
+curve_df <- data.frame() 
+
+for (i in 1:length(SOS_core_sites)) {
+  sites <- curve_list[[i]]$sites
+  richness <- curve_list[[i]]$richness
+  tmp <- data.frame(site = SOS_core_sites[i], samples = sites, richness = richness)
+  
+  curve_df <- rbind(curve_df, tmp)
+}
+
+ggplot() +
+  geom_point(data = curve_df, aes(x = samples, y = richness, color = factor(site, level = SOS_core_sites))) +
+  geom_line(data = curve_df, aes(x = samples, y = richness, color = factor(site, level = SOS_core_sites))) +
+  theme_classic() +
+  labs(x = "Times sampled", y = "Number of species", color = "Site")
+
+ggsave("docs/figures/bird_specaccum_plot.png")
+
+##is there obvious seasonality in our catch?
+#in total catch abundance?
+birds %>% 
+  filter(!is.na(comm_name)) %>% 
+  filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
+  ggplot(aes(x = month, y = spp_sum, fill = year)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Month", y = "Abundance", fill = "Year") + 
+  theme_classic()
+#no clear seasonal trend
+
+#in species richness?
+n_spp_by_month <- birds %>% 
+  filter(!is.na(comm_name)) %>% 
+  filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
+  group_by(year, month) %>% 
+  summarize(n_spp = n_distinct(comm_name)) 
+
+n_spp_by_month %>% 
+  ggplot(aes(x = month, y = n_spp, group = year, color = year)) +
+  geom_line() +
+  geom_point() + 
+  theme_classic() + 
+  labs(x = "Month", y = "Species Richness", color = "Year")
+#again, doesn't seem to be a clear break between "early" and "late" 
+
+##is there a difference between northern and southern sites?
+abund_region <- birds %>% 
+  filter(!is.na(comm_name)) %>% 
+  mutate(year_month = ym(paste(year, month, sep = "-"))) %>% 
+  mutate(region = case_when(site %in% c("FAM", "TUR", "COR", "MA", "HO", "WA") ~ "North",
+                            TRUE ~ "South")) %>% 
+  group_by(region, site, year_month) %>% 
+  summarize(n_spp = n_distinct(comm_name))
+
+abund_region %>% 
+  ggplot(aes(x = site, y = n_spp, fill = region)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(x = "Site", y = "Species Richness", fill = "Region")
+
+#### final tidy dataframe for analysis ####
+birds_tidy <- birds %>% 
+  filter(site %in% SOS_core_sites) #use only core sites because we didn't sample jubilee sites enough to capture the community
+
+save(birds_tidy, file = here("data", "birds_tidy.Rdata"))
