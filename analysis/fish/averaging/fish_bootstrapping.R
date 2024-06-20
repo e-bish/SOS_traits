@@ -1,33 +1,38 @@
 library(here)
 library(tidyverse)
+library(janitor)
 library(mFD)
+library(FD)
 library(ggridges)
 library(patchwork)
 
 set.seed(1993)
 
-#load tidy bird data frame created in 01_tidy_data
-load(here("data", "birds_tidy.Rdata")) 
-load(here("data", "bird.list.Rdata")) #object created in 02_create_matrices
+#load tidy fish data frame created in 02_tidy_data
+load(here("data", "net_tidy.Rdata")) 
+load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-bird_Q <- bird.list$trait
+fish_Q <- fish.list$trait
 
 SOS_core_sites <- c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")
 
 #### bootstrap tidy dataframe ####
 
-expand_species <- birds_tidy %>% 
-  expand(nesting(year, month, site, ipa), spp_code) %>% 
-  filter(!is.na(spp_code))
+expand_species <- net_tidy %>% 
+  expand(nesting(year, month, site, ipa), ComName) %>% 
+  filter(!is.na(ComName))
 
 #create abundance matrix
-mat_to_boot <- birds_tidy %>% 
-  filter(!is.na(comm_name)) %>% 
-  select(!c(day, comm_name)) %>% 
+mat_to_boot <- net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
+  group_by(year, month, day, site, ipa, ComName) %>% 
+  summarize(spp_sum = sum(species_count)) %>% #sum across depth stations on each day
+  ungroup() %>% 
+  select(!day) %>% #don't need this anymore
   full_join(expand_species) %>% 
   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
   mutate(spp_sum = replace_na(spp_sum, 0)) %>% 
-  arrange(spp_code)
+  arrange(ComName)
 
 #bootstrap
 boot_list <- list()
@@ -37,20 +42,21 @@ for (i in seq_len(nboot)) {
   boot_list[[i]] <- mat_to_boot[sample(seq_len(nrow(mat_to_boot)), nrow(mat_to_boot), replace = TRUE),]
 }
 
+
+format_fish_L <- function(df) {
   
-format_bird_L <- function(df) {
-  
-  bird_L <- df %>% 
-    group_by(site, spp_code) %>% 
+  fish_L <- df %>% 
+    group_by(site, ComName) %>% 
     summarize(spp_total_sum = sum(spp_sum)) %>% #sum across months/years
     ungroup() %>% 
-    pivot_wider(names_from = spp_code, values_from = spp_total_sum, values_fill = 0) %>% 
-    column_to_rownames(var = "site")
+    pivot_wider(names_from = ComName, values_from = spp_total_sum, values_fill = 0) %>% 
+    column_to_rownames(var = "site") %>% 
+    clean_names() 
   
-  return(bird_L)
+  return(fish_L)
 }
 
-boot_L <- lapply(boot_list, format_bird_L)
+boot_L <- lapply(boot_list, format_fish_L)
 
 #remove species that aren't represented in assemblages
 remove_missing_spp <- function(df) {
@@ -63,43 +69,44 @@ remove_missing_spp <- function(df) {
 boot_L_filtered <- lapply(boot_L, remove_missing_spp)
 
 #### prep the functional trait space ####
-traits.cat <- data.frame(trait_name = colnames(bird.list$trait),
+traits.cat <- data.frame(trait_name = colnames(fish.list$trait),
                          trait_type = c("Q", "N", "N", "N", "N"))
 
 #Species trait summary
 traits_summary <- sp.tr.summary(tr_cat = traits.cat, 
-                                sp_tr = bird.list$trait, 
+                                sp_tr = fish.list$trait, 
                                 stop_if_NA = T)
 
 #create a list of trait matrices based on species represented in the bootstrapped L matrices
-bird_Q_list <- list() 
+fish_Q_list <- list() 
 dist_mat <- list()
 space_quality <- list()
 trait_space <- list()
 
 for (i in 1:length(boot_L)) {
-  bird_Q_list[[i]] <- bird_Q %>% 
-    rownames_to_column(var = "species") %>% 
-    filter(species %in% colnames(boot_L_filtered[[i]])) %>% 
+  
+  fish_Q_list[[i]] <- fish_Q %>%
+    rownames_to_column(var = "species") %>%
+    filter(species %in% colnames(boot_L_filtered[[i]])) %>%
     column_to_rownames(var = "species")
 
-#create the trait space
-dist_mat[[i]] <- funct.dist(sp_tr = bird_Q_list[[i]], 
-                       tr_cat = traits.cat,
-                       metric = "gower",
-                       weight_type = "equal",
-                       stop_if_NA = TRUE)
+  #create the trait space
+  dist_mat[[i]] <- funct.dist(sp_tr = fish_Q_list[[i]], 
+                              tr_cat = traits.cat,
+                              metric = "gower",
+                              weight_type = "equal",
+                              stop_if_NA = TRUE)
 
-#examine the quality of the potential functional spaces 
-space_quality[[i]] <- quality.fspaces(sp_dist = dist_mat[[i]],
-                                 maxdim_pcoa = 10,
-                                 deviation_weighting = "absolute",
-                                 fdist_scaling = FALSE,
-                                 fdendro = "ward.D2")
-
-#extract the space 
-trait_space[[i]] <- space_quality[[i]]$"details_fspaces"$"sp_pc_coord"
-
+  #examine the quality of the potential functional spaces 
+  space_quality[[i]] <- quality.fspaces(sp_dist = dist_mat[[i]],
+                                        maxdim_pcoa = 10,
+                                        deviation_weighting = "absolute",
+                                        fdist_scaling = FALSE,
+                                        fdendro = "ward.D2")
+  
+  #extract the space 
+  trait_space[[i]] <- space_quality[[i]]$"details_fspaces"$"sp_pc_coord"
+  
 }
 
 #look at the distribution of best space qualities
@@ -119,9 +126,7 @@ space_qual_df %>%
   filter(!is.na(n_axes)) %>% 
   group_by(n_axes) %>% 
   summarize(n = n(), min = min(mad), max = max(mad), avg = mean(mad))
-  #5 axes is almost always the best trait space but 4 is nearly as good
-
-
+#5 axes is almost always the best trait space 
 
 space_qual_df %>% 
   filter(!is.na(n_axes)) %>% 
@@ -136,13 +141,13 @@ FD_results <- data.frame()
 
 # with the mFD package
 for (i in 1:length(boot_L)){
-    
-  alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4")], #if you use 5 for every assemblage then some of the TUR don't have more species than axes
-                                          asb_sp_w = data.matrix(boot_L_filtered[[i]]),
-                                          ind_vect = c("fdis", "feve", "fric", "fdiv"),
-                                          scaling = TRUE,
-                                          check_input = TRUE,
-                                          details_returned = TRUE)
+  
+  alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4", "PC5")], 
+                                     asb_sp_w = data.matrix(boot_L_filtered[[i]]),
+                                     ind_vect = c("fdis", "feve", "fric", "fdiv"),
+                                     scaling = FALSE,
+                                     check_input = TRUE,
+                                     details_returned = TRUE)
   
   FD_values <- alpha_indices$"functional_diversity_indices"
   
@@ -150,16 +155,51 @@ for (i in 1:length(boot_L)){
     as_tibble(rownames = "site") 
   
   FD_results <- rbind(FD_results, FD_results_df)
-
+  
 }
 #the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
 
 colnames(FD_results)[2:6] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
-index_names <- c("Species Richness", "F. Dispersion", "F. Eveness", "F. Richness", "F. Divergence")
 
 FD_results <- FD_results %>% 
+  select(site, Species_Richness, FRic, FEve, FDiv, FDis) %>% 
   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
+
+# with the FD package
+gowdist.list <- lapply(fish_Q_list, gowdis)
+FD_results_v2 <- list()
+
+for (i in 1:length(boot_L)){
+  
+  fishFD <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
+                 a = data.matrix(boot_L_filtered[[i]]),
+                 stand.x = TRUE, # we already log transformed the mean length variable so it doesn't need additional standardization
+                 corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred 
+                 m = 5,
+                 calc.FDiv = TRUE, 
+                 print.pco = FALSE)
+  
+  FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv,
+                             fishFD$FDis, fishFD$RaoQ) #extract indices
+  
+  FD_results_df <- FD_values %>% 
+    as_tibble(rownames = "site") 
+  
+  FD_results_v2 <- rbind(FD_results_v2, FD_results_df)
+}
+
+colnames(FD_results_v2)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+
+FD_results_v2 <- FD_results_v2 %>% 
+  select(-Rao) %>% 
+  mutate(site = factor(site, levels = SOS_core_sites)) %>% 
+  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
+
+#test for differences in calculations between packages
+all.equal(FD_results, FD_results_v2)
+
+index_names <- c("Species Richness", "F. Dispersion", "F. Eveness", "F. Richness", "F. Divergence")
 
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = .data[[index]], 
@@ -185,20 +225,20 @@ index_plots[[5]] <- ggplot(data = FD_results,
                            aes(x = Species_Richness, 
                                y = factor(site, levels = rev(SOS_core_sites)), 
                                color = region)) +
-                    geom_density_ridges2(aes(fill = region), 
-                                         stat = "binline", 
-                                         binwidth = 1, 
-                                         scale = 0.95, 
-                                         alpha = 0.9) +
-                    theme_classic() +
-                    xlab("Species Richness") +
-                    theme(axis.title.y = element_blank(), 
-                          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  geom_density_ridges2(aes(fill = region), 
+                       stat = "binline", 
+                       binwidth = 1, 
+                       scale = 0.95, 
+                       alpha = 0.9) +
+  theme_classic() +
+  xlab("Species Richness") +
+  theme(axis.title.y = element_blank(), 
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
 
 index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
   plot_layout(ncol = 3, guides = "collect")
 
-# ggsave("docs/figures/bird_FDbootpatch.png")
+# ggsave("docs/figures/fish_FDbootpatch.png")
 
 #### test for equal variances ####
 
@@ -212,7 +252,7 @@ kruskal.test(FEve ~ site, data = FD_results) #different
 kruskal.test(FEve ~ region, data = FD_results) #different
 
 kruskal.test(FDiv ~ site, data = FD_results) #different
-kruskal.test(FDiv ~ region, data = FD_results) #different
+kruskal.test(FDiv ~ region, data = FD_results) #same
 
 kruskal.test(FDis ~ site, data = FD_results) #different
 kruskal.test(FDis ~ region, data = FD_results) #different
