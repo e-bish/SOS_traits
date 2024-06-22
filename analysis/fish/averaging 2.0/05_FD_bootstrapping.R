@@ -250,25 +250,11 @@ index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_
 # ggsave("docs/figures/fish_FDbootpatch.png")
 
 #### test for equal variances ####
+#### test for equal variances ####
+site_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ site, data = FD_results)
+summary(site_test) #reject the null
+summary.aov(site_test)
 
-kruskal.test(Species_Richness ~ site, data = FD_results) #different
-kruskal.test(Species_Richness ~ region, data = FD_results) #different
-
-kruskal.test(FRic ~ site, data = FD_results) #different
-kruskal.test(FRic ~ region, data = FD_results) #different
-
-kruskal.test(FEve ~ site, data = FD_results) #different
-kruskal.test(FEve ~ region, data = FD_results) #different
-
-kruskal.test(FDiv ~ site, data = FD_results) #different
-kruskal.test(FDiv ~ region, data = FD_results) #same
-
-kruskal.test(FDis ~ site, data = FD_results) #different
-kruskal.test(FDis ~ region, data = FD_results) #different
-
-#### test for significance ####
-SR_model <- lm(Species_Richness ~ site, data = FD_results)
-
-plot(SR_model)
-
-confint(SR_model, level = 0.95)
+region_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ region, data = FD_results)
+summary(region_test) #reject the null
+summary.aov(region_test)

@@ -1,5 +1,6 @@
 library(here)
 library(tidyverse)
+library(rsample)
 library(mFD)
 library(ggridges)
 library(patchwork)
@@ -29,22 +30,24 @@ mat_to_boot <- birds_tidy %>%
   mutate(spp_sum = replace_na(spp_sum, 0)) %>% 
   arrange(spp_code)
 
-#bootstrap
-boot_list <- list()
-nboot <- 999
+#bootstrap & keep equal proportions for each month to maintain seasonal variability
+boot_obj <- bootstraps(mat_to_boot, strata = month, times = 999)
 
-for (i in seq_len(nboot)) {
-  boot_list[[i]] <- mat_to_boot[sample(seq_len(nrow(mat_to_boot)), nrow(mat_to_boot), replace = TRUE),]
+#store the bootstrap dataframes in a list
+boot_list <- list()
+for (i in seq_along(boot_obj$splits)) {
+  resample <- boot_obj$splits[[i]]
+  boot_list[[i]] <- analysis(resample)
+  
 }
 
-  
 format_bird_L <- function(df) {
   
   bird_L <- df %>% 
     group_by(site, spp_code) %>% 
-    summarize(spp_total_sum = sum(spp_sum)) %>% #sum across months/years
+    summarize(spp_total_avg = mean(spp_sum)) %>% #average across months/years
     ungroup() %>% 
-    pivot_wider(names_from = spp_code, values_from = spp_total_sum, values_fill = 0) %>% 
+    pivot_wider(names_from = spp_code, values_from = spp_total_avg, values_fill = 0) %>% 
     column_to_rownames(var = "site")
   
   return(bird_L)
