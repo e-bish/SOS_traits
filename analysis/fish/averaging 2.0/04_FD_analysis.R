@@ -29,7 +29,7 @@ load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 #                        stop_if_NA = TRUE)
 
 #using the FD package
-# dist_mat <- gowdis(fish.list$trait, ord = "classic")
+dist_mat <- gowdis(fish.list$trait, ord = "classic")
 # funct_space <- ape::pcoa(dist_mat)$vectors
 # 
 # euc_distances1 <- vegdist(funct_space[,1], method = "euc")
@@ -137,7 +137,7 @@ functional_space_plot <- mFD::funct.space.plot(
 #   left_join(FDiv) %>% 
 #   full_join(FDis)
 
-alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , 1:n_axes_to_retain],
+alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[ , 1:n_axes_to_retain],
                                    asb_sp_w = data.matrix(fish.list$abund),
                                    ind_vect = c("fdis", "feve", "fric", "fdiv"),
                                    scaling = TRUE,
