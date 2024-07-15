@@ -53,7 +53,7 @@
 ##                                                                                                                             ##
 #################################################################################################################################
 
-qual_funct_space <- function(mat_funct, nbdim=7, metric="Gower", plot="quality_funct_space") {
+quality_funct_space <- function(mat_funct, nbdim=7, metric="Gower", plot="quality_funct_space") {
 
 #loading required libraries
 require(ape)
@@ -69,7 +69,7 @@ source("http://villeger.sebastien.free.fr/R%20scripts/GFD_matcomm.R")  ; GFD<-GF
 # checking data
 if (sum(is.na(mat_funct))!=0)   {  stop(" NA are not allowed in 'funct_mat' ")     }
 if (nbdim<2)   {  stop(" 'nbdim' must be higher than 1")     }
-if (nrow(mat_funct)<3){  stop(" there must be at least 3 species in 'funct_mat' ")     }
+if (nrow(mat_funct)<3)   {  stop(" there must be at least 3 species in 'funct_mat' ")     }
 if (metric=="Euclidean" & sum(apply(mat_funct,2,is.numeric))!=ncol(mat_funct) )  { stop("using Euclidean distance requires that all traits are continuous")   }
 if (metric=="Euclidean" & nbdim>ncol(mat_funct) )  { stop("using Euclidean distance requires less dimensions than number of traits")   }
 if (metric=="Gower" & nbdim>nrow(mat_funct) )  { stop("using Gower's distance requires less dimensions than number of species")   }

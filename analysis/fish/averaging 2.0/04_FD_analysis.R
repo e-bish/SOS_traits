@@ -10,6 +10,7 @@ library(patchwork)
 library(vegan)
 
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
+# source("analysis/general_functions/geb12299-sup-0002-si.r")
 
 # traits.cat <- data.frame(trait_name = colnames(fish.list$trait),
 #                          trait_type = c("Q", "N", "N", "N", "N"))
@@ -29,7 +30,7 @@ load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 #                        stop_if_NA = TRUE)
 
 #using the FD package
-dist_mat <- gowdis(fish.list$trait, ord = "classic")
+dist_mat <- gowdis(fish.list$trait.t) #"classic" method matches mFD, which treats categorical variables as continuous
 # funct_space <- ape::pcoa(dist_mat)$vectors
 # 
 # euc_distances1 <- vegdist(funct_space[,1], method = "euc")
@@ -88,7 +89,7 @@ trait_space %>%
 #test for correlation between functional axes and traits
 trait_axes <- traits.faxes.cor(
   sp_tr = fish.list$trait, 
-  sp_faxes_coord = plot_object[ , 1:n_axes_to_retain], 
+  sp_faxes_coord = trait_space[ , 1:n_axes_to_retain], 
   plot = TRUE)
 
 # Print traits with significant effect:
@@ -99,7 +100,7 @@ trait_axes$"tr_faxes_plot"
 
 #plot the functional space
 functional_space_plot <- mFD::funct.space.plot(
-  sp_faxes_coord  = plot_object[ , 1:4], #this function won't let you plot more than 4
+  sp_faxes_coord  = trait_space[ , 1:4], #this function won't let you plot more than 4
   faxes           = c("PC1", "PC2", "PC3", "PC4"),
   name_file       = NULL,
   faxes_nm        = NULL,
@@ -137,17 +138,38 @@ functional_space_plot <- mFD::funct.space.plot(
 #   left_join(FDiv) %>% 
 #   full_join(FDis)
 
-alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[ , 1:n_axes_to_retain],
-                                   asb_sp_w = data.matrix(fish.list$abund),
-                                   ind_vect = c("fdis", "feve", "fric", "fdiv"),
-                                   scaling = TRUE,
-                                   check_input = TRUE,
-                                   details_returned = TRUE)
-# the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
+# #using mFD
+# alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[ , 1:n_axes_to_retain],
+#                                    asb_sp_w = data.matrix(fish.list$abund),
+#                                    ind_vect = c("fdis", "feve", "fric", "fdiv"),
+#                                    scaling = TRUE,
+#                                    check_input = TRUE,
+#                                    details_returned = TRUE)
+# # the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
+# 
+# FD_values <- alpha_indices$"functional_diversity_indices"
 
-FD_values <- alpha_indices$"functional_diversity_indices"
+# #### test the quality of the functional space ####
+# space_qual <- qual_funct_space(mat_funct = fish.list$trait.t, 
+#                                nbdim = 5, 
+#                                metric = "Gower")
+# space_qual$meanSD
 
-colnames(FD_values)[1:5] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
+# with the FD package 
+fishFD <- dbFD(x = trait_space, #must be a df where character columns are factors or a distance matrix
+               a = fish.list$abund,
+               # stand.x = FALSE, #standardization by range is automatic for Gower's distances
+               # ord = "podani", #method of standardizing by range
+               corr = "cailliez", #mFD package gives an explanation of why sqrt is misleading
+               m = n_axes_to_retain,
+               calc.FDiv = TRUE, 
+               scale.RaoQ = TRUE, #scale Rao's Q 0-1 to make comparable
+               print.pco = FALSE)
+
+FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv,
+                           fishFD$FDis, fishFD$RaoQ) #extract indices
+
+colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis", "Rao")
 
 FD_results <- FD_values %>% 
   as_tibble(rownames = "sample") %>% 
@@ -155,6 +177,23 @@ FD_results <- FD_values %>%
   relocate(sample) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
+
+plot_site_index <- function (index){
+  ggplot(data = FD_results, aes(x = site, 
+                                y = .data[[index]], 
+                                color = site,
+                                shape = ipa)) +
+    geom_point(size = 3) + 
+    theme_classic() +
+    ylab(index) +
+    theme(axis.title.x = element_blank(), 
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+}
+
+index_plots <- lapply(names(FD_results[5:9]), plot_site_index)
+
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+  plot_layout(ncol = 3) + plot_layout(guides = "collect")
 
 # ggsave("docs/figures/fish_FDpatch.png")
 
@@ -174,7 +213,14 @@ index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "ipa")
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
   plot_layout(ncol = 3) + plot_layout(guides = "collect")
 
-ggsave("docs/figures/fish_FDipapatch.png")
+# ggsave("docs/figures/fish_FDipapatch.png")
+
+index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "region")
+
+index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+  plot_layout(ncol = 3) + plot_layout(guides = "collect")
+
+# ggsave("docs/figures/fish_FDregionpatch.png")
 
 #### test for equal variances ####
 ipa_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ ipa, data = FD_results)
