@@ -251,7 +251,8 @@ index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_
 # ggsave("docs/figures/fish_FDbootpatch.png")
 
 #### test for differences ####
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, data = FD_results, method = "euc")
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
+        data = FD_results, method = "euc", getOption("mc.cores"))
 
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
 
