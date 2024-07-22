@@ -3,27 +3,22 @@ library(here)
 library(ggrepel)
 library(FD)
 library(mFD)
-library(fundiversity)
+# library(fundiversity)
 library(ggordiplots)
 library(PNWColors)
 library(patchwork)
 library(vegan)
 
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
-source("analysis/general_functions/geb12299-sup-0002-si.r")
 
 #using the FD package
 dist_mat <- gowdis(fish.list$trait.t) #"classic" method matches mFD, which treats categorical variables as continuous
 
-# #using the function from Maire et al. 2015. The function linked within this function seems to be broken now. There's an ifelse that no longer works
-# space_qual <- qual_funct_space(mat_funct = fish.list$trait.t, nbdim = 6, metric = "Gower")
-# space_qual$meanSD #"The mSD is 0 when the functional space perfectly represents the initial distance and increases as pairs of species become less represented in the functional space (Maire et al., 2015)."
-
 #examine the quality of the potential functional spaces using the mFD package
 space_quality <- quality.fspaces(sp_dist = dist_mat,
                                  maxdim_pcoa = 10,
-                                 deviation_weighting = "absolute", #setting this to squared and dist scaling to TRUE would align with the original Maire et al. 2015 method
-                                 fdist_scaling = FALSE,
+                                 deviation_weighting = "squared", #setting this to squared and dist scaling to TRUE aligns with the original Maire et al. 2015 method
+                                 fdist_scaling = TRUE,
                                  fdendro = "ward.D2")
 
 round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good), meaning species pairs are accurately represented
@@ -96,8 +91,7 @@ functional_space_plot <- mFD::funct.space.plot(
 fishFD <- dbFD(x = trait_space, #must be a df where character columns are factors or a distance matrix
                a = fish.list$abund,
                # stand.x = FALSE, #standardization by range is automatic for Gower's distances
-               # ord = "podani", #method of standardizing by range
-               corr = "cailliez", #mFD package gives an explanation of why sqrt is misleading
+               corr = "none", 
                m = n_axes_to_retain,
                calc.FDiv = TRUE, 
                scale.RaoQ = TRUE, #scale Rao's Q 0-1 to make comparable
@@ -138,7 +132,8 @@ plot_index <- function (index, by){
   ggplot(data = FD_results, aes(x = .data[[by]], 
                                 y = .data[[index]], 
                                 fill = .data[[by]])) +
-    geom_boxplot() + 
+    geom_boxplot() +
+    geom_point(size = 2, color = "black") + 
     theme_classic() +
     ylab(index) +
     theme(axis.title.x = element_blank(), 
@@ -159,17 +154,22 @@ index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + inde
 
 # ggsave("docs/figures/fish_FDregionpatch.png")
 
-#### test for equal variances ####
-ipa_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ ipa, data = FD_results)
-summary(ipa_test) #cannot reject the null
-summary.aov(ipa_test)
+#### test for differences in means ####
 
-site_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ site, data = FD_results)
-summary(site_test) #reject the null
-summary.aov(site_test)
+#test for multivariate normality
+# library(mvn)
+# mvn_test <- mvn(FD_results[5:9], mvnTest="mardia", multivariatePlot="qq")
+# mvn_test$multivariateNormality #skewness does not agree; reject the null hypothesis
+# #does not meet assumptions of multivariate normality
 
-region_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ region, data = FD_results)
-summary(region_test) #cannot reject the null
-summary.aov(region_test)
+#permanova - nonparametric 
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, data = FD_results, method = "euc")
+#cannot reject the null
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, data = FD_results, method = "euc")
+#reject the null
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
+#reject the null
 
 

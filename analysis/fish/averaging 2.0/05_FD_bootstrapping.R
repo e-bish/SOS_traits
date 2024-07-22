@@ -1,6 +1,7 @@
 library(here)
 library(tidyverse)
 library(janitor)
+library(rsample)
 library(mFD)
 library(FD)
 library(ggridges)
@@ -32,8 +33,7 @@ mat_to_boot <- net_tidy %>%
   full_join(expand_species) %>% 
   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
   mutate(spp_sum = replace_na(spp_sum, 0)) %>% 
-  arrange(ComName)
-
+  arrange(ComName) 
 #bootstrap & keep equal proportions for each month to maintain seasonal variability
 #using the strata argument here instead of the group option, because the group option results in 
 #some assessment datasets with zero rows (meaning that the analysis dataset is the exact same as the raw data)
@@ -80,6 +80,7 @@ boot_L_filtered <- lapply(boot_L, remove_missing_spp)
 #### prep the functional trait space ####
 traits.cat <- data.frame(trait_name = colnames(fish.list$trait),
                          trait_type = c("Q", "N", "N", "N", "N"))
+
 
 #Species trait summary
 traits_summary <- sp.tr.summary(tr_cat = traits.cat, 
@@ -146,66 +147,66 @@ space_qual_df %>%
 
 #### calculate the functional indices ####
 alpha_indices <- list()
-FD_results <- data.frame()
+FD_results_v2 <- data.frame()
 
 # with the mFD package
-for (i in 1:length(boot_L)){
-  
-  alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4", "PC5")], 
-                                     asb_sp_w = data.matrix(boot_L_filtered[[i]]),
-                                     ind_vect = c("fdis", "feve", "fric", "fdiv"),
-                                     scaling = FALSE,
-                                     check_input = TRUE,
-                                     details_returned = TRUE)
-  
-  FD_values <- alpha_indices$"functional_diversity_indices"
-  
-  FD_results_df <- FD_values %>% 
-    as_tibble(rownames = "site") 
-  
-  FD_results <- rbind(FD_results, FD_results_df)
-  
-}
-#the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
-
-colnames(FD_results)[2:6] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
-
-FD_results <- FD_results %>% 
-  select(site, Species_Richness, FRic, FEve, FDiv, FDis) %>% 
-  mutate(site = factor(site, levels = SOS_core_sites)) %>% 
-  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
-
-# with the FD package
-# gowdist.list <- lapply(fish_Q_list, gowdis)
-# FD_results_v2 <- list()
-# 
 # for (i in 1:length(boot_L)){
 #   
-#   fishFD <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
-#                  a = data.matrix(boot_L_filtered[[i]]),
-#                  stand.x = TRUE, # we already log transformed the mean length variable so it doesn't need additional standardization
-#                  corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred 
-#                  m = 5,
-#                  calc.FDiv = TRUE, 
-#                  print.pco = FALSE)
+#   alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4", "PC5")], 
+#                                      asb_sp_w = data.matrix(boot_L_filtered[[i]]),
+#                                      ind_vect = c("fdis", "feve", "fric", "fdiv"),
+#                                      scaling = FALSE,
+#                                      check_input = TRUE,
+#                                      details_returned = TRUE)
 #   
-#   FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv,
-#                              fishFD$FDis, fishFD$RaoQ) #extract indices
+#   FD_values <- alpha_indices$"functional_diversity_indices"
 #   
 #   FD_results_df <- FD_values %>% 
 #     as_tibble(rownames = "site") 
 #   
 #   FD_results_v2 <- rbind(FD_results_v2, FD_results_df)
+#   
 # }
+# #the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
 # 
-# colnames(FD_results_v2)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+# colnames(FD_results_v2)[2:6] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
 # 
 # FD_results_v2 <- FD_results_v2 %>% 
-#   select(-Rao) %>% 
+#   select(site, Species_Richness, FRic, FEve, FDiv, FDis) %>% 
 #   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
 #   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
-# 
-# #test for differences in calculations between packages
+
+# with the FD package
+gowdist.list <- lapply(fish_Q_list, gowdis)
+FD_results <- list()
+
+for (i in 1:length(boot_L)){
+
+  fishFD <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
+                 a = data.matrix(boot_L_filtered[[i]]),
+                 # stand.x = FALSE, # traits are automatically standardized with gower's distances
+                 corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred
+                 m = 5,
+                 calc.FDiv = TRUE,
+                 print.pco = FALSE)
+
+  FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv,
+                             fishFD$FDis, fishFD$RaoQ) #extract indices
+
+  FD_results_df <- FD_values %>%
+    as_tibble(rownames = "site")
+
+  FD_results <- rbind(FD_results, FD_results_df)
+}
+
+colnames(FD_results)[2:7] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis", "Rao")
+
+FD_results <- FD_results %>%
+  select(-Rao) %>%
+  mutate(site = factor(site, levels = SOS_core_sites)) %>%
+  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
+
+#test for differences in calculations between packages
 # all.equal(FD_results, FD_results_v2)
 
 index_names <- c("Species Richness", "F. Dispersion", "F. Eveness", "F. Richness", "F. Divergence")
@@ -249,12 +250,8 @@ index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_
 
 # ggsave("docs/figures/fish_FDbootpatch.png")
 
-#### test for equal variances ####
-#### test for equal variances ####
-site_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ site, data = FD_results)
-summary(site_test) #reject the null
-summary.aov(site_test)
+#### test for differences ####
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, data = FD_results, method = "euc")
 
-region_test <- manova(cbind(Species_Richness, FDis, FEve, FRic, FDiv) ~ region, data = FD_results)
-summary(region_test) #reject the null
-summary.aov(region_test)
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
+
