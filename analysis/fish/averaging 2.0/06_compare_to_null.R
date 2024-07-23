@@ -2,46 +2,57 @@ library(here)
 library(tidyverse)
 library(picante)
 library(FD)
-
-set.seed(1993)
+library(mFD)
 
 #load tidy fish data frame created in 02_tidy_data
 load(here("data", "net_tidy.Rdata")) 
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-#picante - creates a single matrix
-null_mat <- randomizeMatrix(fish.list$abund, null.model ="independentswap", iterations = 1000)   
+#picante
+null_L <- list()
+n_iter <- 999
 
-#vegan
-null_object <- nullmodel(fish.list$abund, method = "abuswap_r") #limited to algorithms that accept non-integer values
-test <- simulate(null_object, nsim = 2)
+for (i in 1:n_iter) {
+  set.seed(i)
+  null_L[[i]] <- randomizeMatrix(fish.list$abund, null.model ="independentswap", iterations = 1000)   
+}
 
-#another vegan function
-permatswap(fish.list$abund, "quasiswap")
+# with the FD package
+FD_null_results <- list()
 
-#using the FD package
-dist_mat <- gowdis(fish.list$trait.t) #"classic" method matches mFD, which treats categorical variables as continuous
+for (i in 1:n_iter){
+  
+  null_fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
+                 a = null_L[[i]],
+                 corr = "none", 
+                 m = 5,
+                 calc.FDiv = TRUE, 
+                 print.pco = FALSE)
+  
+  null_FD_values <- cbind(null_fishFD$nbsp, null_fishFD$FRic, null_fishFD$FEve, null_fishFD$FDiv,
+                          null_fishFD$FDis, null_fishFD$RaoQ) #extract indices
+  
+  FD_null_df <- null_FD_values %>%
+    as_tibble(rownames = "sample")
+  
+  FD_null_results <- rbind(FD_null_results, FD_null_df)
+}
+  
+colnames(FD_null_results)[2:7] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis", "Rao")
+  
+FD_null_results <- FD_null_results %>% 
+    separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
+    relocate(sample) %>% 
+    mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
+    mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
 
-n_axes_to_retain
+save(FD_null_results, file = "data/null_df.Rda")
+load("data/null_df.Rda")  
 
-# with the FD package 
-null_fishFD <- dbFD(x = trait_space, #must be a df where character columns are factors or a distance matrix
-               a = null_mat,
-               # stand.x = FALSE, #standardization by range is automatic for Gower's distances
-               corr = "none", 
-               m = n_axes_to_retain,
-               calc.FDiv = TRUE, 
-               scale.RaoQ = TRUE, #scale Rao's Q 0-1 to make comparable
-               print.pco = FALSE)
+FD_null_summary <- FD_null_results %>% 
+  group_by(site) %>% 
+  summarize(across(where(is.numeric), list(mean = mean, sd = sd)))
 
-null_FD_values <- cbind(null_fishFD$nbsp, null_fishFD$FRic, null_fishFD$FEve, null_fishFD$FDiv,
-                        null_fishFD$FDis, null_fishFD$RaoQ) #extract indices
-
-colnames(null_FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis", "Rao")
-
-nulll_FD_results <- null_FD_values %>% 
-  as_tibble(rownames = "sample") %>% 
-  separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
-  relocate(sample) %>% 
-  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
-  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
+## use the equation in Zhang et al. to calculate SES
+## OR figure out how to calculate significance with p-values
+ 

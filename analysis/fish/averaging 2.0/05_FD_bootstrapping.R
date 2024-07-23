@@ -13,8 +13,6 @@ set.seed(1993)
 load(here("data", "net_tidy.Rdata")) 
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-fish_Q <- fish.list$trait
-
 SOS_core_sites <- c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")
 
 #### bootstrap tidy dataframe ####
@@ -67,7 +65,7 @@ format_fish_L <- function(df) {
 
 boot_L <- lapply(boot_list, format_fish_L)
 
-#remove species that aren't represented in assemblages
+#remove species that aren't represented in assemblages 
 remove_missing_spp <- function(df) {
   filtered_df <- df %>% 
     select_if(colSums(.) != 0)
@@ -80,7 +78,6 @@ boot_L_filtered <- lapply(boot_L, remove_missing_spp)
 #### prep the functional trait space ####
 traits.cat <- data.frame(trait_name = colnames(fish.list$trait),
                          trait_type = c("Q", "N", "N", "N", "N"))
-
 
 #Species trait summary
 traits_summary <- sp.tr.summary(tr_cat = traits.cat, 
@@ -95,7 +92,7 @@ trait_space <- list()
 
 for (i in 1:length(boot_L)) {
   
-  fish_Q_list[[i]] <- fish_Q %>%
+  fish_Q_list[[i]] <- fish.list$trait.t %>%
     rownames_to_column(var = "species") %>%
     filter(species %in% colnames(boot_L_filtered[[i]])) %>%
     column_to_rownames(var = "species")
@@ -146,10 +143,10 @@ space_qual_df %>%
   theme_classic()
 
 #### calculate the functional indices ####
-alpha_indices <- list()
-FD_results_v2 <- data.frame()
-
 # with the mFD package
+# alpha_indices <- list()
+# FD_results_v2 <- data.frame()
+
 # for (i in 1:length(boot_L)){
 #   
 #   alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4", "PC5")], 
@@ -177,7 +174,7 @@ FD_results_v2 <- data.frame()
 #   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
 
 # with the FD package
-gowdist.list <- lapply(fish_Q_list, gowdis)
+gowdist.list <- lapply(fish_Q_list, gowdis, ord = "podani")
 FD_results <- list()
 
 for (i in 1:length(boot_L)){
@@ -252,7 +249,7 @@ index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_
 
 #### test for differences ####
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
-        data = FD_results, method = "euc", getOption("mc.cores"))
+        data = FD_results, method = "euc")
 
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
 

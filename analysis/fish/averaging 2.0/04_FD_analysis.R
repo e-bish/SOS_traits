@@ -12,12 +12,14 @@ library(vegan)
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
 #using the FD package
-dist_mat <- gowdis(fish.list$trait.t) #"classic" method matches mFD, which treats categorical variables as continuous
+dist_mat <- gowdis(fish.list$trait.t, ord = "podani") #"classic" method matches mFD, which treats categorical variables as continuous
+cor_dist_mat <- cailliez(dist_mat)
+cor_dist_mat2 <- lingoes(dist_mat)
 
 #examine the quality of the potential functional spaces using the mFD package
 space_quality <- quality.fspaces(sp_dist = dist_mat,
                                  maxdim_pcoa = 10,
-                                 deviation_weighting = "squared", #setting this to squared and dist scaling to TRUE aligns with the original Maire et al. 2015 method
+                                 deviation_weighting = c("absolute", "squared"), #setting this to squared and dist scaling to TRUE aligns with the original Maire et al. 2015 method
                                  fdist_scaling = TRUE,
                                  fdendro = "ward.D2")
 
@@ -34,15 +36,15 @@ trait_space <- space_quality$"details_fspaces"$"sp_pc_coord"
 
 # ggsave("docs/figures/fish_funct.space.plot.png")
 
-trait_space %>%
-  as_tibble(rownames = "species") %>%
-  ggplot(aes(x = PC1, y = PC2)) +
-  geom_text_repel(  
-    label=rownames(trait_space),
-    max.time = 1,
-    max.overlaps = Inf) +
-  geom_point(color = "darkblue") +
-  theme_bw()
+# trait_space %>%
+#   as_tibble(rownames = "species") %>%
+#   ggplot(aes(x = PC1, y = PC2)) +
+#   geom_text_repel(  
+#     label=rownames(trait_space),
+#     max.time = 1,
+#     max.overlaps = Inf) +
+#   geom_point(color = "darkblue") +
+#   theme_bw()
 
 # ggsave("docs/figures/fish_pcoa.png")
 
@@ -88,13 +90,12 @@ functional_space_plot <- mFD::funct.space.plot(
 #### calculate diversity indices ####
 
 # with the FD package 
-fishFD <- dbFD(x = trait_space, #must be a df where character columns are factors or a distance matrix
+fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
                a = fish.list$abund,
-               # stand.x = FALSE, #standardization by range is automatic for Gower's distances
+               ord = "podani",
                corr = "none", 
                m = n_axes_to_retain,
                calc.FDiv = TRUE, 
-               scale.RaoQ = TRUE, #scale Rao's Q 0-1 to make comparable
                print.pco = FALSE)
 
 FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv,
