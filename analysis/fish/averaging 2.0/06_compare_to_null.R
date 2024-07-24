@@ -46,8 +46,8 @@ FD_null_results <- FD_null_results %>%
     mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
     mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
 
-save(FD_null_results, file = "data/null_df.Rda")
-load("data/null_df.Rda")  
+save(FD_null_results, file = "data/FD_null_results.Rda")
+load("data/FD_null_results.Rda")  
 
 FD_null_summary <- FD_null_results %>% 
   group_by(site) %>% 
