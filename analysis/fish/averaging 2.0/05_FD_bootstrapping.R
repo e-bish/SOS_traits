@@ -181,7 +181,6 @@ for (i in 1:length(boot_L)){
 
   fishFD <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
                  a = data.matrix(boot_L_filtered[[i]]),
-                 # stand.x = FALSE, # traits are automatically standardized with gower's distances
                  corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred
                  m = 5,
                  calc.FDiv = TRUE,
@@ -202,6 +201,9 @@ FD_results <- FD_results %>%
   select(-Rao) %>%
   mutate(site = factor(site, levels = SOS_core_sites)) %>%
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
+
+FD_boot_results <- FD_results
+save(FD_boot_results, file = "data/FD_boot_results.Rda")
 
 #test for differences in calculations between packages
 # all.equal(FD_results, FD_results_v2)

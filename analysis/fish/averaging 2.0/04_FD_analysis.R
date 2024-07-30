@@ -110,6 +110,8 @@ FD_results <- FD_values %>%
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
 
+# save(FD_results, file = "data/FD_results.Rda")
+
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = site, 
                                 y = .data[[index]], 
