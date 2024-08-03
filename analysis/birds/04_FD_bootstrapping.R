@@ -11,8 +11,6 @@ set.seed(1993)
 load(here("data", "birds_tidy.Rdata")) 
 load(here("data", "bird.list.Rdata")) #object created in 02_create_matrices
 
-bird_Q <- bird.list$trait
-
 SOS_core_sites <- c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")
 
 #### bootstrap tidy dataframe ####
@@ -81,7 +79,7 @@ space_quality <- list()
 trait_space <- list()
 
 for (i in 1:length(boot_L)) {
-  bird_Q_list[[i]] <- bird_Q %>% 
+  bird_Q_list[[i]] <- bird.list$trait %>% 
     rownames_to_column(var = "species") %>% 
     filter(species %in% colnames(boot_L_filtered[[i]])) %>% 
     column_to_rownames(var = "species")
@@ -124,8 +122,6 @@ space_qual_df %>%
   summarize(n = n(), min = min(mad), max = max(mad), avg = mean(mad))
   #5 axes is almost always the best trait space but 4 is nearly as good
 
-
-
 space_qual_df %>% 
   filter(!is.na(n_axes)) %>% 
   ggplot() + 
@@ -134,35 +130,37 @@ space_qual_df %>%
   theme_classic()
 
 #### calculate the functional indices ####
-alpha_indices <- list()
+gowdist.list <- lapply(bird_Q_list, gowdis, ord = "podani")
 FD_results <- data.frame()
 
-# with the mFD package
+# with the FD package
 for (i in 1:length(boot_L)){
     
-  alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4")], #if you use 5 for every assemblage then some of the TUR don't have more species than axes
-                                          asb_sp_w = data.matrix(boot_L_filtered[[i]]),
-                                          ind_vect = c("fdis", "feve", "fric", "fdiv"),
-                                          scaling = TRUE,
-                                          check_input = TRUE,
-                                          details_returned = TRUE)
+  birdFD <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
+                 a = data.matrix(boot_L_filtered[[i]]),
+                 corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred
+                 m = 5,
+                 calc.FDiv = TRUE,
+                 print.pco = FALSE)
   
-  FD_values <- alpha_indices$"functional_diversity_indices"
+  FD_values <- cbind(birdFD$nbsp, birdFD$FRic, birdFD$FEve, birdFD$FDiv, birdFD$FDis) #extract indices
   
-  FD_results_df <- FD_values %>% 
-    as_tibble(rownames = "site") 
+  FD_results_df <- FD_values %>%
+    as_tibble(rownames = "site")
   
   FD_results <- rbind(FD_results, FD_results_df)
 
 }
-#the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
 
-colnames(FD_results)[2:6] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
-index_names <- c("Species Richness", "F. Dispersion", "F. Eveness", "F. Richness", "F. Divergence")
+colnames(FD_results)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+index_names <- c("Species Richness", "F. Richness","F. Eveness","F. Divergence","F. Dispersion", )
 
 FD_results <- FD_results %>% 
   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
+
+# FD_bird_boot_results <- FD_results
+# save(FD_bird_boot_results, file = "data/FD_bird_boot_results.Rda")
 
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = .data[[index]], 
@@ -198,7 +196,7 @@ index_plots[[5]] <- ggplot(data = FD_results,
                     theme(axis.title.y = element_blank(), 
                           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
 
-index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
+index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[4]] + index_plots[[3]] + index_plots[[2]] + 
   plot_layout(ncol = 3, guides = "collect")
 
 # ggsave("docs/figures/bird_FDbootpatch.png")

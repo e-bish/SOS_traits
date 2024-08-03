@@ -64,8 +64,8 @@ bird_traits <- AVONET %>%
          Migration,
          Trophic.Niche) %>% 
   mutate(Trophic.Niche = str_replace(Trophic.Niche, " ", "_")) %>% 
-  mutate_if(is.character, as.factor) %>% 
   right_join(spp_id) %>% 
+  mutate_if(is.character, as.factor) %>% 
   select(-c(Species2, comm_name, spp_no)) %>% 
   select(spp_code, everything()) %>% 
   arrange(spp_code) %>% 
@@ -88,3 +88,4 @@ range(bird_traits.t$Mass)
 
 bird.list <- list("trait" = bird_traits.t, "abund" = bird_L) 
 save(bird.list, file = here("data", "bird.list.Rdata"))
+

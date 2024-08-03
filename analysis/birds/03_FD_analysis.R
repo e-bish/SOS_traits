@@ -52,26 +52,16 @@ trait_axes$"tr_faxes_plot"
 # with the FD package 
 birdFD <- dbFD(x = bird.list$trait, #must be a df where character columns are factors
                a = bird.list$abund,
-               stand.x = TRUE, # we already log transformed the mean length variable so it doesn't need additional standardization
-               corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred 
-               m = 4,
-               # calc.FGR = TRUE, 
-               # clust.type = "ward.D2",
+               ord = "podani",
+               corr = "none", 
+               m = 5,
                calc.FDiv = TRUE, 
-               print.pco = TRUE)
+               print.pco = FALSE)
 
-# with the mFD package
-alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
-                                   asb_sp_w = data.matrix(bird.list$abund),
-                                   ind_vect = c("fdis", "feve", "fric", "fdiv"),
-                                   scaling = TRUE,
-                                   check_input = TRUE,
-                                   details_returned = TRUE)
-#the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
+FD_values <- cbind(birdFD$nbsp, birdFD$FRic, birdFD$FEve, birdFD$FDiv,
+                   birdFD$FDis) #extract indices
 
-FD_values <- alpha_indices$"functional_diversity_indices"
-
-colnames(FD_values)[1:5] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
+colnames(FD_values)[1:5] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
 
 FD_results <- FD_values %>% 
   as_tibble(rownames = "sample") %>% 
@@ -79,6 +69,9 @@ FD_results <- FD_values %>%
   relocate(sample) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
+
+# FD_bird_results <- FD_results
+# save(FD_bird_results, file = "data/FD_bird_results.Rda")
 
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = site, 
@@ -94,7 +87,7 @@ plot_site_index <- function (index){
 
 index_plots <- lapply(names(FD_results[5:9]), plot_site_index)
 
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+index_plots[[1]] + index_plots[[5]] + guide_area()+ index_plots[[2]] + index_plots[[3]] + index_plots[[4]] +  
   plot_layout(ncol = 3) + plot_layout(guides = "collect")
 
 plot_index <- function (index, by){
@@ -110,13 +103,25 @@ plot_index <- function (index, by){
 
 index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "region")
 
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+index_plots[[1]] + index_plots[[5]] + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
   plot_layout(ncol = 3) + plot_layout(guides = "collect")
 
 index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "ipa")
 
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
+index_plots[[1]] + index_plots[[5]] + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] +  
   plot_layout(ncol = 3) + plot_layout(guides = "collect")
+
+
+#### permanova ####
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, data = FD_results, method = "euc")
+#cannot reject the null
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, data = FD_results, method = "euc")
+#cannot reject the null
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
+#cannot reject the null
+
 
 #### rank sum test ####
 
@@ -139,22 +144,22 @@ kruskal.test(FDiv ~ site, data = FD_results) #same
 kruskal.test(FDiv ~ region, data = FD_results) #different
 kruskal.test(FDiv ~ ipa, data = FD_results) #same
 
-
-#view pcoa
-pcoa <- cmdscale(bird.gowdist)
-colnames(pcoa) <- c("pcoa1", "pcoa2")
-
-bird_pcoa <- pcoa %>%
-  as_tibble(rownames = "species") %>%
-  ggplot(aes(x = pcoa1, y = pcoa2)) +
-  geom_text_repel(
-    label=rownames(pcoa),
-    max.time = 1,
-    max.overlaps = Inf) +
-  geom_point(color = "darkblue") +
-  theme_bw()
-
-ggsave(plot = bird_pcoa, "docs/figures/bird_pcoa.png")
+################################ old code
+# #view pcoa
+# pcoa <- cmdscale(bird.gowdist)
+# colnames(pcoa) <- c("pcoa1", "pcoa2")
+# 
+# bird_pcoa <- pcoa %>%
+#   as_tibble(rownames = "species") %>%
+#   ggplot(aes(x = pcoa1, y = pcoa2)) +
+#   geom_text_repel(
+#     label=rownames(pcoa),
+#     max.time = 1,
+#     max.overlaps = Inf) +
+#   geom_point(color = "darkblue") +
+#   theme_bw()
+# 
+# ggsave(plot = bird_pcoa, "docs/figures/bird_pcoa.png")
 
 #### test the quality of the functional space ####
 space_qual <- qual_funct_space(bird.traits, nbdim = 6, metric = "Gower")

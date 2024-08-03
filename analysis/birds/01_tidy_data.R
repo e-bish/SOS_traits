@@ -8,7 +8,7 @@ library(moments)
 library(janitor)
 library(vegan)
 
-OS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), 
+SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), 
                          levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))
 
 #load field data
@@ -121,13 +121,13 @@ times_encountered <- birds %>%
   summarize(freq_obs = n())
 
 #by tax group
-ggplot(times_encountered, aes(x = comm_name, y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
+ggplot(times_encountered, aes(x = comm_name, y = freq_obs, fill = factor(site, levels = SOS_core_sites))) + 
   geom_bar(position = "stack", stat="identity") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   labs(x = "", y = "Frequency observed", fill = "Site") 
 
-ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs, fill = comm_name)) + 
+ggplot(times_encountered, aes(x = factor(site, levels = SOS_core_sites), y = freq_obs, fill = comm_name)) + 
   geom_bar(position = "stack", stat = "identity") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
@@ -275,7 +275,7 @@ abund_region <- birds %>%
   summarize(n_spp = n_distinct(comm_name))
 
 abund_region %>% 
-  ggplot(aes(x = site, y = n_spp, fill = region)) +
+  ggplot(aes(x = factor(site, levels = SOS_core_sites), y = n_spp, fill = region)) +
   geom_boxplot() +
   theme_classic() +
   labs(x = "Site", y = "Species Richness", fill = "Region")
