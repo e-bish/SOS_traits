@@ -2,16 +2,16 @@ Species,ComName,mean_length_mm,BodyShapeI,DemersPelag,migrations,feeding_guild
 Syngnathus leptorhynchus,Bay pipefish,135.54422112974746,eel-like,demersal,non-migratory,zoobenthivorous
 Enophrys bison,Buffalo Sculpin,81.24444444444444,fusiform / normal,demersal,non-migratory,zoobenthivorous
 Pleuronichthys coenosus,C-O Sole,70,short and / or deep,demersal,non-migratory,zoobenthivorous
-Oncorhynchus tshawytscha,Chinook salmon,107.47868846795348,fusiform / normal,benthopelagic,anadromous,omnivorous
-Oncorhynchus keta,Chum salmon,70.26135913341786,fusiform / normal,benthopelagic,anadromous,omnivorous
-Oncorhynchus kisutch,Coho salmon,123.98941798941799,fusiform / normal,pelagic,anadromous,omnivorous
+Oncorhynchus tshawytscha,Chinook salmon,107.47868846795348,fusiform / normal,epipelagic,anadromous,omnivorous
+Oncorhynchus keta,Chum salmon,70.26135913341786,fusiform / normal,epipelagic,anadromous,omnivorous
+Oncorhynchus kisutch,Coho salmon,123.98941798941799,fusiform / normal,epipelagic,anadromous,omnivorous
 Pholis laeta,Crescent Gunnel,99.63419540229886,eel-like,demersal,non-migratory,zoobenthivorous
-Oncorhynchus clarkii,Cutthroat trout,206.5,fusiform / normal,demersal,anadromous,omnivorous
+Oncorhynchus clarkii,Cutthroat trout,206.5,fusiform / normal,epipelagic,anadromous,omnivorous
 Parophrys vetulus,English sole,58.78125,short and / or deep,demersal,oceanodromous,zoobenthivorous
 Myoxocephalus polyacanthocephalus,Great Sculpin,200,fusiform / normal,demersal,amphidromous,zoobenthivorous
 Hexagrammos decagrammus,Kelp Greenling,60.04777517564403,fusiform / normal,demersal,non-migratory,zoobenthivorous
-Ophiodon elongatus,Lingcod,83.75,elongated,demersal,oceano-estuarine,piscivorous
-Engraulis mordax,Northern Anchovy,98.125,elongated,pelagic,non-migratory,omnivorous
+Ophiodon elongatus,Lingcod,83.75,elongated,demersal,oceano-estuarine,planktivorous
+Engraulis mordax,Northern Anchovy,98.125,elongated,pelagic,non-migratory,planktivorous
 Gadus macrocephalus,Pacific Cod,62.541666666666664,fusiform / normal,demersal,oceanodromous,zoobenthivorous
 Clupea pallasii,Pacific herring,79.99183385442831,fusiform / normal,pelagic,non-migratory,planktivorous
 Ammodytes hexapterus,Pacific sand lance,76.27195592286502,elongated,benthopelagic,oceanodromous,planktivorous
@@ -23,7 +23,7 @@ Microgadus proximus,Pacific tomcod,39.30148240728519,fusiform / normal,demersal,
 Artedius fenestralis,Padded Sculpin,80,elongated,demersal,non-migratory,omnivorous
 Apodichthys flavidus,Penpoint Gunnel,122.60714285714286,eel-like,demersal,non-migratory,zoobenthivorous
 Phanerodon vacca,Pile Perch,148.1875,short and / or deep,demersal,non-migratory,zoobenthivorous
-Oncorhynchus gorbuscha,Pink salmon,55.38847437958003,fusiform / normal,demersal,anadromous,omnivorous
+Oncorhynchus gorbuscha,Pink salmon,55.38847437958003,fusiform / normal,epipelagic,anadromous,omnivorous
 Porichthys notatus,Plainfin midshipman,57.5,elongated,demersal,non-migratory,piscivorous
 Lepidopsetta bilineata,Rock Sole,215,short and / or deep,demersal,non-migratory,zoobenthivorous
 Pholis ornata,Saddleback Gunnel,97.57824074074074,eel-like,demersal,non-migratory,zoobenthivorous
@@ -32,7 +32,7 @@ Cymatogaster aggregata,Shiner Perch,69.7554917260169,short and / or deep,demersa
 Blepsias cirrhosus,Silverspotted sculpin,54.986111111111114,elongated,demersal,non-migratory,zoobenthivorous
 Citharichthys stigmaeus,Speckled sanddab,110,short and / or deep,demersal,non-migratory,zoobenthivorous
 Platichthys stellatus,Starry Flounder,220.25,short and / or deep,demersal,catadromous,zoobenthivorous
-Oncorhynchus mykiss,Steelhead trout,209,fusiform / normal,benthopelagic,anadromous,zoobenthivorous
+Oncorhynchus mykiss,Steelhead trout,209,fusiform / normal,epipelagic,anadromous,zoobenthivorous
 Embiotoca lateralis,Striped Seaperch,136.33541666666667,short and / or deep,demersal,non-migratory,zoobenthivorous
 Hypomesus pretiosus,Surf Smelt,116.15947791659816,elongated,benthopelagic,non-migratory,omnivorous
 Psychrolutes paradoxus,Tadpole Sculpin,32.38333333333333,elongated,demersal,non-migratory,planktivorous
