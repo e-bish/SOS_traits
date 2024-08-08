@@ -82,17 +82,42 @@ load_data <- function() {
 }
 
 net_tidy <- load_data()
+net_core <- net_tidy %>% filter(site %in% SOS_core_sites)
 
 #### explore the data ####
+total_catch <- sum(net_tidy$species_count)
+core_catch <- sum(net_core$species_count)
 
 ##what were the most common species we caught?
 net_tidy %>%
   group_by(ComName) %>%
   summarize(total = sum(species_count)) %>% 
-  arrange(-total)
+  arrange(-total) %>% 
+  print(n = 20)
 
+net_tidy %>% 
+  group_by(tax_group) %>% 
+  summarize(sum = sum(species_count), prop = sum/total_catch) %>% 
+  arrange(-prop)
+
+#core sites 
+net_core %>% 
+  group_by(tax_group) %>% 
+  summarize(sum = sum(species_count), prop = sum/core_catch) %>% 
+  arrange(-prop)
+
+#eelgrass community
+net_core %>% 
+  filter(tax_group %in% c("Stichaeid", "Sygnathid", "Aulorhynchus", "Pholidae")) %>% 
+  summarize(sum = sum(species_count), prop = sum/core_catch)
+  
 ##how often did we encounter each species?
 times_encountered <- net_tidy %>% 
+  filter(!is.na(ComName)) %>% 
+  group_by(ComName, tax_group, site) %>% 
+  summarize(freq_obs = n())
+
+times_encountered.c <- net_core %>% 
   filter(!is.na(ComName)) %>% 
   group_by(ComName, tax_group, site) %>% 
   summarize(freq_obs = n())
@@ -105,6 +130,19 @@ ggplot(times_encountered, aes(x = tax_group, y = freq_obs, fill = factor(site, l
   labs(x = "", y = "Frequency observed", fill = "Site") 
 
 ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs, fill = tax_group)) + 
+  geom_bar(position = "stack", stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "tax group") 
+
+#core
+ggplot(times_encountered.c, aes(x = tax_group, y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
+  geom_bar(position = "stack", stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "Site") 
+
+ggplot(times_encountered.c, aes(x = factor(site, levels = SOS_sites), y = freq_obs, fill = tax_group)) + 
   geom_bar(position = "stack", stat = "identity") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
@@ -127,13 +165,17 @@ spp_by_site <- net_tidy %>%
   filter(!is.na(ComName)) %>% 
   count(ComName, site)
 
+spp_by_site.c <- net_core %>% 
+  filter(!is.na(ComName)) %>% 
+  count(ComName, site)
+
 ggplot(spp_by_site, aes(x = reorder(ComName, -n), y = n, fill = site)) +
   geom_col() + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 #core sites only
-ggplot(filter(spp_by_site, site %in% SOS_core_sites), aes(x = reorder(ComName, -n), y = n, fill = site)) +
+ggplot(spp_by_site.c, aes(x = reorder(ComName, -n), y = n, fill = site)) +
   geom_col() + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
@@ -251,11 +293,29 @@ abund_region <- net_tidy %>%
   group_by(region, site, year_month) %>% 
   summarize(n_spp = n_distinct(ComName))
 
+abund_region.c <- abund_region %>% filter(site %in% SOS_core_sites))
+
 abund_region %>% 
   ggplot(aes(x = site, y = n_spp, fill = region)) +
   geom_boxplot() +
   theme_classic() +
   labs(x = "Site", y = "Species Richness", fill = "Region")
+
+abund_region.c %>% 
+  ggplot(aes(x = site, y = n_spp, fill = region)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(x = "Site", y = "Species Richness", fill = "Region")
+
+mod <- aov(n_spp ~ site, data = abund_region.c)
+summary(mod)
+pairwise.t.test(abund_region.c$n_spp, abund_region.c$site, p.adj = "none")
+TukeyHSD(mod)
+
+mod2 <- aov(n_spp ~ region, data = abund_region.c)
+summary(mod2)
+#significant regional difference driven only by cornet bay
+
 
 #### final tidy dataframe for analysis ####
 net_tidy <- net_tidy %>% 
