@@ -29,17 +29,17 @@ round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good)
 n_axes_to_retain <- 5
 
 #plot the trait space with the first 4 axes
-trait_space <- space_quality$"details_fspaces"$"sp_pc_coord"
-
+# trait_space <- space_quality$"details_fspaces"$"sp_pc_coord"
+# 
 # funct.space.plot(sp_faxes_coord = trait_space[ , c("PC1", "PC2", "PC3", "PC4")],
-#                  faxes = c("PC1", "PC2", "PC3", "PC4"))
+#                   faxes = c("PC1", "PC2", "PC3", "PC4"))
 
 # ggsave("docs/figures/fish_funct.space.plot.png")
 
 # trait_space %>%
 #   as_tibble(rownames = "species") %>%
 #   ggplot(aes(x = PC1, y = PC2)) +
-#   geom_text_repel(  
+#   geom_text_repel(
 #     label=rownames(trait_space),
 #     max.time = 1,
 #     max.overlaps = Inf) +
@@ -114,8 +114,7 @@ FD_results <- FD_values %>%
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = site, 
                                 y = .data[[index]], 
-                                color = site,
-                                shape = ipa)) +
+                                color = site)) +
     geom_point(size = 3) + 
     theme_classic() +
     ylab(index) +

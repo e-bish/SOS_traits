@@ -1,17 +1,18 @@
 library(tidyverse)
 library(vegan)
+library(indicspecies)
 
 load("data/fish.list.Rdata") #object created in 03_create_matrices
 SOS_core_sites <- c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")
 
-
 fish_L <- fish.list$abund %>% 
   as_tibble(rownames = "sample") %>% 
-  separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) 
-  
-  
+  separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
+  mutate(veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = "sample") %>% 
+  mutate(region = ifelse(site %in% c("FAM", "COR", "TUR"), "north", "south"), .after = "veg")
+
 #SIMPER code borrowed from Jon Bakker
-simper.results <- simper(fish_L[4:45], fish_L$site)
+simper.results <- simper(fish_L[6:47], fish_L$site)
 simper.results
 summary(simper.results)
 
@@ -36,11 +37,30 @@ simper.df %>%
   select(Species, average, Comparison, Position) %>% 
   arrange(Species)
 
-#### ISA ####
-library(indicspecies)
+COR_simper <- simper.df %>% 
+  filter(grepl("COR", Comparison)) %>% 
+  arrange(-cumsum)
 
-test.ISA <- multipatt(x = fish_L[4:45], cluster = fish_L$site, duleg = TRUE)
-summary(test.ISA)
+simper.veg.results <- simper(fish_L[6:47], fish_L$veg)
+summary(simper.veg.results)
+#gunnels make up the biggest differences between sites with and without eelgrass
+
+simper.region.results <- simper(fish_L[6:47], fish_L$region)
+summary(simper.region.results)
+#herring is the most significant difference (only in north)
+
+#### ISA ####
+site.ISA <- multipatt(x = fish_L[6:47], cluster = fish_L$site, duleg = TRUE)
+summary(site.ISA)
+
+veg.ISA <- multipatt(x = fish_L[6:47], cluster = fish_L$veg, duleg = TRUE)
+summary(veg.ISA)
+
+region.ISA <- multipatt(x = fish_L[6:47], cluster = fish_L$region, duleg = TRUE)
+summary(region.ISA)
+
+#facts
+#we encountered salmon at COR twice as many times as we encountered them at any other site
 
 #### TITAN ####
 library(TITAN2)

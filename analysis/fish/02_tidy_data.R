@@ -136,7 +136,7 @@ ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs
   labs(x = "", y = "Frequency observed", fill = "tax group") 
 
 #core
-ggplot(times_encountered.c, aes(x = tax_group, y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
+ggplot(times_encountered.c, aes(x = reorder(tax_group, -freq_obs), y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
   geom_bar(position = "stack", stat = "identity") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
@@ -149,6 +149,16 @@ ggplot(times_encountered.c, aes(x = factor(site, levels = SOS_sites), y = freq_o
   labs(x = "", y = "Frequency observed", fill = "tax group") 
 
 ##in how many sites does each species occur?
+site_occurance <- times_encountered.c %>% 
+  pivot_wider(names_from = site, values_from = freq_obs, values_fill = 0)
+
+site_occurance_pa <- decostand(site_occurance[3:8], method = "pa")
+
+unique_by_site <- site_occurance %>% 
+  select(ComName, tax_group) %>% 
+  bind_cols(site_occurance_pa) %>% 
+  filter(rowSums(across(where(is.numeric))) < 2)
+
 sites_encountered <- times_encountered %>% 
   mutate(pa = ifelse(freq_obs > 0, 1, 0)) %>% 
   group_by(ComName) %>% 
@@ -187,12 +197,32 @@ spp_site_count <- spp_by_site %>%
   arrange(desc(n_sites))
 
 ##what is the abundance of each species when it occurs?
+total_abundance <- net_core %>% 
+  filter(!is.na(ComName)) %>% 
+  group_by(ComName, tax_group, site) %>% 
+  summarize(total_catch = sum(species_count))
+
+site_abundance <- total_abundance %>% 
+  pivot_wider(names_from = site, values_from = total_catch, values_fill = 0)
+
+total_tax_abundance <- total_abundance %>% 
+  group_by(site, tax_group) %>% 
+  summarize(total_catch = sum(total_catch))
+
+tax_abundance <- total_tax_abundance %>% 
+  pivot_wider(names_from = site, values_from = total_catch, values_fill = 0)
+
 spp_by_site %>% 
   # filter(site %in% SOS_core_sites) %>% 
   ggplot(aes(x = reorder(ComName, -n), y = n)) +
   geom_boxplot() + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+## where did we catch cod?
+cod_sites <- net_tidy %>% 
+  filter(tax_group == "Gadidae") %>% 
+  arrange(site, ipa)
 
 ##is the mean abundance correlated with the number of sites where it occurs?
 mean_count <- spp_by_site %>% 
@@ -293,7 +323,7 @@ abund_region <- net_tidy %>%
   group_by(region, site, year_month) %>% 
   summarize(n_spp = n_distinct(ComName))
 
-abund_region.c <- abund_region %>% filter(site %in% SOS_core_sites))
+abund_region.c <- abund_region %>% filter(site %in% SOS_core_sites)
 
 abund_region %>% 
   ggplot(aes(x = site, y = n_spp, fill = region)) +
