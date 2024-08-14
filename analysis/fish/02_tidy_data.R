@@ -122,6 +122,9 @@ times_encountered.c <- net_core %>%
   group_by(ComName, tax_group, site) %>% 
   summarize(freq_obs = n())
 
+times_encountered.cV2 <- times_encountered.c %>% 
+  uncount(freq_obs)
+
 #by tax group
 ggplot(times_encountered, aes(x = tax_group, y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
   geom_bar(position = "stack", stat = "identity") +
@@ -129,11 +132,24 @@ ggplot(times_encountered, aes(x = tax_group, y = freq_obs, fill = factor(site, l
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   labs(x = "", y = "Frequency observed", fill = "Site") 
 
+
 ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs, fill = tax_group)) + 
   geom_bar(position = "stack", stat = "identity") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   labs(x = "", y = "Frequency observed", fill = "tax group") 
+
+ggplot(times_encountered.cV2, aes(x = tax_group, fill = site)) + 
+  geom_bar(position = "fill") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 70, vjust = 1, hjust=1)) +
+  labs(x = "", y = "Frequency observed", fill = "Site")
+
+ggplot(times_encountered.cV2, aes(x = site, fill = tax_group)) + 
+  geom_bar(position = "fill") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 70, vjust = 1, hjust=1)) +
+  labs(x = "", y = "Proportion of encounters", fill = "Tax group")
 
 #core
 ggplot(times_encountered.c, aes(x = reorder(tax_group, -freq_obs), y = freq_obs, fill = factor(site, levels = SOS_sites))) + 
@@ -196,7 +212,7 @@ spp_site_count <- spp_by_site %>%
   summarize(n_sites = n()) %>% 
   arrange(desc(n_sites))
 
-##what is the abundance of each species when it occurs?
+##what is the abundance of each species when it occurs at core sites?
 total_abundance <- net_core %>% 
   filter(!is.na(ComName)) %>% 
   group_by(ComName, tax_group, site) %>% 
@@ -211,6 +227,10 @@ total_tax_abundance <- total_abundance %>%
 
 tax_abundance <- total_tax_abundance %>% 
   pivot_wider(names_from = site, values_from = total_catch, values_fill = 0)
+
+ggplot(total_abundance, aes(x = site, y = total_catch, fill = tax_group)) +
+  geom_bar(position = "stack", stat = "identity") +
+  theme_classic()
 
 spp_by_site %>% 
   # filter(site %in% SOS_core_sites) %>% 
