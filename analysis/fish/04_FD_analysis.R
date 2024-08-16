@@ -29,7 +29,7 @@ round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good)
 n_axes_to_retain <- 5
 
 #plot the trait space with the first 4 axes
-# trait_space <- space_quality$"details_fspaces"$"sp_pc_coord"
+trait_space <- space_quality$"details_fspaces"$"sp_pc_coord"
 # 
 # funct.space.plot(sp_faxes_coord = trait_space[ , c("PC1", "PC2", "PC3", "PC4")],
 #                   faxes = c("PC1", "PC2", "PC3", "PC4"))
@@ -99,6 +99,7 @@ fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are 
                print.pco = FALSE)
 
 FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv, fishFD$FDis) #extract indices
+CWM_values <- fishFD$CWM #Community-weighted means are the mean trait values for each community weighted by species abundances
 
 colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
 

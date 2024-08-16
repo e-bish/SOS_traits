@@ -64,6 +64,7 @@ format_fish_L <- function(df) {
   return(fish_L)
 }
 
+#format the bootstrapped data frame into properly formatted matrices
 boot_L <- lapply(boot_list, format_fish_L)
 
 #remove species that aren't represented in assemblages 
@@ -99,11 +100,7 @@ for (i in 1:length(boot_L)) {
     column_to_rownames(var = "species")
 
   #create the trait space
-  dist_mat[[i]] <- funct.dist(sp_tr = fish_Q_list[[i]], 
-                              tr_cat = traits.cat,
-                              metric = "gower",
-                              weight_type = "equal",
-                              stop_if_NA = TRUE)
+  dist_mat[[i]] <- gowdis(fish_Q_list[[i]], ord = "podani")
 
   #examine the quality of the potential functional spaces 
   space_quality[[i]] <- quality.fspaces(sp_dist = dist_mat[[i]],
@@ -144,39 +141,10 @@ space_qual_df %>%
   theme_classic()
 
 #### calculate the functional indices ####
-# with the mFD package
-# alpha_indices <- list()
-# FD_results_v2 <- data.frame()
-
-# for (i in 1:length(boot_L)){
-#   
-#   alpha_indices <- alpha.fd.multidim(sp_faxes_coord = trait_space[[i]][ , c("PC1", "PC2", "PC3", "PC4", "PC5")], 
-#                                      asb_sp_w = data.matrix(boot_L_filtered[[i]]),
-#                                      ind_vect = c("fdis", "feve", "fric", "fdiv"),
-#                                      scaling = FALSE,
-#                                      check_input = TRUE,
-#                                      details_returned = TRUE)
-#   
-#   FD_values <- alpha_indices$"functional_diversity_indices"
-#   
-#   FD_results_df <- FD_values %>% 
-#     as_tibble(rownames = "site") 
-#   
-#   FD_results_v2 <- rbind(FD_results_v2, FD_results_df)
-#   
-# }
-# #the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
-# 
-# colnames(FD_results_v2)[2:6] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
-# 
-# FD_results_v2 <- FD_results_v2 %>% 
-#   select(site, Species_Richness, FRic, FEve, FDiv, FDis) %>% 
-#   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
-#   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
-
 # with the FD package
 gowdist.list <- lapply(fish_Q_list, gowdis, ord = "podani")
 FD_results <- list()
+# CWM_results <- list() #gives an error for one of the bootstrapped matrices when you try to use this for getting the CWM
 
 for (i in 1:length(boot_L)){
 
@@ -193,6 +161,7 @@ for (i in 1:length(boot_L)){
     as_tibble(rownames = "site")
 
   FD_results <- rbind(FD_results, FD_results_df)
+  # CWM_results[[i]] <- fishFD$CWM
 }
 
 colnames(FD_results)[2:7] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
