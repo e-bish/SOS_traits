@@ -142,7 +142,7 @@ ggplot(times_encountered, aes(x = factor(site, levels = SOS_sites), y = freq_obs
 ggplot(times_encountered.cV2, aes(x = tax_group, fill = site)) + 
   geom_bar(position = "fill") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle = 70, vjust = 1, hjust=1)) +
+  theme(axis.text = element_text(size = 14),axis.text.x = element_text(angle = 70, vjust = 1, hjust=1)) +
   labs(x = "", y = "Frequency observed", fill = "Site")
 
 ggplot(times_encountered.cV2, aes(x = site, fill = tax_group)) + 
