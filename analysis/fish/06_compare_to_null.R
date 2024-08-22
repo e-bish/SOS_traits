@@ -24,7 +24,7 @@ for (i in 1:n_iter){
   
   null_fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
                  a = null_L[[i]],
-                 corr = "none", 
+                 corr = "cailliez", 
                  m = 5,
                  calc.FDiv = TRUE, 
                  print.pco = FALSE)
