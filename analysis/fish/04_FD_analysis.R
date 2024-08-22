@@ -13,7 +13,7 @@ load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
 #using the FD package
 dist_mat <- gowdis(fish.list$trait.t, ord = "podani") #"classic" method matches mFD, which treats categorical variables as continuous
-# cor_dist_mat <- cailliez(dist_mat)
+cor_dist_mat <- cailliez(dist_mat)
 # cor_dist_mat2 <- lingoes(dist_mat)
 
 #examine the quality of the potential functional spaces using the mFD package
@@ -23,8 +23,16 @@ space_quality <- quality.fspaces(sp_dist = dist_mat,
                                  fdist_scaling = TRUE,
                                  fdendro = "ward.D2")
 
+#examine the quality of the potential functional spaces using the mFD package
+space_quality_cor <- quality.fspaces(sp_dist = cor_dist_mat,
+                                 maxdim_pcoa = 10,
+                                 deviation_weighting = c("absolute", "squared"), #setting this to squared and dist scaling to TRUE aligns with the original Maire et al. 2015 method
+                                 fdist_scaling = TRUE,
+                                 fdendro = "ward.D2")
+
 round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good), meaning species pairs are accurately represented
 #aka the distances in euclidean space are accurately reflecting the gowers distances
+round(space_quality_cor$"quality_fspaces",3) #lowest value is the best (<.1 is good), meaning species pairs are accurately represented
 
 n_axes_to_retain <- 5
 
@@ -98,10 +106,21 @@ fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are 
                calc.FDiv = TRUE, 
                print.pco = FALSE)
 
+fishFD_cor <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
+               a = fish.list$abund,
+               ord = "podani",
+               corr = "cailliez", 
+               m = n_axes_to_retain,
+               calc.FDiv = TRUE, 
+               print.pco = FALSE)
+
 FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv, fishFD$FDis) #extract indices
+FD_cor_values <- cbind(fishFD_cor$nbsp, fishFD_cor$FRic, fishFD_cor$FEve, fishFD_cor$FDiv, fishFD_cor$FDis) #extract indices
 CWM_values <- fishFD$CWM #Community-weighted means are the mean trait values for each community weighted by species abundances
 
 colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+colnames(FD_cor_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+
 
 FD_results <- FD_values %>% 
   as_tibble(rownames = "sample") %>% 
@@ -110,10 +129,18 @@ FD_results <- FD_values %>%
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
 
+FD_cor_results <- FD_cor_values %>% 
+  as_tibble(rownames = "sample") %>% 
+  separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
+  relocate(sample) %>% 
+  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
+  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
+
 # save(FD_results, file = "data/FD_results.Rda")
+# save(FD_cor_results, file = "data/FD_cor_results.Rda")
 
 plot_site_index <- function (index){
-  ggplot(data = FD_results, aes(x = site, 
+  ggplot(data = FD_cor_results, aes(x = site, 
                                 y = .data[[index]], 
                                 color = site)) +
     geom_point(size = 3) + 
@@ -131,7 +158,7 @@ index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + inde
 # ggsave("docs/figures/fish_FDpatch.png")
 
 plot_index <- function (index, by){
-  ggplot(data = FD_results, aes(x = .data[[by]], 
+  ggplot(data = FD_cor_results, aes(x = .data[[by]], 
                                 y = .data[[index]], 
                                 fill = .data[[by]])) +
     geom_boxplot() +
