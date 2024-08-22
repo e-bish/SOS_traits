@@ -101,6 +101,7 @@ for (i in 1:length(boot_L)) {
 
   #create the trait space
   dist_mat[[i]] <- gowdis(fish_Q_list[[i]], ord = "podani")
+  dist_mat[[i]] <- cailliez(dist_mat[[i]])
 
   #examine the quality of the potential functional spaces 
   space_quality[[i]] <- quality.fspaces(sp_dist = dist_mat[[i]],
@@ -150,7 +151,7 @@ for (i in 1:length(boot_L)){
 
   fishFD <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
                  a = data.matrix(boot_L_filtered[[i]]),
-                 corr = "none", #mFD package gives an explanation of why sqrt is misleading, and just removing the negative eigenvalues is preferred
+                 corr = "cailliez", 
                  m = 5,
                  calc.FDiv = TRUE,
                  print.pco = FALSE)
@@ -220,8 +221,8 @@ index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_
 #### test for differences ####
 
 #this crashes R!
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
-        data = FD_results, method = "euc")
-
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
+# adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
+#         data = FD_results, method = "euc")
+# 
+# adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
 
