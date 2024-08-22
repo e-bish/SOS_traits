@@ -92,7 +92,7 @@ functional_space_plot <- mFD::funct.space.plot(
 fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
                a = fish.list$abund,
                ord = "podani",
-               corr = "none", 
+               corr = "cailliez", 
                m = n_axes_to_retain,
                calc.FDiv = TRUE, 
                print.pco = FALSE)
@@ -114,7 +114,7 @@ FD_results <- FD_values %>%
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = site, 
                                 y = .data[[index]], 
-                                color = site)) +
+                                color = site, shape = ipa)) +
     geom_point(size = 3) + 
     theme_classic() +
     ylab(index) +
