@@ -13,8 +13,7 @@ load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
 #using the FD package
 dist_mat <- gowdis(fish.list$trait.t, ord = "podani") #"classic" method matches mFD, which treats categorical variables as continuous
-# cor_dist_mat <- cailliez(dist_mat)
-# cor_dist_mat2 <- lingoes(dist_mat)
+dist_mat <- cailliez(dist_mat) #correction for negative eigenvalues
 
 #examine the quality of the potential functional spaces using the mFD package
 space_quality <- quality.fspaces(sp_dist = dist_mat,
