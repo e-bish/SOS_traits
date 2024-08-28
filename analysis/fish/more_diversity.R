@@ -182,7 +182,7 @@ permutest(bd_season)
 
 ### rarefy abundance matrix 
 
-n_iter <- 10
+n_iter <- 100
 alpha_list <- list()
 
 for (i in 1:n_iter) {
