@@ -82,7 +82,9 @@ load_data <- function() {
 }
 
 net_tidy <- load_data()
-net_core <- net_tidy %>% filter(site %in% SOS_core_sites)
+net_core <- net_tidy %>% 
+  filter(site %in% SOS_core_sites) %>% 
+  mutate(site = factor(site, levels = SOS_core_sites))
 
 #### explore the data ####
 total_catch <- sum(net_tidy$species_count)
