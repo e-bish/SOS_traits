@@ -176,6 +176,6 @@ adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ regi
 #### beta diversity ####
 library(betapart)
 
-beta_obj <- functional.betapart.core(decostand(fish.list$abund, method = "pa"), fish.list$trait.t)
+beta_obj <- functional.betapart.core(decostand(fish.list$abund, method = "pa"), fishFD$x.axes[,1:5], warning.time = FALSE)
 
 str(fish.list$trait.t)

@@ -48,6 +48,9 @@ fish_L_pa <- decostand(fish_L, method = "pa")
 beta.multi(fish_L_pa, index.family="jaccard")
 beta.pair(fish_L_pa, index.family="jaccard")
 
+
+
+
 #### taxonomic diversity with raw counts ####
 
 fish_counts <- net_core %>% 
