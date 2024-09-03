@@ -89,48 +89,28 @@ functional_space_plot <- mFD::funct.space.plot(
 #### calculate diversity indices ####
 
 # with the FD package 
-fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
-               a = fish.list$abund,
+fishFD.ipa <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
+               a = fish.list$abund.ipa,
                ord = "podani",
                corr = "cailliez", 
                m = n_axes_to_retain,
                calc.FDiv = TRUE, 
                print.pco = TRUE)
 
-FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv, fishFD$FDis) #extract indices
-CWM_values <- fishFD$CWM #Community-weighted means are the mean trait values for each community weighted by species abundances
+FD_values.ipa <- cbind(fishFD.ipa$nbsp, fishFD.ipa$FRic, fishFD.ipa$FEve, fishFD.ipa$FDiv, fishFD.ipa$FDis) #extract indices
+colnames(FD_values.ipa) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
 
-colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
-
-FD_results <- FD_values %>% 
+FD_results.ipa <- FD_values.ipa %>% 
   as_tibble(rownames = "sample") %>% 
   separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
   relocate(sample) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
 
-# save(FD_results, file = "data/FD_results.Rda")
-
-plot_site_index <- function (index){
-  ggplot(data = FD_results, aes(x = site, 
-                                y = .data[[index]], 
-                                color = site, shape = ipa)) +
-    geom_point(size = 3) + 
-    theme_classic() +
-    ylab(index) +
-    theme(axis.title.x = element_blank(), 
-          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-}
-
-index_plots <- lapply(names(FD_results[5:9]), plot_site_index)
-
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
-  plot_layout(ncol = 3) + plot_layout(guides = "collect")
-
-# ggsave("docs/figures/fish_FDpatch.png")
+# save(FD_results, file = "data/FD_results.ipa.Rda")
 
 plot_index <- function (index, by){
-  ggplot(data = FD_results, aes(x = .data[[by]], 
+  ggplot(data = FD_results.ipa, aes(x = .data[[by]], 
                                 y = .data[[index]], 
                                 fill = .data[[by]])) +
     geom_boxplot() +
@@ -148,13 +128,6 @@ index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + inde
 
 # ggsave("docs/figures/fish_FDipapatch.png")
 
-index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "region")
-
-index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
-  plot_layout(ncol = 3) + plot_layout(guides = "collect")
-
-# ggsave("docs/figures/fish_FDregionpatch.png")
-
 #### test for differences in means ####
 
 #test for multivariate normality
@@ -164,18 +137,37 @@ index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + inde
 # #does not meet assumptions of multivariate normality
 
 #permanova - nonparametric 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, data = FD_results, method = "euc")
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, data = FD_results.ipa, method = "euc")
 #cannot reject the null
 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, data = FD_results, method = "euc")
-#reject the null
+#### recompute by site ####
+fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
+                   a = fish.list$abund,
+                   ord = "podani",
+                   corr = "cailliez", 
+                   m = n_axes_to_retain,
+                   calc.FDiv = TRUE, 
+                   print.pco = TRUE)
 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
-#reject the null
+FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv, fishFD$FDis) #extract indices
+colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+
+FD_results <- FD_values %>% 
+  as_tibble(rownames = "site") %>% 
+  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) 
 
 #### beta diversity ####
 library(betapart)
 
-beta_obj <- functional.betapart.core(decostand(fish.list$abund, method = "pa"), fishFD$x.axes[,1:5], warning.time = FALSE)
+abund_pa <- decostand(fish.list$abund, method = "pa")
 
-str(fish.list$trait.t)
+# beta_obj <- functional.betapart.core(as.matrix(abund_pa), 
+#                                      as.matrix(fishFD$x.axes[,1:4]), 
+#                                      parallel = FALSE, #gives a weird error if you try to do this
+#                                      warning.time = TRUE,
+#                                      progress = TRUE)
+# #this takes a reallllllly long time with 4 axes
+
+beta_pairs <- functional.beta.pair(as.matrix(abund_pa), 
+                                   as.matrix(fishFD$x.axes[,1:4]),
+                                   index.family = "jaccard")
