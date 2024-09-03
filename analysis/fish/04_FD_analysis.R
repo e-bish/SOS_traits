@@ -95,7 +95,7 @@ fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are 
                corr = "cailliez", 
                m = n_axes_to_retain,
                calc.FDiv = TRUE, 
-               print.pco = FALSE)
+               print.pco = TRUE)
 
 FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv, fishFD$FDis) #extract indices
 CWM_values <- fishFD$CWM #Community-weighted means are the mean trait values for each community weighted by species abundances
@@ -173,4 +173,9 @@ adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
 #reject the null
 
+#### beta diversity ####
+library(betapart)
 
+beta_obj <- functional.betapart.core(decostand(fish.list$abund, method = "pa"), fish.list$trait.t)
+
+str(fish.list$trait.t)
