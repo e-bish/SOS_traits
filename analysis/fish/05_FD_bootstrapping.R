@@ -67,6 +67,8 @@ format_fish_L <- function(df) {
 #format the bootstrapped data frame into properly formatted matrices
 boot_L <- lapply(boot_list, format_fish_L)
 
+save(boot_L, file = here("data", "boot_L.Rda"))
+
 #remove species that aren't represented in assemblages 
 remove_missing_spp <- function(df) {
   filtered_df <- df %>% 
@@ -93,7 +95,7 @@ space_quality <- list()
 trait_space <- list()
 
 for (i in 1:length(boot_L)) {
-  
+
   fish_Q_list[[i]] <- fish.list$trait.t %>%
     rownames_to_column(var = "species") %>%
     filter(species %in% colnames(boot_L_filtered[[i]])) %>%
@@ -103,43 +105,43 @@ for (i in 1:length(boot_L)) {
   dist_mat[[i]] <- gowdis(fish_Q_list[[i]], ord = "podani")
   dist_mat[[i]] <- cailliez(dist_mat[[i]])
 
-  #examine the quality of the potential functional spaces 
+  #examine the quality of the potential functional spaces
   space_quality[[i]] <- quality.fspaces(sp_dist = dist_mat[[i]],
                                         maxdim_pcoa = 10,
                                         deviation_weighting = "absolute",
                                         fdist_scaling = FALSE,
                                         fdendro = "ward.D2")
-  
-  #extract the space 
+
+  #extract the space
   trait_space[[i]] <- space_quality[[i]]$"details_fspaces"$"sp_pc_coord"
-  
+
 }
-
-#look at the distribution of best space qualities
-space_qual_df <- data.frame(matrix(ncol = 2))
-names(space_qual_df) <- c("n_axes", "mad")
-
-for (i in 1:length(space_quality)) {
-  space_qual <- space_quality[[i]][1] %>% 
-    as.data.frame() %>% 
-    rownames_to_column(var = "n_axes") %>% 
-    slice(which.min(mad))
-  
-  space_qual_df <- rbind(space_qual_df, space_qual)
-}
-
-space_qual_df %>% 
-  filter(!is.na(n_axes)) %>% 
-  group_by(n_axes) %>% 
-  summarize(n = n(), min = min(mad), max = max(mad), avg = mean(mad))
-#5 axes is more often the best trait space but 4 is close behind
-
-space_qual_df %>% 
-  filter(!is.na(n_axes)) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = mad), fill = "lightblue", color = "skyblue") +
-  xlab("Quality of the Trait Space") +
-  theme_classic()
+# 
+# #look at the distribution of best space qualities
+# space_qual_df <- data.frame(matrix(ncol = 2))
+# names(space_qual_df) <- c("n_axes", "mad")
+# 
+# for (i in 1:length(space_quality)) {
+#   space_qual <- space_quality[[i]][1] %>% 
+#     as.data.frame() %>% 
+#     rownames_to_column(var = "n_axes") %>% 
+#     slice(which.min(mad))
+#   
+#   space_qual_df <- rbind(space_qual_df, space_qual)
+# }
+# 
+# space_qual_df %>% 
+#   filter(!is.na(n_axes)) %>% 
+#   group_by(n_axes) %>% 
+#   summarize(n = n(), min = min(mad), max = max(mad), avg = mean(mad))
+# #5 axes is more often the best trait space but 4 is close behind
+# 
+# space_qual_df %>% 
+#   filter(!is.na(n_axes)) %>% 
+#   ggplot() + 
+#   geom_histogram(aes(x = mad), fill = "lightblue", color = "skyblue") +
+#   xlab("Quality of the Trait Space") +
+#   theme_classic()
 
 #### calculate the functional indices ####
 # with the FD package
@@ -174,10 +176,7 @@ FD_results <- FD_results %>%
 # FD_boot_results <- FD_results
 # save(FD_boot_results, file = "data/FD_boot_results.Rda")
 
-#test for differences in calculations between packages
-# all.equal(FD_results, FD_results_v2)
-
-index_names <- c("Species Richness", "F. Dispersion", "F. Eveness", "F. Richness", "F. Divergence")
+index_names <- c("Species Richness", "F. Richness", "F. Eveness", "F. Divergence", "F. Dispersion")
 
 plot_site_index <- function (index){
   ggplot(data = FD_results, aes(x = .data[[index]], 
@@ -218,11 +217,65 @@ index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_
 
 # ggsave("docs/figures/fish_FDbootpatch.png")
 
+FD_boot_means <- FD_boot_results %>% 
+  group_by(site) %>% 
+  summarize(mean = across(where(is.numeric),mean), sd = across(where(is.numeric),sd))
+
 #### test for differences ####
 
-#this crashes R!
-# adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
-#         data = FD_results, method = "euc")
-# 
-# adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ region, data = FD_results, method = "euc")
+
+#### taxonomic diversity ####
+
+pivot_boot_L <- function(fish_L) {
+  fish_L_long <- fish_L %>% 
+    rownames_to_column("site") %>% 
+    pivot_longer(!site, names_to = "species", values_to = "avg_n")
+  
+  return(fish_L_long)
+}
+
+boot_L_long <- lapply(boot_L, pivot_boot_L)
+
+alpha_div <- list()
+
+for (i in seq_along(boot_L_long)) {
+  
+  alpha_div[[i]] <- boot_L_long[[i]] %>% 
+    group_by(site) %>% 
+    summarize(richness = specnumber(avg_n),
+              shannon = diversity(avg_n, index = "shannon"),
+              simpson = diversity(avg_n, index = "simpson"),
+              invsimpson = diversity(avg_n, index = "invsimpson"),
+              sum_avg_n = sum(avg_n)) %>% 
+    ungroup() 
+}
+
+alpha_div_df <- alpha_div[[1]]
+
+for (i in 2:length(alpha_div)) {
+  alpha_div_df <- rbind(alpha_div_df, alpha_div[[i]])
+}
+
+alpha_div_df <- alpha_div_df %>% 
+  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"))
+
+plot_site_TD_index <- function (index){
+  ggplot(data = alpha_div_df, aes(x = .data[[index]], 
+                                y = factor(site, levels = rev(SOS_core_sites)), 
+                                fill = region, color = region)) +
+    geom_density_ridges(alpha = 0.9) + 
+    theme_classic() +
+    theme(axis.title.y = element_blank(), 
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+}
+
+td_index_plots <- lapply(names(alpha_div_df[2:6]), plot_site_TD_index)
+
+td_index_plots[[1]]  + td_index_plots[[2]]  + guide_area() + td_index_plots[[3]] + td_index_plots[[4]] + td_index_plots[[5]] + 
+  plot_layout(ncol = 3, guides = "collect")
+
+
+index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
+  td_index_plots[[2]] +  td_index_plots[[3]] +  td_index_plots[[4]] +
+  plot_layout(ncol = 3, guides = "collect")
 
