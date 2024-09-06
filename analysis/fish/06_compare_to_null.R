@@ -124,15 +124,38 @@ SOS_core_sites <- c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")
 
 #### make a new function that extracts the 25th and 975th value from each set
 
-FD_null_results %>% 
-  filter(site == "TUR") %>% 
-  arrange(FRic) %>% 
-  nth(25)
+SES_p_vals <- as.data.frame(matrix(nrow = 6, ncol = 4))
+names(SES_p_vals) <- names(SES_boot_tab[3:6])
+# SES_p_vals <- cbind(SES_boot_tab[1], SES_p_vals)
 
-FD_null_results %>% 
-  filter(site == "TUR") %>% 
-  arrange(FRic) %>% 
-  nth(975)
+pull_ntiles <- function(site, metric) {
+  lower <- FD_null_results %>% 
+    filter(site == site) %>% 
+    arrange(metric) %>% 
+    nth(25) %>% 
+    pull(metric)
+  
+  upper <- FD_null_results %>% 
+    filter(site == site) %>% 
+    arrange(metric) %>% 
+    nth(975) %>% 
+    pull(metric)
+  
+  names <- c("site", paste(metric, "lower", sep = "_"), paste(metric, "upper", sep = "_"))
+  
+  df <- data.frame(site)
+  df <- cbind(df, lower, upper)
+  names(df) <- names
+  
+  return(df)
+}
+
+pull_ntiles("COR", "FRic")
+
+
+
+
+
 
 ########
 

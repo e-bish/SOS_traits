@@ -271,6 +271,12 @@ plot_site_TD_index <- function (index){
 
 td_index_plots <- lapply(names(alpha_div_df[2:6]), plot_site_TD_index)
 
+td_index_names <- c("Species Richness", "Shannon", "Simpson", "InvSimpson", "Sum of Average Count")
+
+for (i in 1:length(td_index_plots)) {
+  td_index_plots[[i]] <- td_index_plots[[i]] + xlab(td_index_names[i])
+}
+
 td_index_plots[[1]]  + td_index_plots[[2]]  + guide_area() + td_index_plots[[3]] + td_index_plots[[4]] + td_index_plots[[5]] + 
   plot_layout(ncol = 3, guides = "collect")
 
@@ -278,4 +284,6 @@ td_index_plots[[1]]  + td_index_plots[[2]]  + guide_area() + td_index_plots[[3]]
 index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
   td_index_plots[[2]] +  td_index_plots[[3]] +  td_index_plots[[4]] +
   plot_layout(ncol = 3, guides = "collect")
+
+ggsave("~/docs/figures/all_indices.png")
 
