@@ -8,14 +8,14 @@ library(mFD)
 load(here("data", "net_tidy.Rdata")) 
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-null_L <- list(fish.list$abund)
+null_L <- list(fish.list$abund.ipa)
 n_iter <- 1000 #observed data + 999 permutations
 
 #frequency is C4 null model in Gotzenberger et al. that works well for detection of environmental filtering
 #independentswap seems to be the method that other FD papers have used (e.g., Zhang) and is recommended by Swenson
 for (i in 2:n_iter) {
   set.seed(i)
-  null_L[[i]] <- randomizeMatrix(fish.list$abund, null.model ="independentswap", iterations = 1000) 
+  null_L[[i]] <- randomizeMatrix(fish.list$abund.ipa, null.model ="independentswap", iterations = 1000) 
 }
 
 # calculate FD indices with the FD package
@@ -73,11 +73,12 @@ FD_null_summary <- FD_null_results %>%
 load("data/FD_boot_results.Rda")  
 
 FD_boot_means <- FD_boot_results %>% 
+  replace(is.na(.), 0) %>% 
   group_by(site) %>% 
   summarize(across(where(is.numeric), mean))
 
 SES_boot_tab <- as.data.frame(FD_boot_means$site)
-SES_boot_tab[,2] <- (FD_boot_means$Species_Richness - FD_null_summary$Species_Richness_mean) / FD_null_summary$Species_Richness_sd
+SES_boot_tab[,2] <- FD_boot_means$Species_Richness 
 SES_boot_tab[,3] <- (FD_boot_means$FRic - FD_null_summary$FRic_mean) / FD_null_summary$FRic_sd
 SES_boot_tab[,4] <- (FD_boot_means$FEve - FD_null_summary$FEve_mean) / FD_null_summary$FEve_sd
 SES_boot_tab[,5] <- (FD_boot_means$FDiv - FD_null_summary$FDiv_mean) / FD_null_summary$FDiv_sd
@@ -128,31 +129,48 @@ SES_p_vals <- as.data.frame(matrix(nrow = 6, ncol = 4))
 names(SES_p_vals) <- names(SES_boot_tab[3:6])
 # SES_p_vals <- cbind(SES_boot_tab[1], SES_p_vals)
 
-pull_ntiles <- function(site, metric) {
+metrics <- colnames(SES_p_vals)
+
+## not working because its not properly arranging. Try adding an index to see what it's pulling?
+pull_ntiles <- function(site_ID, metric_ID) {
   lower <- FD_null_results %>% 
-    filter(site == site) %>% 
-    arrange(metric) %>% 
-    nth(25) %>% 
-    pull(metric)
-  
-  upper <- FD_null_results %>% 
-    filter(site == site) %>% 
-    arrange(metric) %>% 
-    nth(975) %>% 
-    pull(metric)
-  
-  names <- c("site", paste(metric, "lower", sep = "_"), paste(metric, "upper", sep = "_"))
-  
-  df <- data.frame(site)
+    filter(site == site_ID) %>% 
+    arrange(metric_ID) %>% 
+    slice(25) %>%
+    pull(metric_ID)
+
+  upper <- FD_null_results %>%
+    filter(site == site_ID) %>%
+    arrange(metric_ID) %>%
+    slice(975) %>%
+    pull(metric_ID)
+
+  names <- c("site", paste(metric_ID, "lower", sep = "_"),
+             paste(metric_ID, "upper", sep = "_"))
+
+  df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
   names(df) <- names
   
   return(df)
 }
 
-pull_ntiles("COR", "FRic")
+FAM_list <- list()
 
+for (i in 1:length(metric_ID)) {
+  FAM_list[[i]] <- pull_ntiles(site_ID = SOS_core_sites[3], metric_ID = metrics[1])
+}
 
+FAM_list
+
+# tmp <- data.frame()
+# 
+# for (i in 1:length(metrics)) {
+#   for (j in 1:length(SOS_core_sites)){
+#     tmp_new <- pull_ntiles(site_ID[j], metrics[i])
+#     tmp <- cbind(tmp, tmp_new)
+#   }
+# }
 
 
 
