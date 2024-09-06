@@ -12,7 +12,7 @@ expand_species <- net_tidy %>%
   expand(nesting(year, month, site, ipa), ComName) %>% 
   filter(!is.na(ComName))
 
-fish_L <- net_tidy %>% #L is referring to the RLQ analysis
+fish_L.ipa <- net_tidy %>% #L is referring to the RLQ analysis
   filter(!is.na(ComName)) %>% 
   group_by(year, month, site, ipa, ComName) %>%
   summarize(spp_sum = sum(species_count)) %>% #sum across depths within a site
@@ -29,6 +29,22 @@ fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   mutate(sample = paste(site, ipa, sep = "_"), .after = ipa) %>% 
   select(!1:2) %>% 
   column_to_rownames(var = "sample")
+
+fish_L <- net_tidy %>% #L is referring to the RLQ analysis
+  filter(!is.na(ComName)) %>% 
+  group_by(year, month, site, ComName) %>%
+  summarize(spp_sum = sum(species_count)) %>% #sum across depths and ipas for a given day
+  ungroup() %>%
+  full_join(expand_species) %>% #add back in all of the events so we can capture 0s
+  mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
+  arrange(year, month, site) %>% 
+  mutate(spp_sum =replace_na(spp_sum, 0)) %>% 
+  group_by(site, ComName) %>% 
+  summarize(spp_avg = mean(spp_sum)) %>% #average across sampling events at each site (unbalanced)
+  pivot_wider(names_from = ComName, values_from = spp_avg, values_fill = 0) %>% 
+  clean_names() %>% 
+  ungroup() %>% 
+  column_to_rownames(var = "site")
 
 #### Create the Q (trait) matrix ####
 
@@ -143,7 +159,7 @@ confirm_proper_names <- fish_Q %>%
 ### Conduct data quality and integrity check using steps outlined in Palacio et al. 2022 ####
 ##Step 1: Plot the community data matrix to assess the prevalence of zeros 
 
-fish_L %>% 
+fish_L.ipa %>% 
   rownames_to_column(var = "sample") %>% 
   pivot_longer(cols = 2:43, names_to = "species") %>% 
   ggplot() +
@@ -194,6 +210,7 @@ ggpairs(fish_Q.t)
 #### save final L and Q matrices #### 
 fish.list <- list("trait" = fish_Q, 
                   "trait.t" = fish_Q.t,
+                  "abund.ipa" = fish_L.ipa,
                   "abund" = fish_L) 
 
 save(fish.list, file = here("data", "fish.list.Rdata"))

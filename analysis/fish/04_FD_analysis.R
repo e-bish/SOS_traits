@@ -11,7 +11,7 @@ library(vegan)
 
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-#using the FD package
+#test the quality of the trait space
 dist_mat <- gowdis(fish.list$trait.t, ord = "podani") #"classic" method matches mFD, which treats categorical variables as continuous
 dist_mat <- cailliez(dist_mat) #correction for negative eigenvalues
 
@@ -121,7 +121,7 @@ plot_index <- function (index, by){
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
 }
 
-index_plots <- lapply(names(FD_results[5:9]), plot_index, by = "ipa")
+index_plots <- lapply(names(FD_results.ipa[5:9]), plot_index, by = "ipa")
 
 index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + index_plots[[5]] + guide_area() + 
   plot_layout(ncol = 3) + plot_layout(guides = "collect")
@@ -137,7 +137,7 @@ index_plots[[1]] + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + inde
 # #does not meet assumptions of multivariate normality
 
 #permanova - nonparametric 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, data = FD_results.ipa, method = "euc")
+adonis2(FD_results.ipa[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, data = FD_results.ipa, method = "euc")
 #cannot reject the null
 
 #### recompute by site ####
