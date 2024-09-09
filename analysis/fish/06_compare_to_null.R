@@ -2,7 +2,7 @@ library(here)
 library(tidyverse)
 library(picante)
 library(FD)
-library(mFD)
+# library(mFD)
 
 #load tidy fish data frame created in 02_tidy_data
 load(here("data", "net_tidy.Rdata")) 
@@ -73,7 +73,7 @@ FD_null_summary <- FD_null_results %>%
 load("data/FD_boot_results.Rda")  
 
 FD_boot_means <- FD_boot_results %>% 
-  replace(is.na(.), 0) %>% 
+  replace(is.na(.), 0) %>% #replace na with zero for EDG armored where there was only two species caught at one ipa so cant calculate FRic, FEve, FDiv
   group_by(site) %>% 
   summarize(across(where(is.numeric), mean))
 
@@ -131,29 +131,83 @@ names(SES_p_vals) <- names(SES_boot_tab[3:6])
 
 metrics <- colnames(SES_p_vals)
 
+
+FD_null_results %>% 
+  filter(site == "FAM") %>% 
+  rownames_to_column(var = "index") %>% 
+  arrange(FRic) %>% 
+  rownames_to_column(var = "arranged") %>% 
+  slice(25) %>% 
+  pull(FRic)
+
+
+
 ## not working because its not properly arranging. Try adding an index to see what it's pulling?
-pull_ntiles <- function(site_ID, metric_ID) {
+pull_ntiles <- function(site_ID) {
+  
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
-    arrange(metric_ID) %>% 
+    rownames_to_column(var = "index") %>% 
+    arrange(FRic) %>% 
+    rownames_to_column(var = "arranged") %>% 
     slice(25) %>%
-    pull(metric_ID)
-
+    select(index, arranged, FRic)
+  
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
-    arrange(metric_ID) %>%
+    rownames_to_column(var = "index") %>% 
+    arrange(FRic) %>% 
+    rownames_to_column(var = "arranged") %>% 
+    ungroup() %>% 
     slice(975) %>%
-    pull(metric_ID)
-
-  names <- c("site", paste(metric_ID, "lower", sep = "_"),
-             paste(metric_ID, "upper", sep = "_"))
-
+    select(index, arranged, FRic)
+  
+  names <- c("site", "index_lower", "arranged_lower", "FRic_lower",
+             "index_upper", "arranged_upper", "FRic_upper")
+  
   df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
   names(df) <- names
   
   return(df)
 }
+pull_ntiles <- function(site_ID, the_metric) {
+  
+  metric_ID <- the_metric
+  
+  lower <- FD_null_results %>% 
+    filter(site == site_ID) %>% 
+    rownames_to_column(var = "index")
+  
+  lower_ordered <- lower[order(lower[metricID]),]
+  
+  lower_vals <- lower_ordered
+    rownames_to_column(var = "arranged") %>% 
+    slice(25) %>%
+    select(index, arranged, any_of(metric_ID))
+
+  upper <- FD_null_results %>%
+    filter(site == site_ID) %>%
+    rownames_to_column(var = "index")
+  
+  upper_ordered <- upper[order(upper[metric_ID]),]
+  
+  upper_vals <- upper_ordered %>% 
+    rownames_to_column(var = "arranged") %>% 
+    slice(975) %>%
+    select(index, arranged, any_of(metric_ID))
+
+  names <- c("site", "index_lower", "arranged_lower", paste(metric_ID, "lower", sep = "_"),
+             "index_upper", "arranged_upper", paste(metric_ID, "upper", sep = "_"))
+
+  df <- data.frame(site_ID)
+  df <- cbind(df, lower_vals, upper_vals)
+  names(df) <- names
+  
+  return(df)
+}
+
+pull_ntiles(site_ID = "FAM")
 
 FAM_list <- list()
 
