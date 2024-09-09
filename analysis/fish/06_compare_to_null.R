@@ -129,41 +129,34 @@ SES_p_vals <- as.data.frame(matrix(nrow = 6, ncol = 4))
 names(SES_p_vals) <- names(SES_boot_tab[3:6])
 # SES_p_vals <- cbind(SES_boot_tab[1], SES_p_vals)
 
-metrics <- colnames(SES_p_vals)
-
-
-FD_null_results %>% 
-  filter(site == "FAM") %>% 
-  rownames_to_column(var = "index") %>% 
-  arrange(FRic) %>% 
-  rownames_to_column(var = "arranged") %>% 
-  slice(25) %>% 
-  pull(FRic)
-
-
-
-## not working because its not properly arranging. Try adding an index to see what it's pulling?
-pull_ntiles <- function(site_ID) {
-  
+pull_FRic_ntiles <- function(site_ID) {
+  #commented out code left here for checking that the proper order has been extracted
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
-    rownames_to_column(var = "index") %>% 
+    # rownames_to_column(var = "index") %>% 
     arrange(FRic) %>% 
-    rownames_to_column(var = "arranged") %>% 
+    # rownames_to_column(var = "arranged") %>% 
     slice(25) %>%
-    select(index, arranged, FRic)
+    select(FRic)
+    # select(index, arranged, FRic)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
-    rownames_to_column(var = "index") %>% 
+    # rownames_to_column(var = "index") %>% 
     arrange(FRic) %>% 
-    rownames_to_column(var = "arranged") %>% 
+    # rownames_to_column(var = "arranged") %>% 
     ungroup() %>% 
     slice(975) %>%
-    select(index, arranged, FRic)
+    select(FRic)
+    # select(index, arranged, FRic)
   
-  names <- c("site", "index_lower", "arranged_lower", "FRic_lower",
-             "index_upper", "arranged_upper", "FRic_upper")
+  names <- c("site", 
+             # "index_lower", 
+             # "arranged_lower",
+             "FRic_lower",
+             # "index_upper", 
+             # "arranged_upper", 
+             "FRic_upper")
   
   df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
@@ -171,63 +164,98 @@ pull_ntiles <- function(site_ID) {
   
   return(df)
 }
-pull_ntiles <- function(site_ID, the_metric) {
-  
-  metric_ID <- the_metric
+pull_FEve_ntiles <- function(site_ID) {
   
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
-    rownames_to_column(var = "index")
-  
-  lower_ordered <- lower[order(lower[metricID]),]
-  
-  lower_vals <- lower_ordered
-    rownames_to_column(var = "arranged") %>% 
+    arrange(FEve) %>% 
     slice(25) %>%
-    select(index, arranged, any_of(metric_ID))
-
+    select(FEve)
+  
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
-    rownames_to_column(var = "index")
-  
-  upper_ordered <- upper[order(upper[metric_ID]),]
-  
-  upper_vals <- upper_ordered %>% 
-    rownames_to_column(var = "arranged") %>% 
+    arrange(FEve) %>% 
+    ungroup() %>% 
     slice(975) %>%
-    select(index, arranged, any_of(metric_ID))
-
-  names <- c("site", "index_lower", "arranged_lower", paste(metric_ID, "lower", sep = "_"),
-             "index_upper", "arranged_upper", paste(metric_ID, "upper", sep = "_"))
-
+    select(FEve)
+  
+  names <- c("site", "FEve_lower","FEve_upper")
+  
   df <- data.frame(site_ID)
-  df <- cbind(df, lower_vals, upper_vals)
+  df <- cbind(df, lower, upper)
+  names(df) <- names
+  
+  return(df)
+}
+pull_FDiv_ntiles <- function(site_ID) {
+  
+  lower <- FD_null_results %>% 
+    filter(site == site_ID) %>% 
+    arrange(FDiv) %>% 
+    slice(25) %>%
+    select( FDiv)
+  
+  upper <- FD_null_results %>%
+    filter(site == site_ID) %>%
+    arrange(FDiv) %>% 
+    ungroup() %>% 
+    slice(975) %>%
+    select(FDiv)
+  
+  names <- c("site", "FDiv_lower","FDiv_upper")
+  
+  df <- data.frame(site_ID)
+  df <- cbind(df, lower, upper)
+  names(df) <- names
+  
+  return(df)
+}
+pull_FDis_ntiles <- function(site_ID) {
+  
+  lower <- FD_null_results %>% 
+    filter(site == site_ID) %>% 
+    arrange(FDis) %>% 
+    slice(25) %>%
+    select(FDis)
+  
+  upper <- FD_null_results %>%
+    filter(site == site_ID) %>%
+    arrange(FDis) %>% 
+    ungroup() %>% 
+    slice(975) %>%
+    select(FDis)
+  
+  names <- c("site",  "FDis_lower","FDis_upper")
+  
+  df <- data.frame(site_ID)
+  df <- cbind(df, lower, upper)
   names(df) <- names
   
   return(df)
 }
 
-pull_ntiles(site_ID = "FAM")
+FRic_CI <- lapply(SOS_core_sites, pull_FRic_ntiles)
+FEve_CI <- lapply(SOS_core_sites, pull_FEve_ntiles)
+FDiv_CI <- lapply(SOS_core_sites, pull_FDiv_ntiles)
+FDis_CI <- lapply(SOS_core_sites, pull_FDis_ntiles)
 
-FAM_list <- list()
+combine_CI <- t(mapply(c, FRic_CI, FEve_CI, FDiv_CI, FDis_CI)) %>% as.data.frame()
 
-for (i in 1:length(metric_ID)) {
-  FAM_list[[i]] <- pull_ntiles(site_ID = SOS_core_sites[3], metric_ID = metrics[1])
-}
+CI_uppers_lowers <- combine_CI %>% 
+  select(!starts_with("site")) %>% 
+  mutate(site = SOS_core_sites) %>% 
+  pivot_longer(!site, names_to = "metric") %>% 
+  separate_wider_delim(metric, delim = "_", names = c("metric", "range"), cols_remove = TRUE) %>% 
+  mutate(value = unlist(value))
 
-FAM_list
+FD_boot_means_long <- FD_boot_means %>% 
+  pivot_longer(!c(site, Species_Richness), names_to = "metric", values_to = "value") %>% 
+  select(!Species_Richness) %>% 
+  mutate(range = "boot_mean", .before = value)
 
-# tmp <- data.frame()
-# 
-# for (i in 1:length(metrics)) {
-#   for (j in 1:length(SOS_core_sites)){
-#     tmp_new <- pull_ntiles(site_ID[j], metrics[i])
-#     tmp <- cbind(tmp, tmp_new)
-#   }
-# }
-
-
-
+df_for_p_vals <- bind_rows(CI_uppers_lowers, FD_boot_means_long) %>% 
+  pivot_wider(names_from = range, values_from = value) %>% 
+  mutate(significant = ifelse(boot_mean > lower & boot_mean < upper, "no", "yes"))
 
 ########
 
