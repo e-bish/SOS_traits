@@ -30,21 +30,25 @@ fish_L.ipa <- net_tidy %>% #L is referring to the RLQ analysis
   select(!1:2) %>% 
   column_to_rownames(var = "sample")
 
-fish_L <- net_tidy %>% #L is referring to the RLQ analysis
+fish_L.year <- net_tidy %>% #L is referring to the RLQ analysis
   filter(!is.na(ComName)) %>% 
-  group_by(year, month, site, ComName) %>%
-  summarize(spp_sum = sum(species_count)) %>% #sum across depths and ipas for a given day
+  group_by(year, month, site, ipa, ComName) %>% #keep in shorelines for now so we can add 0s for when we missed one
+  summarize(spp_sum = sum(species_count)) %>% #sum across depths within a shoreline
   ungroup() %>%
   full_join(expand_species) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
   arrange(year, month, site) %>% 
   mutate(spp_sum =replace_na(spp_sum, 0)) %>% 
-  group_by(site, ComName) %>% 
-  summarize(spp_avg = mean(spp_sum)) %>% #average across sampling events at each site (unbalanced)
+  group_by(year, month, site, ComName) %>%  
+  summarize(spp_sum_all = sum(spp_sum)) %>% #sum across shorelines within a site
+  group_by(site, year, ComName) %>% 
+  summarize(spp_avg = mean(spp_sum_all)) %>% #average across months within each year at each site (slightly unbalanced effort between sites)
   pivot_wider(names_from = ComName, values_from = spp_avg, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
-  column_to_rownames(var = "site")
+  mutate(sample = paste(site, year, sep = "_"), .after = year) %>% 
+  select(!1:2) %>% 
+  column_to_rownames(var = "sample")
 
 #### Create the Q (trait) matrix ####
 
@@ -151,7 +155,7 @@ fish_Q <- fish_traits %>%
   clean_names() %>% 
   as.data.frame()
 
-rownames(fish_Q) <- colnames(fish_L)
+rownames(fish_Q) <- colnames(fish_L.year)
 
 confirm_proper_names <- fish_Q %>% 
   mutate(Species = fish_traits$ComName, .before = mean_length_mm)
@@ -159,7 +163,7 @@ confirm_proper_names <- fish_Q %>%
 ### Conduct data quality and integrity check using steps outlined in Palacio et al. 2022 ####
 ##Step 1: Plot the community data matrix to assess the prevalence of zeros 
 
-fish_L.ipa %>% 
+fish_L.year %>% 
   rownames_to_column(var = "sample") %>% 
   pivot_longer(cols = 2:43, names_to = "species") %>% 
   ggplot() +
@@ -211,6 +215,6 @@ ggpairs(fish_Q.t)
 fish.list <- list("trait" = fish_Q, 
                   "trait.t" = fish_Q.t,
                   "abund.ipa" = fish_L.ipa,
-                  "abund" = fish_L) 
+                  "abund" = fish_L.year) 
 
 save(fish.list, file = here("data", "fish.list.Rdata"))

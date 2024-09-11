@@ -1,6 +1,42 @@
 library(tidyverse)
 library(vegan)
 
+## rarefy? can only rarefy count data
+
+#load tidy fish data frame created in 02_tidy_data
+load(here("data", "net_tidy.Rdata")) 
+
+#### Create the L (abundance) matrix ####
+expand_species <- net_tidy %>% 
+  expand(nesting(year, month, site, ipa), ComName) %>% 
+  filter(!is.na(ComName))
+
+fish_counts <- net_tidy %>% #L is referring to the RLQ analysis
+  filter(!is.na(ComName)) %>% 
+  group_by(year, month, site, ipa, ComName) %>%
+  summarize(spp_sum = sum(species_count)) %>% #sum across depths within a site
+  ungroup() %>%
+  full_join(expand_species) %>% #add back in all of the events so we can capture 0s
+  mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
+  mutate(spp_sum =replace_na(spp_sum, 0)) %>% 
+  group_by(year, month, site, ComName) %>% 
+  summarize(spp_sum_all = sum(spp_sum))  %>% 
+  ungroup()
+
+fish_counts_mat <- fish_counts %>% 
+  pivot_wider(id_cols = !c(year, month, site), names_from = ComName, values_from = spp_sum_all)
+#why isn't this working??
+
+  group_by(site, year, ComName) %>% 
+  summarize(spp_avg = mean(spp_sum)) %>% #average across sampling events at each site/ipa (unbalanced)
+  pivot_wider(names_from = ComName, values_from = spp_avg, values_fill = 0) %>% 
+  clean_names() %>% 
+  ungroup() %>% 
+  mutate(sample = paste(site, year, sep = "_"), .after = year) %>% 
+  select(!1:2) %>% 
+  column_to_rownames(var = "sample")
+
+
 #### same data aggregation procedure as the FD analysis ####
 load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"), 
@@ -27,7 +63,8 @@ alpha_div %>%
   pivot_longer(cols = c(richness, shannon, invsimpson, simpson), names_to = "metric") %>% 
   mutate(metric = factor(metric, levels = c("richness", "shannon", "simpson", "invsimpson"))) %>% 
   ggplot(aes(x = site, y = value, color = site)) +
-    geom_point(size = 2) +
+    geom_boxplot() +
+    geom_point() +
     facet_wrap(~metric, scales = "free_y") +
     theme_classic()
 
