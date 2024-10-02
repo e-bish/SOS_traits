@@ -59,15 +59,29 @@ FD_null_summary <- FD_null_results %>%
   summarize(across(where(is.numeric), list(mean = mean, sd = sd)))
 
 #### calculate SES for bootstrapped samples ####
-load("data/FD_results.Rda")  
+load("data/FD_results.Rda")
 
-FD_means <- FD_results %>% 
-  replace(is.na(.), 0) %>% #replace na with zero for EDG armored where there was only two species caught at one ipa so cant calculate FRic, FEve, FDiv
-  group_by(site) %>% 
+# FD_means <- FD_results %>%
+#   replace(is.na(.), 0) %>% #replace na with zero for EDG armored where there was only two species caught at one ipa so cant calculate FRic, FEve, FDiv
+#   group_by(site) %>%
+#   summarize(across(where(is.numeric), mean))
+
+# SES_tab <- as.data.frame(FD_means$site)
+# SES_tab[,2] <- FD_means$Species_Richness
+# SES_tab[,3] <- (FD_means$FRic - FD_null_summary$FRic_mean) / FD_null_summary$FRic_sd
+# SES_tab[,4] <- (FD_means$FEve - FD_null_summary$FEve_mean) / FD_null_summary$FEve_sd
+# SES_tab[,5] <- (FD_means$FDiv - FD_null_summary$FDiv_mean) / FD_null_summary$FDiv_sd
+# SES_tab[,6] <- (FD_means$FDis - FD_null_summary$FDis_mean) / FD_null_summary$FDis_sd
+# 
+# names(SES_tab) <- names(FD_means)
+
+FD_means <- FD_results %>%
+  # replace(is.na(.), 0) %>% #replace na with zero for EDG armored where there was only two species caught at one ipa so cant calculate FRic, FEve, FDiv
+  group_by(site) %>%
   summarize(across(where(is.numeric), mean))
 
 SES_tab <- as.data.frame(FD_means$site)
-SES_tab[,2] <- FD_means$Species_Richness 
+SES_tab[,2] <- FD_means$Species_Richness
 SES_tab[,3] <- (FD_means$FRic - FD_null_summary$FRic_mean) / FD_null_summary$FRic_sd
 SES_tab[,4] <- (FD_means$FEve - FD_null_summary$FEve_mean) / FD_null_summary$FEve_sd
 SES_tab[,5] <- (FD_means$FDiv - FD_null_summary$FDiv_mean) / FD_null_summary$FDiv_sd

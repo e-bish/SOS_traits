@@ -89,7 +89,7 @@ n_axes_to_retain <- 4
 
 # with the FD package 
 fishFD.ipa <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
-               a = fish.list$abund.year,
+               a = fish.list$abund.ipa,
                ord = "podani",
                corr = "cailliez", 
                m = n_axes_to_retain,
@@ -103,7 +103,8 @@ FD_results.ipa <- FD_values.ipa %>%
   as_tibble(rownames = "sample") %>% 
   separate_wider_delim(sample, delim = "_", names = c("site", "ipa"), cols_remove = FALSE) %>% 
   relocate(sample) %>% 
-  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"))) %>% 
+  mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")),
+         ipa = ifelse(ipa == "Natural2", "Natural", ipa)) %>% 
   mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
 
 # save(FD_results, file = "data/FD_results.ipa.Rda")
