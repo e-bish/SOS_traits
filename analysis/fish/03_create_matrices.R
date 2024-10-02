@@ -7,23 +7,49 @@ library(GGally)
 #load tidy fish data frame created in 02_tidy_data
 load(here("data", "net_tidy.Rdata")) 
 
+sampling_events <- net_tidy %>% 
+  select(year, month, day, site, ipa, station) %>% 
+  distinct() %>% 
+  filter(!(site == "COR" & year == "2019" & month == "Apr" & day == "30")) %>% #these COR seem like data entry errors because they were only sampled at one station and we already had complete sampling at COR in april and may. No fish recorded in either entry
+  filter(!(site == "COR" & year == "2019" & month == "May" & day == "01")) %>% 
+  filter(!(site == "TUR" & year == "2018" & month == "Jul" & day == "11")) %>%  #this is an incomplete sampling event. Complete sampling at TUR occured on 7/12/18
+  filter(!(site == "TUR" & year == "2018" & month == "Sept" & day == "11")) %>% #another month with repeat sampling; keeping only the second september TUR sampling event
+  group_by(year, site, ipa) %>% 
+  summarize(no_net_sets = n()) %>% 
+  ungroup()
+
+sampling_events_ipa <- sampling_events %>% 
+  group_by(site, ipa) %>% 
+  summarize(total_net_sets = sum(no_net_sets)) %>% 
+  ungroup()
+
+sampling_events_yr <- sampling_events %>% 
+  group_by(year, site) %>% 
+  summarize(total_net_sets = sum(no_net_sets)) %>% 
+  ungroup()
+
 #### Create the L (abundance) matrix ####
-expand_species <- net_tidy %>% 
-  expand(nesting(year, month, site, ipa), ComName) %>% 
+expand_species_ipa <- net_tidy %>% 
+  expand(nesting(site, ipa), ComName) %>% 
+  filter(!is.na(ComName))
+
+expand_species_yr <- net_tidy %>% 
+  expand(nesting(year, site), ComName) %>% 
   filter(!is.na(ComName))
 
 fish_L.ipa <- net_tidy %>% #L is referring to the RLQ analysis
   filter(!is.na(ComName)) %>% 
-  group_by(year, month, site, ipa, ComName) %>%
-  summarize(spp_sum = sum(species_count)) %>% #sum across depths within a site
+  group_by(site, ipa, ComName) %>%
+  summarize(spp_sum = sum(species_count)) %>% #sum across net sets within a shoreline by year
   ungroup() %>%
-  full_join(expand_species) %>% #add back in all of the events so we can capture 0s
+  full_join(sampling_events_ipa) %>% 
+  mutate(catch_per_set = spp_sum/total_net_sets) %>% 
+  full_join(expand_species_ipa) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
-  arrange(year, month, site, ipa) %>% 
-  mutate(spp_sum =replace_na(spp_sum, 0)) %>% 
-  group_by(site, ipa, ComName) %>% 
-  summarize(spp_avg = mean(spp_sum)) %>% #average across sampling events at each site/ipa (unbalanced)
-  pivot_wider(names_from = ComName, values_from = spp_avg, values_fill = 0) %>% 
+  arrange(site, ipa) %>% 
+  mutate(catch_per_set =replace_na(catch_per_set, 0)) %>% 
+  select(!c(spp_sum, total_net_sets)) %>% 
+  pivot_wider(names_from = ComName, values_from = catch_per_set, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
   mutate(sample = paste(site, ipa, sep = "_"), .after = ipa) %>% 
@@ -32,21 +58,20 @@ fish_L.ipa <- net_tidy %>% #L is referring to the RLQ analysis
 
 fish_L.year <- net_tidy %>% #L is referring to the RLQ analysis
   filter(!is.na(ComName)) %>% 
-  group_by(year, month, site, ipa, ComName) %>% #keep in shorelines for now so we can add 0s for when we missed one
-  summarize(spp_sum = sum(species_count)) %>% #sum across depths within a shoreline
+  group_by(year, site, ComName) %>% 
+  summarize(spp_sum = sum(species_count)) %>% #sum across sampling events 
   ungroup() %>%
-  full_join(expand_species) %>% #add back in all of the events so we can capture 0s
+  full_join(sampling_events_yr) %>% 
+  mutate(catch_per_set = spp_sum/total_net_sets) %>% 
+  full_join(expand_species_yr) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
-  arrange(year, month, site) %>% 
-  mutate(spp_sum =replace_na(spp_sum, 0)) %>% 
-  group_by(year, month, site, ComName) %>%  
-  summarize(spp_sum_all = sum(spp_sum)) %>% #sum across shorelines within a site
-  group_by(site, year, ComName) %>% 
-  summarize(spp_avg = mean(spp_sum_all)) %>% #average across months within each year at each site (slightly unbalanced effort between sites)
-  pivot_wider(names_from = ComName, values_from = spp_avg, values_fill = 0) %>% 
+  arrange(year, site) %>% 
+  mutate(catch_per_set  =replace_na(catch_per_set , 0)) %>% 
+  select(!c(spp_sum, total_net_sets)) %>% 
+  pivot_wider(names_from = ComName, values_from = catch_per_set, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
-  mutate(sample = paste(site, year, sep = "_"), .after = year) %>% 
+  mutate(sample = paste(site, year, sep = "_"), .after = site) %>% 
   select(!1:2) %>% 
   column_to_rownames(var = "sample")
 
