@@ -144,7 +144,7 @@ fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are 
                    a = fish.list$abund,
                    ord = "podani",
                    corr = "cailliez", 
-                   m = n_axes_to_retain,
+                   m = 4,
                    calc.FDiv = TRUE, 
                    print.pco = TRUE)
 

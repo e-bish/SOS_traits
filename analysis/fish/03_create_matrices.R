@@ -37,6 +37,10 @@ expand_species_yr <- net_tidy %>%
   expand(nesting(year, site), ComName) %>% 
   filter(!is.na(ComName))
 
+expand_species_both <- net_tidy %>% 
+  expand(nesting(year, site, ipa), ComName) %>% 
+  filter(!is.na(ComName))
+
 fish_L.ipa <- net_tidy %>% #L is referring to the RLQ analysis
   filter(!is.na(ComName)) %>% 
   group_by(site, ipa, ComName) %>%
@@ -46,7 +50,7 @@ fish_L.ipa <- net_tidy %>% #L is referring to the RLQ analysis
   mutate(catch_per_set = spp_sum/total_net_sets) %>% 
   full_join(expand_species_ipa) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
-  arrange(site, ipa) %>% 
+  arrange(site, ipa, ComName) %>% 
   mutate(catch_per_set =replace_na(catch_per_set, 0)) %>% 
   select(!c(spp_sum, total_net_sets)) %>% 
   pivot_wider(names_from = ComName, values_from = catch_per_set, values_fill = 0) %>% 
@@ -65,7 +69,7 @@ fish_L.year <- net_tidy %>% #L is referring to the RLQ analysis
   mutate(catch_per_set = spp_sum/total_net_sets) %>% 
   full_join(expand_species_yr) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
-  arrange(year, site) %>% 
+  arrange(year, site, ComName) %>% 
   mutate(catch_per_set  =replace_na(catch_per_set , 0)) %>% 
   select(!c(spp_sum, total_net_sets)) %>% 
   pivot_wider(names_from = ComName, values_from = catch_per_set, values_fill = 0) %>% 
@@ -74,6 +78,33 @@ fish_L.year <- net_tidy %>% #L is referring to the RLQ analysis
   mutate(sample = paste(site, year, sep = "_"), .after = site) %>% 
   select(!1:2) %>% 
   column_to_rownames(var = "sample")
+
+fish_L.both <- net_tidy %>% #L is referring to the RLQ analysis
+  filter(!is.na(ComName)) %>% 
+  group_by(year, site, ipa, ComName) %>% 
+  summarize(spp_sum = sum(species_count)) %>% #sum across sampling events 
+  ungroup() %>%
+  full_join(sampling_events) %>% 
+  mutate(catch_per_set = spp_sum/no_net_sets) %>% 
+  full_join(expand_species_both) %>% #add back in all of the events so we can capture 0s
+  mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
+  arrange(year, site, ipa, ComName) %>% 
+  mutate(catch_per_set  = replace_na(catch_per_set , 0)) %>% 
+  select(!c(spp_sum, no_net_sets)) %>% 
+  pivot_wider(names_from = ComName, values_from = catch_per_set, values_fill = 0) %>% 
+  clean_names() %>% 
+  ungroup() %>% 
+  mutate(sample = paste(site, year, ipa, sep = "_"), .after = ipa) %>% 
+  select(!1:3) %>% 
+  column_to_rownames(var = "sample")
+
+check_matrix <- fish_L.both %>% 
+  decostand(method = "pa") %>% 
+  mutate(no_spp = rowSums(.)) %>% 
+  filter(no_spp < 3)
+
+fish_L.both <- fish_L.both %>% 
+  filter(!row.names(.) %in% row.names(check_matrix))
 
 #### Create the Q (trait) matrix ####
 
@@ -240,6 +271,7 @@ ggpairs(fish_Q.t)
 fish.list <- list("trait" = fish_Q, 
                   "trait.t" = fish_Q.t,
                   "abund.ipa" = fish_L.ipa,
-                  "abund" = fish_L.year) 
+                  "abund" = fish_L.year,
+                  "abund.both" = fish_L.both) 
 
 save(fish.list, file = here("data", "fish.list.Rdata"))
