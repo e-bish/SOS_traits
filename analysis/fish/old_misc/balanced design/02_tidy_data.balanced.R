@@ -29,8 +29,8 @@ load_data <- function() {
     read_csv()
   
   net_tidy <- bind_rows(net_2018.19, net_2021, net_2022) %>% 
-    filter(!(site == "TUR" & ipa == "Natural")) %>% 
-    mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>% #no restoration at Turn Island, we sampled at 2 natural sites. Keeping the "second" one ("restored" in the field data) because it was an easier site to sample with less variability
+    # filter(!(site == "TUR" & ipa == "Natural")) %>% 
+    mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural2")) %>% #no restoration at Turn Island, we sampled at 2 natural sites. Keeping the "second" one ("restored" in the field data) because it was an easier site to sample with less variability
     mutate(month = recode(month, `04` = "Apr", `05` = "May", `06` = "Jun", `07` = "Jul", `08` = "Aug", `09` = "Sept")) %>% 
     mutate(year = factor(year), 
            month = factor(month, levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sept")),
@@ -51,7 +51,7 @@ load_data <- function() {
     group_by(year, month, day, site) %>% 
     summarize(n_samples = n()) %>% 
     filter(n_samples < 9) %>% #sampling days when we missed either a depth or a shoreline (ipa)
-    filter(!site == "TUR") #all of the TUR samples are balanced, but there are only 6 because there is no Restored ipa
+    filter(!site == "TUR") #one sampling event was split between two days
   
   balanced_events <- sampling_events %>%
     anti_join(unbalanced_events, join_by("year", "month", "day", "site"))

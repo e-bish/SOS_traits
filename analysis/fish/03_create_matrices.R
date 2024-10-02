@@ -35,12 +35,18 @@ fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   group_by(year, month, site, ComName) %>%
   summarize(spp_sum = sum(species_count)) %>% #sum across depths and ipas for a given day
   ungroup() %>%
+  mutate(catch_by_set = case_when(year == 2018 & site == "COR" & month == "Jun" ~ spp_sum/6,
+                                  year == 2019 & site == "DOK" & month == "Apr" ~ spp_sum/8,
+                                  year == 2019 & site == "COR" & month == "Aug" ~ spp_sum/6,
+                                  year == 2021 & site == "DOK" & month == "Jul" ~ spp_sum/7,
+                                  year == 2021 & site == "SHR" & month == "Aug" ~ spp_sum/6,
+                                  TRUE ~ spp_sum/9)) %>% 
   full_join(expand_species) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
   arrange(year, month, site) %>% 
-  mutate(spp_sum =replace_na(spp_sum, 0)) %>% 
+  mutate(catch_by_set =replace_na(catch_by_set, 0)) %>% 
   group_by(site, ComName) %>% 
-  summarize(spp_avg = mean(spp_sum)) %>% #average across sampling events at each site (unbalanced)
+  summarize(spp_avg = mean(catch_by_set)) %>% #average across sampling events at each site (unbalanced)
   pivot_wider(names_from = ComName, values_from = spp_avg, values_fill = 0) %>% 
   clean_names() %>% 
   ungroup() %>% 
