@@ -6,38 +6,25 @@ library(janitor)
 library(vegan)
 
 #create matrices
-library(tidyverse)
-library(here)
 library(rfishbase)
-library(janitor)
 library(GGally)
 
 #FD analysis
-library(tidyverse)
-library(here)
 library(ggrepel)
 library(FD)
 library(ggordiplots)
 library(PNWColors)
 library(patchwork)
-library(vegan)
 
 #null model
-library(here)
-library(tidyverse)
 library(picante)
-library(FD)
 
 #bootstrapping
-library(here)
-library(tidyverse)
-library(janitor)
 library(rsample)
-library(mFD)
-library(FD)
+# library(mFD)
 library(ggridges)
-library(patchwork)
 
+#set seed
 set.seed(1993)
 
 #### Import Data in 01_import_data####
@@ -314,37 +301,72 @@ FD_results <- FD_values %>%
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")),
          year = factor(year, levels = c("2018", "2019", "2021", "2022")),
          region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), 
-         eelgrass = ifelse(site %in% c("TUR", "COR", "SHR"), "yes", "no"), .after = site,
+         veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = site,
          ipa = ifelse(ipa == "Natural2", "Natural", ipa)) #combine the two natural sites at TUR
 
 # save(FD_results, file = "data/FD_results.Rdata")  
 
-#plot the results
-FD_results %>% 
-  pivot_longer(!c(site, ipa, region, eelgrass, year), names_to = "metric", values_to = "value") %>% 
-  ggplot(aes(x = site, y = value, fill = eelgrass)) +
-  geom_boxplot() +
-  geom_point(show.legend = FALSE) +
-  theme_classic() +
-  facet_wrap(~metric, scales = "free_y")
+#plot the results & do preliminary checks
+#for the final interpretations, we really want to be looking at the SES values
 
+#check to see if ipas are different
 FD_results %>% 
-  pivot_longer(!c(site, ipa, region, eelgrass, year), names_to = "metric", values_to = "value") %>% 
+  pivot_longer(!c(site, ipa, region, veg, year), names_to = "metric", values_to = "value") %>% 
   ggplot(aes(x = ipa, y = value)) +
   geom_boxplot() +
   geom_point(show.legend = FALSE) +
   theme_classic() +
   facet_wrap(~metric, scales = "free_y")
 
+FD_results %>% 
+  pivot_longer(!c(site, ipa, region, veg, year), names_to = "metric", values_to = "value") %>% 
+  ggplot(aes(x = ipa, y = value)) +
+  geom_violin() +
+  theme_classic() +
+  facet_wrap(~metric, scales = "free_y")
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, 
+        strata = FD_results$site, data = FD_results, method = "euc")
+#same but pattern isn't as strong as I thought
+
 #check to see if sites are different while controlling for year
+FD_results %>% 
+  pivot_longer(!c(site, ipa, region, veg, year), names_to = "metric", values_to = "value") %>% 
+  ggplot(aes(x = site, y = value, fill = veg)) +
+  geom_boxplot() +
+  geom_point(show.legend = FALSE) +
+  theme_classic() +
+  facet_wrap(~metric, scales = "free_y")
+
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
         strata = FD_results$year, data = FD_results, method = "euc")
 #yes
 
 #check to see if years are the same
+FD_results %>% 
+  pivot_longer(!c(site, ipa, region, veg, year), names_to = "metric", values_to = "value") %>% 
+  group_by(site, year, metric) %>% 
+  summarize(site_mean = mean(value)) %>% 
+  ggplot(aes(x = as.numeric(year), y = site_mean, color = site)) +
+  geom_line() +
+  geom_point(show.legend = FALSE) +
+  theme_classic() +
+  facet_wrap(~metric, scales = "free_y")
+
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ year, 
         strata = FD_results$site, data = FD_results, method = "euc")
 #very slightly different
+
+#check for an effect of eelgrass
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ veg, 
+        strata = FD_results$year, data = FD_results, method = "euc")
+
+adonis2(FD_results$Species_Richness ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+adonis2(FD_results$FRic ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+adonis2(FD_results$FEve ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+adonis2(FD_results$FDiv ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+adonis2(FD_results$FDis ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+#yes, effect for some metrics
 
 #### compute null model ####
 #load tidy fish data frame created in 02_tidy_data
@@ -363,7 +385,7 @@ for (i in 2:n_iter) {
 }
 
 # # calculate FD indices with the FD package
-FD_null_results <- list()
+FD_null_output <- list()
 for (i in 1:n_iter){
   
   null_fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
@@ -379,16 +401,17 @@ for (i in 1:n_iter){
   FD_null_df <- null_FD_values %>%
     as_tibble(rownames = "sample")
   
-  FD_null_results <- rbind(FD_null_results, FD_null_df)
+  FD_null_output <- rbind(FD_null_output, FD_null_df)
 }
 
-colnames(FD_null_results)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+colnames(FD_null_output)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis") 
 
-FD_null_results <- FD_null_results %>%
-  separate_wider_delim(sample, delim = "_", names = c("site", "year"), cols_remove =  TRUE) %>%
+FD_null_results <- FD_null_output %>%
+  separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "year"), cols_remove =  TRUE) %>%
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")),
          year = factor(year, levels = c("2018", "2019", "2021", "2022"))) %>%
-  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site)
+  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site) %>% 
+  replace(is.na(.), 0) 
 
 # save(FD_null_results, file = "data/FD_null_results.Rda")
 
@@ -405,7 +428,8 @@ FD_null_summary <- FD_null_results %>%
 FD_means <- FD_results %>% 
   replace(is.na(.), 0) %>% #replace na with zero for EDG armored where there was only two species caught at one ipa so cant calculate FRic, FEve, FDiv
   group_by(site) %>% 
-  summarize(across(where(is.numeric), mean))
+  summarize(across(where(is.numeric), mean)) %>% 
+  ungroup()
 
 SES_tab <- as.data.frame(FD_means$site)
 SES_tab[,2] <- FD_means$Species_Richness 
@@ -422,29 +446,28 @@ pull_FRic_ntiles <- function(site_ID) {
   #commented out code left here for checking that the proper order has been extracted
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
-    # rownames_to_column(var = "index") %>% 
+    # rownames_to_column(var = "index") %>% #
     arrange(FRic) %>% 
-    # rownames_to_column(var = "arranged") %>% 
-    slice(25) %>%
+    # rownames_to_column(var = "arranged") %>% #
+    slice(600) %>% #5th percentile of 12000 observations
     select(FRic)
-  # select(index, arranged, FRic)
+   # select(index, arranged, FRic) #
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
-    # rownames_to_column(var = "index") %>% 
+    # rownames_to_column(var = "index") %>% #
     arrange(FRic) %>% 
-    # rownames_to_column(var = "arranged") %>% 
-    ungroup() %>% 
-    slice(975) %>%
+    # rownames_to_column(var = "arranged") %>% #
+    slice(11400) %>% #95th percentile of 12000 observations
     select(FRic)
-  # select(index, arranged, FRic)
+    # select(index, arranged, FRic) #
   
   names <- c("site", 
-             # "index_lower", 
+             # "index_lower",
              # "arranged_lower",
              "FRic_lower",
-             # "index_upper", 
-             # "arranged_upper", 
+             # "index_upper",
+             # "arranged_upper",
              "FRic_upper")
   
   df <- data.frame(site_ID)
@@ -453,19 +476,20 @@ pull_FRic_ntiles <- function(site_ID) {
   
   return(df)
 }
+
 pull_FEve_ntiles <- function(site_ID) {
   
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
     arrange(FEve) %>% 
-    slice(25) %>%
+    slice(600) %>%
     select(FEve)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
     arrange(FEve) %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(11400) %>%
     select(FEve)
   
   names <- c("site", "FEve_lower","FEve_upper")
@@ -476,19 +500,20 @@ pull_FEve_ntiles <- function(site_ID) {
   
   return(df)
 }
+
 pull_FDiv_ntiles <- function(site_ID) {
   
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
     arrange(FDiv) %>% 
-    slice(25) %>%
+    slice(600) %>%
     select( FDiv)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
     arrange(FDiv) %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(11400) %>%
     select(FDiv)
   
   names <- c("site", "FDiv_lower","FDiv_upper")
@@ -499,19 +524,20 @@ pull_FDiv_ntiles <- function(site_ID) {
   
   return(df)
 }
+
 pull_FDis_ntiles <- function(site_ID) {
   
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
     arrange(FDis) %>% 
-    slice(25) %>%
+    slice(600) %>%
     select(FDis)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
     arrange(FDis) %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(11400) %>%
     select(FDis)
   
   names <- c("site",  "FDis_lower","FDis_upper")
@@ -556,6 +582,44 @@ p_vals_tbl <- df_for_p_vals %>%
   select(site, metric, significant) %>% 
   pivot_wider(names_from = metric, values_from = significant)
 
+
+#### Taxonomic Diversity ####
+fish_L_long <- fish.list$abund %>% 
+  rownames_to_column("sample") %>% 
+  pivot_longer(!sample, names_to = "species", values_to = "avg_n")
+
+### alpha diversity 
+alpha_div <- fish_L_long %>% 
+  group_by(sample) %>% 
+  summarize(richness = specnumber(avg_n),
+            shannon = diversity(avg_n, index = "shannon"),
+            simpson = diversity(avg_n, index = "simpson"),
+            invsimpson = diversity(avg_n, index = "invsimpson"),
+            n = sum(avg_n)) %>% 
+  ungroup() %>% 
+  separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "year"), cols_remove = FALSE) %>% #######
+  mutate(site = factor(site, levels = SOS_core_sites),
+         veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"))
+
+alpha_div %>% 
+  pivot_longer(cols = c(richness, shannon, invsimpson, simpson), names_to = "metric") %>% 
+  mutate(metric = factor(metric, levels = c("richness", "shannon", "simpson", "invsimpson"))) %>% 
+  ggplot(aes(x = site, y = value)) +
+  geom_boxplot() +
+  geom_point() +
+  facet_wrap(~metric, scales = "free_y") +
+  theme_classic()
+
+#compare by site
+adonis2(alpha_div[,c("richness","shannon", "simpson", "invsimpson")] ~ site, 
+        strata = alpha_div$year, data = alpha_div, method = "euc")
+#significant but not without species richness
+
+#compare by eelgrass presence
+adonis2(alpha_div[,c("richness", "shannon", "simpson", "invsimpson")] ~ veg, 
+        strata = alpha_div$year, data = alpha_div, method = "euc")
+#significant even without species richness
+
 #### Bootstrapping ####
 
 #create abundance matrix
@@ -564,7 +628,7 @@ mat_to_boot <- net_tidy %>%
   group_by(year, month, site, ComName) %>% 
   summarize(spp_sum = sum(species_count)) %>% #sum across samples on each day
   ungroup() %>% 
-  full_join(expand_species_mo.yr) %>% 
+  full_join(expand_species) %>% 
   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
   mutate(spp_sum = replace_na(spp_sum, 0)) %>% 
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
@@ -588,8 +652,8 @@ for (i in seq_along(boot_obj$splits)) {
 format_fish_L <- function(df) {
   
   fish_L <- df %>% 
-    full_join(sampling_events_mo.yr) %>% 
-    mutate(catch_per_set = spp_sum/total_net_sets) %>% 
+    full_join(sampling_events) %>% 
+    mutate(catch_per_set = spp_sum/no_net_sets) %>% 
     group_by(year, site, ComName) %>%  
     summarize(avg_cps = mean(catch_per_set)) %>% #average across months within a year
     ungroup() %>% 

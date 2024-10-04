@@ -6,38 +6,25 @@ library(janitor)
 library(vegan)
 
 #create matrices
-library(tidyverse)
-library(here)
 library(rfishbase)
-library(janitor)
 library(GGally)
 
 #FD analysis
-library(tidyverse)
-library(here)
 library(ggrepel)
 library(FD)
 library(ggordiplots)
 library(PNWColors)
 library(patchwork)
-library(vegan)
 
 #null model
-library(here)
-library(tidyverse)
 library(picante)
-library(FD)
 
 #bootstrapping
-library(here)
-library(tidyverse)
-library(janitor)
 library(rsample)
-library(mFD)
-library(FD)
+# library(mFD)
 library(ggridges)
-library(patchwork)
 
+#set seed
 set.seed(1993)
 
 #### Import Data in 01_import_data####
@@ -449,7 +436,7 @@ pull_FRic_ntiles <- function(site_ID) {
     # rownames_to_column(var = "index") %>% 
     arrange(FRic) %>% 
     # rownames_to_column(var = "arranged") %>% 
-    slice(25) %>%
+    slice(200) %>%
     select(FRic)
   # select(index, arranged, FRic)
   
@@ -459,7 +446,7 @@ pull_FRic_ntiles <- function(site_ID) {
     arrange(FRic) %>% 
     # rownames_to_column(var = "arranged") %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(3800) %>%
     select(FRic)
   # select(index, arranged, FRic)
   
@@ -482,14 +469,14 @@ pull_FEve_ntiles <- function(site_ID) {
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
     arrange(FEve) %>% 
-    slice(25) %>%
+    slice(200) %>%
     select(FEve)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
     arrange(FEve) %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(3800) %>%
     select(FEve)
   
   names <- c("site", "FEve_lower","FEve_upper")
@@ -505,14 +492,14 @@ pull_FDiv_ntiles <- function(site_ID) {
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
     arrange(FDiv) %>% 
-    slice(25) %>%
+    slice(200) %>%
     select( FDiv)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
     arrange(FDiv) %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(3800) %>%
     select(FDiv)
   
   names <- c("site", "FDiv_lower","FDiv_upper")
@@ -528,14 +515,14 @@ pull_FDis_ntiles <- function(site_ID) {
   lower <- FD_null_results %>% 
     filter(site == site_ID) %>% 
     arrange(FDis) %>% 
-    slice(25) %>%
+    slice(200) %>%
     select(FDis)
   
   upper <- FD_null_results %>%
     filter(site == site_ID) %>%
     arrange(FDis) %>% 
     ungroup() %>% 
-    slice(975) %>%
+    slice(3800) %>%
     select(FDis)
   
   names <- c("site",  "FDis_lower","FDis_upper")
@@ -579,6 +566,41 @@ df_for_p_vals <- bind_rows(CI_uppers_lowers,FD_means_long) %>%
 p_vals_tbl <- df_for_p_vals %>% 
   select(site, metric, significant) %>% 
   pivot_wider(names_from = metric, values_from = significant)
+
+#### Taxonomic Diversity ####
+fish_L_long <- fish.list$abund %>% 
+  rownames_to_column("sample") %>% 
+  pivot_longer(!sample, names_to = "species", values_to = "avg_n")
+
+### alpha diversity 
+alpha_div <- fish_L_long %>% 
+  group_by(sample) %>% 
+  summarize(richness = specnumber(avg_n),
+            shannon = diversity(avg_n, index = "shannon"),
+            simpson = diversity(avg_n, index = "simpson"),
+            invsimpson = diversity(avg_n, index = "invsimpson"),
+            n = sum(avg_n)) %>% 
+  ungroup() %>% 
+  separate_wider_delim(sample, delim = "_", names = c("site", "year"), cols_remove = FALSE) %>% 
+  mutate(site = factor(site, levels = SOS_core_sites),
+         veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"))
+
+alpha_div %>% 
+  pivot_longer(cols = c(richness, shannon, invsimpson, simpson), names_to = "metric") %>% 
+  mutate(metric = factor(metric, levels = c("richness", "shannon", "simpson", "invsimpson"))) %>% 
+  ggplot(aes(x = site, y = value)) +
+  geom_boxplot() +
+  geom_point() +
+  facet_wrap(~metric, scales = "free_y") +
+  theme_classic()
+
+#compare by site
+adonis2(alpha_div[,c("richness", "shannon", "simpson", "invsimpson")] ~ site, 
+        strata = alpha_div$year, data = alpha_div, method = "euc")
+
+#compare by eelgrass presence
+adonis2(alpha_div[,c("richness", "shannon", "simpson", "invsimpson")] ~ veg, 
+        strata = alpha_div$year, data = alpha_div, method = "euc")
 
 #### Bootstrapping ####
 
