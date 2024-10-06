@@ -138,4 +138,23 @@ RDA_ordiplot <- gg_ordiplot(ord = sites_scores, #for some reason the scale gets 
                               hull = FALSE,
                               spiders = FALSE)
 
+ord_gg <- ggplot() + theme_bw(16) + 
+  geom_vline(xintercept = 0, lty=3, color="darkgrey") +
+  geom_hline(yintercept = 0, lty=3, color="darkgrey") +
+  theme(panel.grid=element_blank())
 
+ord_gg +
+  geom_point(data=sites_scores,
+             aes(x=RDA1, y=RDA2)) +
+  # labs(x="RDA Axis 1 (19.55%)",
+  #      y="dbRDA Axis 2 (10.61%)") +
+  # geom_path(data = dbRDA_ordiplot$df_ellipse,
+  #           aes(x=x, y=y, group = Group, colour = Group)) +
+  theme(axis.line = element_blank(), 
+        axis.ticks = element_blank(),
+        axis.text =  element_blank()) +
+  # scale_shape_discrete(name="Site") +
+  geom_segment(data=biplot_scores,
+               aes(x = 0, y = 0, xend=dbRDA1, yend=dbRDA2),
+               arrow=arrow(length = unit(0.03, "npc")),
+               lwd=1)
