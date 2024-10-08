@@ -28,7 +28,8 @@ SOS_core_sites <- factor(c("FAM", "TUR", "COR", "SHR", "DOK", "EDG"),
 
 predator_data <- read_csv("data/raw/predator_import.csv", col_names = TRUE) %>% 
   rename(comm_name = "species") %>% 
-  mutate_if(is.numeric, ~replace_na(., 0)) 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  mutate(ipa = ifelse(site == "TUR" & ipa == "Restored", "Natural2", ipa))
 
 ##### look at representative species for unknowns ####
 

@@ -142,7 +142,7 @@ fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   summarize(spp_sum = sum(species_count)) %>% #sum across sampling events 
   ungroup() %>%
   full_join(sampling_events) %>% 
-  mutate(catch_per_set = spp_sum/no_net_sets) %>% 
+  mutate(catch_per_set = spp_sum/no_net_sets) %>% #on a couple of occasions we did not sample at all three depths
   filter(!is.na(ComName)) %>% #these are accounted for in the next step
   full_join(expand_species) %>% #add back in all of the events so we can capture 0s
   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
@@ -621,151 +621,151 @@ adonis2(alpha_div[,c("richness", "shannon", "simpson", "invsimpson")] ~ veg,
 #significant even without species richness
 
 #### Bootstrapping ####
-
-#create abundance matrix
-mat_to_boot <- net_tidy %>% 
-  filter(!is.na(ComName)) %>% 
-  group_by(year, month, site, ComName) %>% 
-  summarize(spp_sum = sum(species_count)) %>% #sum across samples on each day
-  ungroup() %>% 
-  full_join(expand_species) %>% 
-  mutate(site = factor(site, levels = SOS_core_sites)) %>% 
-  mutate(spp_sum = replace_na(spp_sum, 0)) %>% 
-  mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
-  arrange(ComName) 
-
-#bootstrap & keep equal proportions for each month to maintain seasonal variability
-#using the strata argument here instead of the group option, because the group option results in 
-#some assessment datasets with zero rows (meaning that the analysis dataset is the exact same as the raw data)
-#the strata argument works well when categorical variables are unbalanced but you want similar proportions
-boot_obj <- bootstraps(mat_to_boot, strata = month, times = 999)
-
-#store the bootstrap dataframes in a list
-boot_list <- list()
-for (i in seq_along(boot_obj$splits)) {
-  resample <- boot_obj$splits[[i]]
-  boot_list[[i]] <- analysis(resample)
-  
-}
-
-#format the bootstrapped data frame into properly formatted matrices
-format_fish_L <- function(df) {
-  
-  fish_L <- df %>% 
-    full_join(sampling_events) %>% 
-    mutate(catch_per_set = spp_sum/no_net_sets) %>% 
-    group_by(year, site, ComName) %>%  
-    summarize(avg_cps = mean(catch_per_set)) %>% #average across months within a year
-    ungroup() %>% 
-    arrange(year, site, ComName) %>% 
-    pivot_wider(names_from = ComName, values_from = avg_cps, values_fill = 0, names_sort = TRUE) %>% #you have to use names sort or else species missing in the first matrix will move to the end 
-    clean_names() %>% 
-    mutate(sample = paste(site, year, sep = "_"), .after = site) %>% 
-    select(!1:2) %>% 
-    column_to_rownames(var = "sample") 
-  
-  return(fish_L)
-}
-
-boot_L <- lapply(boot_list, format_fish_L)
-# save(boot_L, file = here("data", "boot_L.Rda"))
-
-#remove columns for species that aren't represented in some assemblages
-remove_missing_spp <- function(df) {
-  filtered_df <- df %>% 
-    select_if(colSums(.) != 0)
-  
-  return(filtered_df)
-}
-
-boot_L_filtered <- lapply(boot_L, remove_missing_spp)
-
-#create a list of trait matrices based on species represented in the bootstrapped L matrices
-fish_Q_list <- list() 
-
-for (i in 1:length(boot_L)) {
-  
-  fish_Q_list[[i]] <- fish.list$trait.t %>%
-    rownames_to_column(var = "species") %>%
-    filter(species %in% colnames(boot_L_filtered[[i]])) %>%
-    column_to_rownames(var = "species")
-}
-
-# calculate alpha diversity with the FD package
-gowdist.list <- lapply(fish_Q_list, gowdis, ord = "podani")
-FD_boot_output <- list()
-
-for (i in 1:length(boot_L)){
-  
-  fishFD.boot <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
-                 a = data.matrix(boot_L_filtered[[i]]),
-                 corr = "cailliez", 
-                 m = n_axes_to_keep,
-                 calc.FDiv = TRUE,
-                 print.pco = TRUE)
-  
-  FD_values.boot <- cbind(fishFD.boot$nbsp, fishFD.boot$FRic, fishFD.boot$FEve, fishFD.boot$FDiv, fishFD.boot$FDis) #extract indices
-  
-  FD_boot_results_df <- FD_values.boot %>%
-    as_tibble(rownames = "site")
-  
-  FD_boot_output <- rbind(FD_boot_output, FD_boot_results_df)
-}
-
-colnames(FD_boot_output)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
-
-FD_boot_results <- FD_boot_output %>%
-  separate_wider_delim(site, delim = "_", names = c("site", "year"), cols_remove =  TRUE) %>%
-  replace(is.na(.), 0) %>% 
-  mutate(site = factor(site, levels = SOS_core_sites), 
-         region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), 
-         veg = ifelse (site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = year) 
-
-# save(FD_boot_results, file = "data/FD_boot_results.Rda")
-
-index_names <- c("Species Richness", "F. Richness", "F. Eveness", "F. Divergence", "F. Dispersion")
-
-plot_site_index <- function (index){
-  ggplot(data = FD_boot_results, aes(x = .data[[index]], 
-                                y = factor(site, levels = rev(SOS_core_sites)), 
-                                fill = region, color = region)) +
-    geom_density_ridges(alpha = 0.9) + 
-    theme_classic() +
-    theme(axis.title.y = element_blank(), 
-          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-}
-
-index_plots <- lapply(names(FD_boot_results[6:9]), plot_site_index)
-
-for (i in 1:length(index_plots)) {
-  index_plots[[i]] <- index_plots[[i]] + xlab(index_names[i+1])
-}
-
-#FEve and FDiv are scaled between 0,1
-index_plots$"F. Evenness" <- index_plots$"F. Evenness" + xlim(0,1)
-index_plots$"F. Divergence" <- index_plots$"F. Divergence" + xlim(0,1)
-
-index_plots[[5]] <- ggplot(data = FD_boot_results, 
-                           aes(x = Species_Richness, 
-                               y = factor(site, levels = rev(SOS_core_sites)), 
-                               color = region)) +
-  geom_density_ridges2(aes(fill = region), 
-                       stat = "binline", 
-                       binwidth = 1, 
-                       scale = 0.95, 
-                       alpha = 0.9) +
-  theme_classic() +
-  xlab("Species Richness") +
-  theme(axis.title.y = element_blank(), 
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-
-index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
-  plot_layout(ncol = 3, guides = "collect")
-
-# ggsave("docs/figures/fish_FDbootpatch.png")
-
-FD_boot_results %>% 
-  filter(site == "COR") %>% 
-  ggplot(aes(x = Species_Richness)) + 
-  geom_histogram()
+# 
+# #create abundance matrix
+# mat_to_boot <- net_tidy %>% 
+#   filter(!is.na(ComName)) %>% 
+#   group_by(year, month, site, ComName) %>% 
+#   summarize(spp_sum = sum(species_count)) %>% #sum across samples on each day
+#   ungroup() %>% 
+#   full_join(expand_species) %>% 
+#   mutate(site = factor(site, levels = SOS_core_sites)) %>% 
+#   mutate(spp_sum = replace_na(spp_sum, 0)) %>% 
+#   mutate(ComName = replace(ComName, ComName == "Pacific Sandfish", "Pacific sandfish")) %>% #if it's capitolized it gets confused about the proper order
+#   arrange(ComName) 
+# 
+# #bootstrap & keep equal proportions for each month to maintain seasonal variability
+# #using the strata argument here instead of the group option, because the group option results in 
+# #some assessment datasets with zero rows (meaning that the analysis dataset is the exact same as the raw data)
+# #the strata argument works well when categorical variables are unbalanced but you want similar proportions
+# boot_obj <- bootstraps(mat_to_boot, strata = month, times = 999)
+# 
+# #store the bootstrap dataframes in a list
+# boot_list <- list()
+# for (i in seq_along(boot_obj$splits)) {
+#   resample <- boot_obj$splits[[i]]
+#   boot_list[[i]] <- analysis(resample)
+#   
+# }
+# 
+# #format the bootstrapped data frame into properly formatted matrices
+# format_fish_L <- function(df) {
+#   
+#   fish_L <- df %>% 
+#     full_join(sampling_events) %>% 
+#     mutate(catch_per_set = spp_sum/no_net_sets) %>% 
+#     group_by(year, site, ComName) %>%  
+#     summarize(avg_cps = mean(catch_per_set)) %>% #average across months within a year
+#     ungroup() %>% 
+#     arrange(year, site, ComName) %>% 
+#     pivot_wider(names_from = ComName, values_from = avg_cps, values_fill = 0, names_sort = TRUE) %>% #you have to use names sort or else species missing in the first matrix will move to the end 
+#     clean_names() %>% 
+#     mutate(sample = paste(site, year, sep = "_"), .after = site) %>% 
+#     select(!1:2) %>% 
+#     column_to_rownames(var = "sample") 
+#   
+#   return(fish_L)
+# }
+# 
+# boot_L <- lapply(boot_list, format_fish_L)
+# # save(boot_L, file = here("data", "boot_L.Rda"))
+# 
+# #remove columns for species that aren't represented in some assemblages
+# remove_missing_spp <- function(df) {
+#   filtered_df <- df %>% 
+#     select_if(colSums(.) != 0)
+#   
+#   return(filtered_df)
+# }
+# 
+# boot_L_filtered <- lapply(boot_L, remove_missing_spp)
+# 
+# #create a list of trait matrices based on species represented in the bootstrapped L matrices
+# fish_Q_list <- list() 
+# 
+# for (i in 1:length(boot_L)) {
+#   
+#   fish_Q_list[[i]] <- fish.list$trait.t %>%
+#     rownames_to_column(var = "species") %>%
+#     filter(species %in% colnames(boot_L_filtered[[i]])) %>%
+#     column_to_rownames(var = "species")
+# }
+# 
+# # calculate alpha diversity with the FD package
+# gowdist.list <- lapply(fish_Q_list, gowdis, ord = "podani")
+# FD_boot_output <- list()
+# 
+# for (i in 1:length(boot_L)){
+#   
+#   fishFD.boot <- dbFD(x = gowdist.list[[i]], #must be a distance object or df where character columns are factors
+#                  a = data.matrix(boot_L_filtered[[i]]),
+#                  corr = "cailliez", 
+#                  m = n_axes_to_keep,
+#                  calc.FDiv = TRUE,
+#                  print.pco = TRUE)
+#   
+#   FD_values.boot <- cbind(fishFD.boot$nbsp, fishFD.boot$FRic, fishFD.boot$FEve, fishFD.boot$FDiv, fishFD.boot$FDis) #extract indices
+#   
+#   FD_boot_results_df <- FD_values.boot %>%
+#     as_tibble(rownames = "site")
+#   
+#   FD_boot_output <- rbind(FD_boot_output, FD_boot_results_df)
+# }
+# 
+# colnames(FD_boot_output)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+# 
+# FD_boot_results <- FD_boot_output %>%
+#   separate_wider_delim(site, delim = "_", names = c("site", "year"), cols_remove =  TRUE) %>%
+#   replace(is.na(.), 0) %>% 
+#   mutate(site = factor(site, levels = SOS_core_sites), 
+#          region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), 
+#          veg = ifelse (site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = year) 
+# 
+# # save(FD_boot_results, file = "data/FD_boot_results.Rda")
+# 
+# index_names <- c("Species Richness", "F. Richness", "F. Eveness", "F. Divergence", "F. Dispersion")
+# 
+# plot_site_index <- function (index){
+#   ggplot(data = FD_boot_results, aes(x = .data[[index]], 
+#                                 y = factor(site, levels = rev(SOS_core_sites)), 
+#                                 fill = region, color = region)) +
+#     geom_density_ridges(alpha = 0.9) + 
+#     theme_classic() +
+#     theme(axis.title.y = element_blank(), 
+#           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+# }
+# 
+# index_plots <- lapply(names(FD_boot_results[6:9]), plot_site_index)
+# 
+# for (i in 1:length(index_plots)) {
+#   index_plots[[i]] <- index_plots[[i]] + xlab(index_names[i+1])
+# }
+# 
+# #FEve and FDiv are scaled between 0,1
+# index_plots$"F. Evenness" <- index_plots$"F. Evenness" + xlim(0,1)
+# index_plots$"F. Divergence" <- index_plots$"F. Divergence" + xlim(0,1)
+# 
+# index_plots[[5]] <- ggplot(data = FD_boot_results, 
+#                            aes(x = Species_Richness, 
+#                                y = factor(site, levels = rev(SOS_core_sites)), 
+#                                color = region)) +
+#   geom_density_ridges2(aes(fill = region), 
+#                        stat = "binline", 
+#                        binwidth = 1, 
+#                        scale = 0.95, 
+#                        alpha = 0.9) +
+#   theme_classic() +
+#   xlab("Species Richness") +
+#   theme(axis.title.y = element_blank(), 
+#         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+# 
+# index_plots[[5]]  + index_plots[[1]]  + guide_area() + index_plots[[2]] + index_plots[[3]] + index_plots[[4]] + 
+#   plot_layout(ncol = 3, guides = "collect")
+# 
+# # ggsave("docs/figures/fish_FDbootpatch.png")
+# 
+# FD_boot_results %>% 
+#   filter(site == "COR") %>% 
+#   ggplot(aes(x = Species_Richness)) + 
+#   geom_histogram()
 #why does this look weird?
