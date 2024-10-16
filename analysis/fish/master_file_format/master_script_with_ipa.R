@@ -113,6 +113,18 @@ net_tidy <- net_tidy %>%
 
 # save(net_tidy, file = here("data", "net_tidy.Rdata"))
 
+#test whether we should exclude shoulder months
+# net_tidy %>% 
+#   select(year, month, site, ipa, ComName, species_count) %>% 
+#   mutate(species_count = ifelse(species_count > 0, 1, 0)) %>% 
+#   group_by(year, month, site, ipa) %>% 
+#   summarize(sp_rich = sum(species_count)) %>% 
+#   ggplot(aes(x = month, y = sp_rich, color = site, shape = ipa)) +
+#   geom_point() + 
+#   theme_bw() +
+#   facet_wrap(~year)
+#there are generally less distinct species captured in april and september but not so much that we need to exclude them
+
 #### Create Matrices ####
 #load tidy fish data 
 # load(here("data", "net_tidy.Rdata")) 
@@ -156,6 +168,14 @@ fish_L <- net_tidy %>% #L is referring to the RLQ analysis
   mutate(sample = paste(site, ipa, year, sep = "_"), .after = ipa) %>% 
   select(!1:3) %>% 
   column_to_rownames(var = "sample")
+
+# #check the abundance matrix
+# less_than_3_spp <- fish_L_full %>% 
+#   decostand(method = "pa") %>% 
+#   filter(rowSums(.) < 3)
+# 
+# fish_L <- fish_L_full %>% 
+#   filter(!rownames(.) %in% c("TUR_Natural_2018", "EDG_Armored_2019", "EDG_Armored_2021"))
 
 ## create the trait matrix 
 
@@ -296,7 +316,7 @@ colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
 
 FD_results <- FD_values %>% 
   as_tibble(rownames = "sample") %>% 
-  replace(is.na(.),0) %>% #some rows don't have enough species to calculate indices
+  replace(is.na(.),0) %>% #keep if you don't remove rows with <3 functionally distinct species
   separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "year"), cols_remove = TRUE) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")),
          year = factor(year, levels = c("2018", "2019", "2021", "2022")),
@@ -325,9 +345,26 @@ FD_results %>%
   theme_classic() +
   facet_wrap(~metric, scales = "free_y")
 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa, 
-        strata = FD_results$site, data = FD_results, method = "euc")
-#same but pattern isn't as strong as I thought
+#specify the permutations
+CTRL <- how(within = Within(type = "free"),
+            plots = Plots(type = "none"),
+            blocks = FD_results$site,
+            nperm = 9999,
+            observed = TRUE)
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + ipa + year, 
+        data = FD_results, method = "euc", permutations = CTRL)
+
+# test correct restriction of permutations 
+
+adonis2(FD_results$FRic ~ site + ipa + year,
+        data = FD_results,
+        method = "euclidean",
+        permutations = CTRL)
+
+summary(aov(FRic ~ Error(site) + ipa + year,
+            data = FD_results))
+#residual sum of squares and f statistic are the same between the two methods
 
 #check to see if sites are different while controlling for year
 FD_results %>% 
@@ -338,9 +375,26 @@ FD_results %>%
   theme_classic() +
   facet_wrap(~metric, scales = "free_y")
 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site, 
-        strata = FD_results$year, data = FD_results, method = "euc")
-#yes
+#set the permutations 
+CTRL2 <- how(within = Within(type = "none"),
+             plots = Plots(strata = FD_results$site, type = "free"),
+             nperm = 999,
+             observed = TRUE)
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + year, 
+        data = FD_results, method = "euc", permutations = CTRL2)
+
+###########
+
+adonis2(FD_results$Species_Richness ~ site + year, 
+        data = FD_results, method = "euc", permutations = CTRL2)
+
+summary(aov(Species_Richness ~ site + year, data = FD_results))
+
+#same F value but different significance level between the approaches??
+#https://uw.pressbooks.pub/appliedmultivariatestatistics/chapter/restricting-permutations/
+
+###########
 
 #check to see if years are the same
 FD_results %>% 
@@ -355,7 +409,7 @@ FD_results %>%
 
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ year, 
         strata = FD_results$site, data = FD_results, method = "euc")
-#very slightly different
+#slightly different
 
 #check for an effect of eelgrass
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ veg, 
