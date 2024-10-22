@@ -15,7 +15,7 @@ library(googledrive)
 # write_csv(wq_import, here("data","wq_import.csv")) 
 
 #read csv
-wq_import <- here::here("data","wq_import.csv") %>% read_csv()
+wq_import <- here::here("data", "raw","wq_import.csv") %>% read_csv()
 
 wq_df <- wq_import %>% 
   mutate(ipa = replace(ipa, site == "TUR" & ipa == "Restored", "Natural")) %>%  #no restoration at Turn Island
@@ -91,11 +91,11 @@ map(wq_metrics, plot_time_series, jubilee = T)
 env.data <- wq_df %>% 
   mutate(month = str_pad(month, 2, pad = "0")) %>% 
   mutate(month = if_else(site == "MA", "06", month)) %>% # we did a July 1st survey at Maylor that we want to count as a June survey
-  mutate(site_month = paste(site, month, sep = "_")) %>% 
-  group_by(site_month, metric) %>% 
+  mutate(sample = paste(site, month, ipa, sep = "_")) %>% 
+  group_by(sample, ipa, metric) %>% 
   summarize(mean = mean(value, na.rm = TRUE)) %>% 
   pivot_wider(names_from = metric, values_from = mean) %>% 
-  column_to_rownames(var = "site_month")
+  column_to_rownames(var = "sample")
 
 save(env.data, file = here("data", "env.data.Rdata"))
 
