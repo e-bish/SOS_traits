@@ -11,7 +11,7 @@ library(GGally)
 
 #FD analysis
 library(ggrepel)
-library(FD)
+library(mFD)
 library(ggordiplots)
 library(PNWColors)
 library(patchwork)
@@ -300,29 +300,86 @@ fish.list <- list("trait" = fish_Q,
 #### FD Analysis ####
 # load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-#could try checking this with the mFD package, but the lit supports retaining 4
-n_axes_to_keep <- 4
+traits.cat <- data.frame(trait_name = colnames(fish.list$trait.t),
+                         trait_type = c("Q", "N", "N", "N", "N"))
 
-fishFD <- dbFD(x = fish.list$trait.t, 
-               a = fish.list$abund,
-               ord = "podani",
-               corr = "cailliez", 
-               m = n_axes_to_keep,
-               calc.FDiv = TRUE, 
-               print.pco = FALSE)
+#Species trait summary
+traits_summary <- sp.tr.summary(tr_cat = traits.cat, 
+                                sp_tr = fish.list$trait.t, 
+                                stop_if_NA = T)
+traits_summary
 
-FD_values <- cbind(fishFD$nbsp, fishFD$FRic, fishFD$FEve, fishFD$FDiv, fishFD$FDis) #extract indices
-colnames(FD_values) <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis")
+#create the trait space
+dist_mat <- funct.dist(sp_tr = fish.list$trait.t, 
+                       tr_cat = traits.cat,
+                       metric = "gower",
+                       weight_type = "equal",
+                       stop_if_NA = TRUE)
 
-FD_results <- FD_values %>% 
+# dist_mat2 <- gowdis(fish.list$trait.t, ord = "podani") #same as dist_mat
+# dist_mat3 <- cailliez(dist_mat2)
+
+#examine the quality of the potential functional spaces 
+space_quality <- quality.fspaces(sp_dist = dist_mat,
+                                 maxdim_pcoa = 10,
+                                 deviation_weighting = "absolute",
+                                 fdist_scaling = FALSE,
+                                 fdendro = "ward.D2")
+
+round(space_quality$"quality_fspaces",3) #lowest value is the best (<.1 is good), meaning species pairs are accurately represented
+#aka the distances in euclidean space are accurately reflecting the gowers distances
+
+#plot the trait space with the first 4 axes
+plot_object <- space_quality$"details_fspaces"$"sp_pc_coord"
+#4 to 5 axes is best
+
+funct.space.plot(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
+                 faxes = c("PC1", "PC2", "PC3", "PC4"))
+
+#test for correlation between functional axes and traits
+trait_axes <- traits.faxes.cor(
+  sp_tr = fish.list$trait, 
+  sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")], 
+  plot = TRUE)
+
+# Print traits with significant effect:
+trait_axes$"tr_faxes_stat"[which(trait_axes$"tr_faxes_stat"$"p.value" < 0.05), ]
+
+trait_axes$"tr_faxes_plot"
+
+#can only include assemblages with more species than axes
+low_n_samples <- fish.list$abund %>%
+  decostand(method = "pa") %>%
+  mutate(n_spp = rowSums(.)) %>%
+  filter(n_spp < 5) %>%
+  rownames()
+
+fish_L_filtered <- fish.list$abund %>%
+  filter(!rownames(.) %in% low_n_samples) %>%
+  select_if(~ any(. != 0)) #remove species that have all zeros after filtering out samples with low catch
+
+
+alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
+                                   asb_sp_w = data.matrix(fish_L_filtered),
+                                   ind_vect = c("fdis", "feve", "fric", "fdiv"),
+                                   scaling = TRUE,
+                                   check_input = TRUE,
+                                   details_returned = FALSE)
+#the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
+
+FD_values <- alpha_indices$"functional_diversity_indices"
+
+colnames(FD_values)[1:5] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
+
+FD_results <- FD_values %>%
+  select(!6:9) %>% 
   as_tibble(rownames = "sample") %>% 
-  replace(is.na(.),0) %>% #keep if you don't remove rows with <3 functionally distinct species
   separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "year"), cols_remove = TRUE) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")),
          year = factor(year, levels = c("2018", "2019", "2021", "2022")),
          region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), 
          veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = site,
-         ipa = ifelse(ipa == "Natural2", "Natural", ipa)) #combine the two natural sites at TUR
+         ipa = ifelse(ipa == "Natural2", "Natural", ipa)) #combine the two natural sites at TUR 
 
 # save(FD_results, file = "data/FD_results.Rdata")  
 
@@ -346,25 +403,27 @@ FD_results %>%
   facet_wrap(~metric, scales = "free_y")
 
 #specify the permutations
+#use sites as blocks, this way we permute ipas within sites but not between them in order to isolate the effect of ipa vs site effects
+
 CTRL <- how(within = Within(type = "free"),
             plots = Plots(type = "none"),
             blocks = FD_results$site,
             nperm = 9999,
             observed = TRUE)
 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + ipa + year, 
+#we have a crossed sample design so this model formula allows us to test for differences between levels
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ ipa + site + year + site:ipa + site:year, 
         data = FD_results, method = "euc", permutations = CTRL)
 
-# test correct restriction of permutations 
-
-adonis2(FD_results$FRic ~ site + ipa + year,
-        data = FD_results,
-        method = "euclidean",
-        permutations = CTRL)
-
-summary(aov(FRic ~ Error(site) + ipa + year,
-            data = FD_results))
-#residual sum of squares and f statistic are the same between the two methods
+# # test correct restriction of permutations 
+# adonis2(FD_results$FRic ~ ipa + site + year + site:ipa + site:year,
+#         data = FD_results,
+#         method = "euclidean",
+#         permutations = CTRL)
+# 
+# summary(aov(FRic ~ Error(site) + ipa + year,
+#             data = FD_results))
+# #residual sum of squares and f statistic are the same between the two methods
 
 #check to see if sites are different while controlling for year
 FD_results %>% 
@@ -375,13 +434,15 @@ FD_results %>%
   theme_classic() +
   facet_wrap(~metric, scales = "free_y")
 
+table(FD_results$site)
+
 #set the permutations 
-CTRL2 <- how(within = Within(type = "none"),
-             plots = Plots(strata = FD_results$site, type = "free"), #this is the same as above
+CTRL2 <- how(within = Within(type = "free"),
+             plots = Plots(strata = FD_results$site, type = "none"), #this is the same as specifying site as a block (currently the same as above)
              nperm = 999,
              observed = TRUE)
 
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + year, 
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + year + site:year, 
         data = FD_results, method = "euc", permutations = CTRL2)
 
 ###########
