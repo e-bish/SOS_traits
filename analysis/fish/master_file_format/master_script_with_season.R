@@ -482,7 +482,7 @@ data = FD_results, distance = "euclidean")
 
 plot(Cap.mod)
 
-#### test with mFD ####
+#### run with mFD ####
 library(mFD)
 traits.cat <- data.frame(trait_name = colnames(fish.list$trait.t),
                          trait_type = c("Q", "N", "N", "N", "N"))
@@ -671,7 +671,15 @@ FD_null_results <- FD_null_output %>%
          veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = site,
          ipa = ifelse(ipa == "Natural2", "Natural", ipa)) #combine the two natural sites at TUR 
 
+hist(FD_null_results$FRic) #yikes
+hist(log(FD_null_results$FRic)) #yikes
 
+hist(FD_null_results$FEve)
+hist(FD_null_results$FDiv)
+hist(FD_null_results$FDis)
+
+##### Need to check these distributions before feeling very confident!!!
+#https://akjournals.com/view/journals/168/19/1/article-p77.xml
 
 # save(FD_null_results, file = "data/FD_null_results.Rda")
 
@@ -706,31 +714,19 @@ pull_FRic_ntiles <- function(site_ID) {
  
    site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    sample_n(1000)
-  
-  #commented out code left here for checking that the proper order has been extracted
-  lower <- site_subset %>% 
-    # rownames_to_column(var = "index") %>% #
-    arrange(FRic) %>%
-    # rownames_to_column(var = "arranged") %>% #
-    slice(50) %>% #5th percentile of 1000 observations
+    arrange(FRic)
+   
+   lower <- site_subset %>% 
+    slice(.05*nrow(site_subset)) %>% #5th percentile of 1000 observations
     select(FRic)
-   # select(index, arranged, FRic) #
 
   upper <- site_subset %>% 
-    # rownames_to_column(var = "index") %>% #
-    arrange(FRic) %>%
-    # rownames_to_column(var = "arranged") %>% #
-    slice(950) %>% #95th percentile of 6000 observations
+    slice(0.95*nrow(site_subset)) %>% #95th percentile of 6000 observations
     select(FRic)
     # select(index, arranged, FRic) #
 
   names <- c("site",
-             # "index_lower",
-             # "arranged_lower",
              "FRic_lower",
-             # "index_upper",
-             # "arranged_upper",
              "FRic_upper")
 
   df <- data.frame(site_ID)
@@ -744,18 +740,16 @@ pull_FEve_ntiles <- function(site_ID) {
   
   site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    sample_n(1000)
-
+    arrange(FEve)
+  
   lower <- site_subset %>% 
-    arrange(FEve) %>%
-    slice(50) %>%
+    slice(.05*nrow(site_subset)) %>% #5th percentile of 1000 observations
     select(FEve)
-
+  
   upper <- site_subset %>% 
-    arrange(FEve) %>%
-    ungroup() %>%
-    slice(950) %>%
+    slice(0.95*nrow(site_subset)) %>% #95th percentile of 6000 observations
     select(FEve)
+  # select(index, arranged, FRic) #
 
   names <- c("site", "FEve_lower","FEve_upper")
 
@@ -770,18 +764,16 @@ pull_FDiv_ntiles <- function(site_ID) {
   
   site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    sample_n(1000)
-
+    arrange(FDiv)
+  
   lower <- site_subset %>% 
-    arrange(FDiv) %>%
-    slice(50) %>%
-    select( FDiv)
-
-  upper <- site_subset %>% 
-    arrange(FDiv) %>%
-    ungroup() %>%
-    slice(950) %>%
+    slice(.05*nrow(site_subset)) %>% #5th percentile of 1000 observations
     select(FDiv)
+  
+  upper <- site_subset %>% 
+    slice(0.95*nrow(site_subset)) %>% #95th percentile of 6000 observations
+    select(FDiv)
+  # select(index, arranged, FRic) #
 
   names <- c("site", "FDiv_lower","FDiv_upper")
 
@@ -795,18 +787,16 @@ pull_FDiv_ntiles <- function(site_ID) {
 pull_FDis_ntiles <- function(site_ID) {
   site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    sample_n(1000)
+    arrange(FDis)
   
   lower <- site_subset %>% 
-    arrange(FDis) %>%
-    slice(50) %>%
+    slice(.05*nrow(site_subset)) %>% #5th percentile of 1000 observations
     select(FDis)
-
+  
   upper <- site_subset %>% 
-    arrange(FDis) %>%
-    ungroup() %>%
-    slice(950) %>%
+    slice(0.95*nrow(site_subset)) %>% #95th percentile of 6000 observations
     select(FDis)
+  # select(index, arranged, FRic) #
 
   names <- c("site",  "FDis_lower","FDis_upper")
 
@@ -818,7 +808,7 @@ pull_FDis_ntiles <- function(site_ID) {
 }
 
 #extract the 95% confidence intervals for each metric
-FRic_CI <- lapply(SOS_core_sites, pull_FRic_ntiles) #wont work as-is because sampling isn't equal between sites (EDG and FAM obs was removed)
+FRic_CI <- lapply(SOS_core_sites, pull_FRic_ntiles) 
 FEve_CI <- lapply(SOS_core_sites, pull_FEve_ntiles)
 FDiv_CI <- lapply(SOS_core_sites, pull_FDiv_ntiles)
 FDis_CI <- lapply(SOS_core_sites, pull_FDis_ntiles)
