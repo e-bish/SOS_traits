@@ -20,9 +20,9 @@ library(patchwork)
 library(picante)
 
 #bootstrapping
-library(rsample)
-# library(mFD)
-library(ggridges)
+# library(rsample)
+# # library(mFD)
+# library(ggridges)
 
 #set seed
 set.seed(1993)
@@ -126,6 +126,38 @@ net_tidy <- net_tidy %>%
 #   facet_wrap(~year)
 #there are generally less distinct species captured in april and september but not so much that we need to exclude them
 
+# ##is there obvious seasonality in our catch?
+# #in total catch abundance?
+# net_tidy %>% 
+#   filter(!is.na(ComName)) %>% 
+#   filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
+#   ggplot(aes(x = month, y = species_count, fill = year)) +
+#   geom_bar(stat = "identity") +
+#   labs(x = "Month", y = "Abundance", fill = "Year") + 
+#   theme_classic()
+# #doesn't seem to be a clear break between "early" and "late" 
+# 
+# #in species richness?
+# n_spp_by_month <- net_tidy %>% 
+#   filter(!is.na(ComName)) %>% 
+#   filter(site %in% SOS_core_sites) %>% #remove jubilee sites to properly compare June
+#   group_by(year, month) %>% 
+#   summarize(n_spp = n_distinct(ComName)) 
+# 
+# n_spp_by_month %>% 
+#   ggplot(aes(x = month, y = n_spp, group = year, color = year)) +
+#   geom_line() +
+#   geom_point() + 
+#   theme_classic() + 
+#   labs(x = "Month", y = "Species Richness", color = "Year")
+# #again, doesn't seem to be a clear break between "early" and "late" 
+# 
+# n_spp_by_month <- n_spp_by_month %>% 
+#   mutate(season = ifelse(month %in% c("May", "Jun", "Jul"), "peak", "shoulder"))
+# 
+# t.test(n_spp ~ season, data= n_spp_by_month)
+# #but there is a difference between peak and shoulder months
+
 #### Create Matrices ####
 #load tidy fish data 
 # load(here("data", "net_tidy.Rdata")) 
@@ -143,7 +175,7 @@ sampling_events <- net_tidy %>%
   summarize(no_net_sets = n()) %>% 
   ungroup()
 
-#expand species by sampling event
+#expand species by sampling event (we're not including day here so we don't have to worry about removing the events we removed above)
 expand_species <- net_tidy %>%
   expand(nesting(year, month, season, site, ipa), ComName) %>%
   filter(!is.na(ComName))
@@ -152,7 +184,7 @@ expand_species <- net_tidy %>%
 fish_L_full <- net_tidy %>% #L is referring to the RLQ analysis
   filter(!is.na(ComName)) %>% 
   group_by(year, month, season, site, ipa, ComName) %>% 
-  summarize(spp_sum = sum(species_count)) %>% #sum across sampling events 
+  summarize(spp_sum = sum(species_count)) %>% #sum across depth stations within each shoreline type
   ungroup() %>%
   full_join(sampling_events) %>% 
   mutate(catch_per_set = spp_sum/no_net_sets) %>% #on a couple of occasions we did not sample at all three depths
@@ -170,11 +202,12 @@ fish_L_full <- net_tidy %>% #L is referring to the RLQ analysis
   select(!1:3) %>% 
   column_to_rownames(var = "sample")
 
-# #check the abundance matrix
+#check the abundance matrix for samples with few species
 fish_L_full %>%
   decostand(method = "pa") %>%
   filter(rowSums(.) < 4)
 
+#remove samples that have less than 4 (this number depends on the number of axes we want to retain for the trait space)
 fish_L <- fish_L_full %>%
   filter(!rownames(.) %in% c("DOK_Natural_shoulder", "EDG_Armored_shoulder"))
 
@@ -288,7 +321,16 @@ rownames(fish_Q) <- colnames(fish_L)
 confirm_proper_names <- fish_Q %>% 
   mutate(Species = fish_traits$ComName, .before = mean_length_mm)
 
-#log transform continuous variables
+# #check the coefficient of variation
+CV <- function(x) { 100 * sd(x) / mean(x) }
+CV(fish_Q$mean_length_mm)
+# # <50 is small, so we don't necessarily need to transform the length data
+
+#log transform the length data
+fish_Q.t <- fish_Q %>% mutate_if(is.numeric, log)
+CV(fish_Q.t$mean_length_mm)
+
+#create a matrix to log transform continuous variables
 fish_Q.t <- fish_Q %>% mutate_if(is.numeric, log)
 
 #save final matrices
@@ -298,13 +340,13 @@ fish.list <- list("trait" = fish_Q,
 
 # save(fish.list, file = here("data", "fish.list.Rdata"))
 
-#### FD Analysis ####
+#### FD Analysis using the FD package####
 # load(here("data", "fish.list.Rdata")) #object created in 03_create_matrices
 
-#could try checking this with the mFD package, but the lit supports retaining 4
-n_axes_to_keep <- 4
+#keep at least 4, based on maire et al. 2015
+n_axes_to_keep <- 5
 
-fishFD <- dbFD(x = fish.list$trait.t, 
+fishFD <- dbFD(x = fish.list$trait, 
                a = fish.list$abund,
                ord = "podani",
                corr = "cailliez", 
@@ -350,7 +392,7 @@ FD_results %>%
 CTRL <- how(within = Within(type = "free"),
             plots = Plots(type = "none"),
             blocks = FD_results$site,
-            nperm = 9999,
+            nperm = 999,
             observed = TRUE)
 
 adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + ipa + season, 
@@ -358,16 +400,27 @@ adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site
 
 # test correct restriction of permutations 
 
-# adonis2(FD_results$FRic ~ site + ipa + year,
-#         data = FD_results,
-#         method = "euclidean",
-#         permutations = CTRL)
-# 
-# summary(aov(FRic ~ Error(site) + ipa + year,
-#             data = FD_results))
-# #residual sum of squares and f statistic are the same between the two methods
+adonis2(FD_results$FRic ~ site + ipa + season,
+        data = FD_results,
+        method = "euclidean",
+        permutations = CTRL)
+
+summary(aov(FRic ~ Error(site) + ipa + season,
+            data = FD_results))
+#residual sum of squares and f statistic are the same between the two methods
 
 #check to see if sites are different 
+FD_results %>% 
+  pivot_longer(!c(site, ipa, season, region, veg), names_to = "metric", values_to = "value") %>% 
+  ggplot(aes(x = site, y = value, fill = season)) +
+  geom_boxplot() +
+  geom_point(show.legend = FALSE) +
+  theme_classic() +
+  facet_wrap(~metric, scales = "free_y")
+
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + season + site*season,
+        data = FD_results, method = "euc", permutations = CTRL)
+
 FD_results %>% 
   pivot_longer(!c(site, ipa, season, region, veg), names_to = "metric", values_to = "value") %>% 
   ggplot(aes(x = site, y = value, fill = veg)) +
@@ -376,66 +429,50 @@ FD_results %>%
   theme_classic() +
   facet_wrap(~metric, scales = "free_y")
 
-# #set the permutations 
-# CTRL2 <- how(within = Within(type = "none"),
-#              plots = Plots(strata = FD_results$site, type = "free"), #this is the same as above
-#              nperm = 999,
-#              observed = TRUE)
-# 
-# adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + year, 
-#         data = FD_results, method = "euc", permutations = CTRL2)
-# 
-# ###########
-# 
-# adonis2(FD_results$Species_Richness ~ site + year, 
-#         data = FD_results, method = "euc", permutations = CTRL2)
-# 
-# summary(aov(Species_Richness ~ site + year, data = FD_results))
-# 
-# #same F value but different significance level between the approaches??
-# #https://uw.pressbooks.pub/appliedmultivariatestatistics/chapter/restricting-permutations/
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ veg + season + veg*season,
+        data = FD_results, method = "euc", permutations = CTRL)
 
 ###########
 
-#check to see if seasons are the same 
-FD_results %>% 
-  pivot_longer(!c(site, ipa, season, region, veg), names_to = "metric", values_to = "value") %>% 
-  group_by(site, season, ipa, metric) %>% 
-  ggplot(aes(x = site, y = value, fill = season)) +
-  geom_boxplot() +
-  geom_point(show.legend = FALSE) +
-  theme_classic() +
-  facet_wrap(~metric, scales = "free_y")
-
-## Except you can't really have a boxplot from only three points
-
-
-#### NMDS
-nmds <- metaMDS(comm = FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")], 
-                distance = "euc")
-
-nmds$stress
-
-nmds.points <- as.data.frame(nmds$points)
-
-ggplot(data = nmds.points, aes(x = MDS1, y = MDS2, 
-                               color = FD_results$site,
-                               shape = FD_results$ipa)) +
-  theme_bw() +
-  geom_point()
-#looks like there are some differences between sites
-
-#### 
-
-#check for an effect of eelgrass
-adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ veg, data = FD_results, method = "euc")
-
-adonis2(FD_results$Species_Richness ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
-adonis2(FD_results$FRic ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
-adonis2(FD_results$FEve ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
-adonis2(FD_results$FDiv ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
-adonis2(FD_results$FDis ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
-#yes, effect for some metrics
+# #check to see if seasons are the same 
+# FD_results %>% 
+#   pivot_longer(!c(site, ipa, season, region, veg), names_to = "metric", values_to = "value") %>% 
+#   group_by(site, season, ipa, metric) %>% 
+#   ggplot(aes(x = site, y = value, fill = season)) +
+#   geom_boxplot() +
+#   geom_point(show.legend = FALSE) +
+#   theme_classic() +
+#   facet_wrap(~metric, scales = "free_y")
+# 
+# ## Except you can't really have a boxplot from only three points
+# 
+# 
+# #### NMDS
+# nmds <- metaMDS(comm = FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")], 
+#                 distance = "euc")
+# 
+# nmds$stress
+# 
+# nmds.points <- as.data.frame(nmds$points)
+# 
+# ggplot(data = nmds.points, aes(x = MDS1, y = MDS2, 
+#                                color = FD_results$site,
+#                                shape = FD_results$ipa)) +
+#   theme_bw() +
+#   geom_point()
+# #looks like there are some differences between sites
+# 
+# #### 
+# 
+# #check for an effect of eelgrass
+# adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ veg, data = FD_results, method = "euc")
+# 
+# adonis2(FD_results$Species_Richness ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+# adonis2(FD_results$FRic ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+# adonis2(FD_results$FEve ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+# adonis2(FD_results$FDiv ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+# adonis2(FD_results$FDis ~ veg, strata = FD_results$year, data = FD_results, method = "euc")
+# #yes, effect for some metrics
 
 ###CAP
 
@@ -445,7 +482,7 @@ data = FD_results, distance = "euclidean")
 
 plot(Cap.mod)
 
-#### test with mFD
+#### test with mFD ####
 library(mFD)
 traits.cat <- data.frame(trait_name = colnames(fish.list$trait.t),
                          trait_type = c("Q", "N", "N", "N", "N"))
@@ -457,7 +494,7 @@ traits_summary <- sp.tr.summary(tr_cat = traits.cat,
 traits_summary
 
 #create the trait space
-dist_mat <- funct.dist(sp_tr = fish.list$trait.t, 
+dist_mat <- funct.dist(sp_tr = fish.list$trait, 
                        tr_cat = traits.cat,
                        metric = "gower",
                        weight_type = "equal",
@@ -510,13 +547,41 @@ mFD_results %>%
   theme_classic() +
   facet_wrap(~metric, scales = "free_y")
 
+adonis2(FD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + ipa + season, 
+        data = mFD_results, method = "euc", permutations = CTRL)
+
+#check to see if sites are different 
+mFD_results %>% 
+  pivot_longer(!c(site, ipa, season, region, veg), names_to = "metric", values_to = "value") %>% 
+  ggplot(aes(x = site, y = value, fill = season)) +
+  geom_boxplot() +
+  geom_point(show.legend = FALSE) +
+  theme_classic() +
+  facet_wrap(~metric, scales = "free_y")
+
+adonis2(mFD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ site + season + site*season,
+        data = mFD_results, method = "euc") #it matters whether you block by site
+
+summary(aov(mFD_results$Species_Richness ~ site, data = mFD_results))
+
+mFD_results %>% 
+  pivot_longer(!c(site, ipa, season, region, veg), names_to = "metric", values_to = "value") %>% 
+  ggplot(aes(x = site, y = value, fill = veg)) +
+  geom_boxplot() +
+  geom_point(show.legend = FALSE) +
+  theme_classic() +
+  facet_wrap(~metric, scales = "free_y")
+
+adonis2(mFD_results[,c("Species_Richness","FDis", "FEve", "FRic", "FDiv")] ~ veg + season + veg*season,
+        data = mFD_results, method = "euc", permutations = CTRL)
+
 #exclude species richness to highlight the FD results
 Cap.mod <- capscale(mFD_results[,c("FDis", "FEve", "FRic", "FDiv")] ~ site + season, 
                     data = mFD_results, distance = "euclidean")
 
 plot(Cap.mod)
 
-### ENVIRONMENTAL DATA
+ ### ENVIRONMENTAL DATA
 wq_import <- here::here("data", "raw","wq_import.csv") %>% read_csv()
 
 wq_df <- wq_import %>% 
@@ -577,30 +642,36 @@ for (i in 2:n_iter) {
 FD_null_output <- list()
 for (i in 1:n_iter){
   
-  null_fishFD <- dbFD(x = fish.list$trait.t, #must be a df where character columns are factors or a distance matrix
-                      a = null_L[[i]],
-                      corr = "cailliez",
-                      m = n_axes_to_keep,
-                      calc.FDiv = TRUE,
-                      print.pco = FALSE)
+  null_alpha_indices <- alpha.fd.multidim(sp_faxes_coord = plot_object[ , c("PC1", "PC2", "PC3", "PC4")],
+                                     asb_sp_w = data.matrix(null_L[[i]]),
+                                     ind_vect = c("fdis", "feve", "fric", "fdiv"),
+                                     scaling = TRUE,
+                                     check_input = TRUE,
+                                     details_returned = FALSE)
   
-  null_FD_values <- cbind(null_fishFD$nbsp, null_fishFD$FRic, null_fishFD$FEve, null_fishFD$FDiv,
-                          null_fishFD$FDis) #extract indices
+  #the mFD package uses ape::pcoa() which automatically removes negative eigenvalues rather than applying a correction
   
-  FD_null_df <- null_FD_values %>%
+  null_mFD_values <- null_alpha_indices$"functional_diversity_indices"
+  
+  FD_null_df <- null_mFD_values %>%
     as_tibble(rownames = "sample")
   
   FD_null_output <- rbind(FD_null_output, FD_null_df)
 }
 
-colnames(FD_null_output)[2:6] <- c("Species_Richness", "FRic", "FEve", "FDiv", "FDis") 
+colnames(FD_null_output)[2:6] <- c("Species_Richness", "FDis", "FEve", "FRic", "FDiv")
+
 
 FD_null_results <- FD_null_output %>%
-  separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "year"), cols_remove =  TRUE) %>%
+  select(!7:10) %>% 
+  separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "season"), cols_remove = TRUE) %>% 
   mutate(site = factor(site, levels = c("FAM", "TUR", "COR", "SHR", "DOK", "EDG")),
-         year = factor(year, levels = c("2018", "2019", "2021", "2022"))) %>%
-  mutate(region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), .after = site) %>% 
-  replace(is.na(.), 0) 
+         season = factor(season),
+         region = ifelse(site %in% c("FAM", "TUR", "COR"), "North", "South"), 
+         veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"), .after = site,
+         ipa = ifelse(ipa == "Natural2", "Natural", ipa)) #combine the two natural sites at TUR 
+
+
 
 # save(FD_null_results, file = "data/FD_null_results.Rda")
 
@@ -614,7 +685,7 @@ FD_null_summary <- FD_null_results %>%
 #### calculate SES samples ####
 # load("data/FD_results.Rda")  
 
-FD_means <- FD_results %>% 
+FD_means <- mFD_results %>% 
   replace(is.na(.), 0) %>% #replace na with zero for EDG armored where there was only two species caught at one ipa so cant calculate FRic, FEve, FDiv
   group_by(site) %>% 
   summarize(across(where(is.numeric), mean)) %>% 
@@ -632,114 +703,122 @@ names(SES_tab) <- names(FD_means)
 # calculate p values for SES
 #cant get this to work in a function!!! had to create a different function for each metric
 pull_FRic_ntiles <- function(site_ID) {
-  #commented out code left here for checking that the proper order has been extracted
-  lower <- FD_null_results %>% 
+ 
+   site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
+    sample_n(1000)
+  
+  #commented out code left here for checking that the proper order has been extracted
+  lower <- site_subset %>% 
     # rownames_to_column(var = "index") %>% #
-    arrange(FRic) %>% 
+    arrange(FRic) %>%
     # rownames_to_column(var = "arranged") %>% #
-    slice(600) %>% #5th percentile of 12000 observations
+    slice(50) %>% #5th percentile of 1000 observations
     select(FRic)
    # select(index, arranged, FRic) #
-  
-  upper <- FD_null_results %>%
-    filter(site == site_ID) %>%
+
+  upper <- site_subset %>% 
     # rownames_to_column(var = "index") %>% #
-    arrange(FRic) %>% 
+    arrange(FRic) %>%
     # rownames_to_column(var = "arranged") %>% #
-    slice(11400) %>% #95th percentile of 12000 observations
+    slice(950) %>% #95th percentile of 6000 observations
     select(FRic)
     # select(index, arranged, FRic) #
-  
-  names <- c("site", 
+
+  names <- c("site",
              # "index_lower",
              # "arranged_lower",
              "FRic_lower",
              # "index_upper",
              # "arranged_upper",
              "FRic_upper")
-  
+
   df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
   names(df) <- names
-  
+
   return(df)
 }
 
 pull_FEve_ntiles <- function(site_ID) {
   
-  lower <- FD_null_results %>% 
+  site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    arrange(FEve) %>% 
-    slice(600) %>%
+    sample_n(1000)
+
+  lower <- site_subset %>% 
+    arrange(FEve) %>%
+    slice(50) %>%
     select(FEve)
-  
-  upper <- FD_null_results %>%
-    filter(site == site_ID) %>%
-    arrange(FEve) %>% 
-    ungroup() %>% 
-    slice(11400) %>%
+
+  upper <- site_subset %>% 
+    arrange(FEve) %>%
+    ungroup() %>%
+    slice(950) %>%
     select(FEve)
-  
+
   names <- c("site", "FEve_lower","FEve_upper")
-  
+
   df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
   names(df) <- names
-  
+
   return(df)
 }
 
 pull_FDiv_ntiles <- function(site_ID) {
   
-  lower <- FD_null_results %>% 
+  site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    arrange(FDiv) %>% 
-    slice(600) %>%
+    sample_n(1000)
+
+  lower <- site_subset %>% 
+    arrange(FDiv) %>%
+    slice(50) %>%
     select( FDiv)
-  
-  upper <- FD_null_results %>%
-    filter(site == site_ID) %>%
-    arrange(FDiv) %>% 
-    ungroup() %>% 
-    slice(11400) %>%
+
+  upper <- site_subset %>% 
+    arrange(FDiv) %>%
+    ungroup() %>%
+    slice(950) %>%
     select(FDiv)
-  
+
   names <- c("site", "FDiv_lower","FDiv_upper")
-  
+
   df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
   names(df) <- names
-  
+
   return(df)
 }
 
 pull_FDis_ntiles <- function(site_ID) {
-  
-  lower <- FD_null_results %>% 
+  site_subset <- FD_null_results %>%
     filter(site == site_ID) %>% 
-    arrange(FDis) %>% 
-    slice(600) %>%
-    select(FDis)
+    sample_n(1000)
   
-  upper <- FD_null_results %>%
-    filter(site == site_ID) %>%
-    arrange(FDis) %>% 
-    ungroup() %>% 
-    slice(11400) %>%
+  lower <- site_subset %>% 
+    arrange(FDis) %>%
+    slice(50) %>%
     select(FDis)
-  
+
+  upper <- site_subset %>% 
+    arrange(FDis) %>%
+    ungroup() %>%
+    slice(950) %>%
+    select(FDis)
+
   names <- c("site",  "FDis_lower","FDis_upper")
-  
+
   df <- data.frame(site_ID)
   df <- cbind(df, lower, upper)
   names(df) <- names
-  
+
   return(df)
 }
 
 #extract the 95% confidence intervals for each metric
-FRic_CI <- lapply(SOS_core_sites, pull_FRic_ntiles)
+FRic_CI <- lapply(SOS_core_sites, pull_FRic_ntiles) #wont work as-is because sampling isn't equal between sites (EDG and FAM obs was removed)
 FEve_CI <- lapply(SOS_core_sites, pull_FEve_ntiles)
 FDiv_CI <- lapply(SOS_core_sites, pull_FDiv_ntiles)
 FDis_CI <- lapply(SOS_core_sites, pull_FDis_ntiles)
@@ -748,27 +827,27 @@ FDis_CI <- lapply(SOS_core_sites, pull_FDis_ntiles)
 combine_CI <- t(mapply(c, FRic_CI, FEve_CI, FDiv_CI, FDis_CI)) %>% as.data.frame()
 
 #turn the confidence intervals into long format
-CI_uppers_lowers <- combine_CI %>% 
-  select(!starts_with("site")) %>% 
-  mutate(site = SOS_core_sites) %>% 
-  pivot_longer(!site, names_to = "metric") %>% 
-  separate_wider_delim(metric, delim = "_", names = c("metric", "range"), cols_remove = TRUE) %>% 
+CI_uppers_lowers <- combine_CI %>%
+  select(!starts_with("site")) %>%
+  mutate(site = SOS_core_sites) %>%
+  pivot_longer(!site, names_to = "metric") %>%
+  separate_wider_delim(metric, delim = "_", names = c("metric", "range"), cols_remove = TRUE) %>%
   mutate(value = unlist(value))
 
 #turn the mean values into long format
-FD_means_long <- FD_means %>% 
-  pivot_longer(!c(site, Species_Richness), names_to = "metric", values_to = "value") %>% 
-  select(!Species_Richness) %>% 
+FD_means_long <- FD_means %>%
+  pivot_longer(!c(site, Species_Richness), names_to = "metric", values_to = "value") %>%
+  select(!Species_Richness) %>%
   mutate(range = "mean", .before = value)
 
 #combine the intervals with the means into one df and check significance
-df_for_p_vals <- bind_rows(CI_uppers_lowers,FD_means_long) %>% 
-  pivot_wider(names_from = range, values_from = value) %>% 
-  mutate(significant = ifelse(mean > lower & mean < upper, "no", "yes")) 
+df_for_p_vals <- bind_rows(CI_uppers_lowers,FD_means_long) %>%
+  pivot_wider(names_from = range, values_from = value) %>%
+  mutate(significant = ifelse(mean > lower & mean < upper, "no", "yes"))
 
 #format significance checks into a table that's the same format as the SES table
-p_vals_tbl <- df_for_p_vals %>% 
-  select(site, metric, significant) %>% 
+p_vals_tbl <- df_for_p_vals %>%
+  select(site, metric, significant) %>%
   pivot_wider(names_from = metric, values_from = significant)
 
 
@@ -786,14 +865,14 @@ alpha_div <- fish_L_long %>%
             invsimpson = diversity(avg_n, index = "invsimpson"),
             n = sum(avg_n)) %>% 
   ungroup() %>% 
-  separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "year"), cols_remove = FALSE) %>% #######
+  separate_wider_delim(sample, delim = "_", names = c("site", "ipa", "season"), cols_remove = FALSE) %>% #######
   mutate(site = factor(site, levels = SOS_core_sites),
          veg = ifelse(site %in% c("TUR", "COR", "SHR"), "present", "absent"))
 
 alpha_div %>% 
   pivot_longer(cols = c(richness, shannon, invsimpson, simpson), names_to = "metric") %>% 
   mutate(metric = factor(metric, levels = c("richness", "shannon", "simpson", "invsimpson"))) %>% 
-  ggplot(aes(x = site, y = value)) +
+  ggplot(aes(x = site, y = value, fill = season)) +
   geom_boxplot() +
   geom_point() +
   facet_wrap(~metric, scales = "free_y") +
@@ -804,10 +883,15 @@ adonis2(alpha_div[,c("richness","shannon", "simpson", "invsimpson")] ~ site,
         strata = alpha_div$year, data = alpha_div, method = "euc")
 #significant but not without species richness
 
+#compare by season
+adonis2(alpha_div[,c("richness", "shannon", "simpson", "invsimpson")] ~ season, 
+        strata = alpha_div$year, data = alpha_div, method = "euc")
+#significant but not without species richness
+
 #compare by eelgrass presence
 adonis2(alpha_div[,c("richness", "shannon", "simpson", "invsimpson")] ~ veg, 
         strata = alpha_div$year, data = alpha_div, method = "euc")
-#significant even without species richness
+#significant but not without species richness
 
 #### Bootstrapping ####
 # 

@@ -336,6 +336,11 @@ n_spp_by_month %>%
   labs(x = "Month", y = "Species Richness", color = "Year")
 #again, doesn't seem to be a clear break between "early" and "late" 
 
+n_spp_by_month <- n_spp_by_month %>% 
+  mutate(season = ifelse(month %in% c("May", "Jun", "Jul"), "peak", "shoulder"))
+
+t.test(n_spp ~ season, data= n_spp_by_month)
+
 ##is there a difference between northern and southern sites?
 abund_region <- net_tidy %>% 
   filter(!is.na(ComName)) %>% 
